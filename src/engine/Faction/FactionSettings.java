@@ -32,7 +32,7 @@ public class FactionSettings {
 	@XmlElement
 	int ai_growth; // Not sure if I will use this variable the same way.  Might just make them more or less agressive on growth.
 	@XmlElement
-	List<String> Techs; //TODO: List of tech names this faction gets for free.  (What happens when someone uses this with a modded techtree that doesn't have that tech?
+	List<String> Free_Techs; //TODO: List of tech names this faction gets for free.  (What happens when someone uses this with a modded techtree that doesn't have that tech?
 	
         @XmlElement
         int num_of_free_techs=0; // A number of techs that the player gets to choose for free at the game start.

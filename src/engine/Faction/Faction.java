@@ -64,7 +64,7 @@ public class Faction {
             setting.ai_wealth = Integer.parseInt(tmp[10].trim());
             setting.ai_growth = Integer.parseInt(tmp[11].trim());
 
-			// Next line in file.
+            // Next line in file.
             // Follows the following grammer:  Rule, rulesetting, rule, rulesetting, etc...
             line++;
             //System.out.println(fac_in.get(line));
@@ -84,7 +84,7 @@ public class Faction {
             }
             System.out.println(setting.anti_ideologies);
 
-			// Lets skip the sentences for now
+            // Lets skip the sentences for now
             dialog.land_base_names = read_section(fac_in, "#BASES");
             System.out.println(dialog.land_base_names);
 
@@ -110,42 +110,50 @@ public class Faction {
             rule = input[ii].trim();
             answ = input[ii + 1].trim();
             System.out.print(rule);
-            
-            if (rule.equalsIgnoreCase("TECH")) {
-                System.out.println("TECH!");
-                // This can be either a name of a specific tech or a number of user selected techs.
-                try {
-                    setting.num_of_free_techs = Integer.parseInt(answ);
 
-                } catch (NumberFormatException e) {
-                    
+            switch (rule.toUpperCase()) {
+                case "TECH":
+                    System.out.println("TECH!");
+                    // This can be either a name of a specific tech or a number of user selected techs.
+                    try {
+                        setting.num_of_free_techs = Integer.parseInt(answ);
 
-                    if (setting.Techs == null) {
-                        setting.Techs = new ArrayList<String>();
+                    } catch (NumberFormatException e) {
+
+                        if (setting.Free_Techs == null) {
+                            setting.Free_Techs = new ArrayList<String>();
+                        }
+                        setting.Free_Techs.add(answ);
+
                     }
-                    setting.Techs.add(answ);
-                }
+                    break;
 
-            } else if (rule.equalsIgnoreCase("SOCIAL")) {
-                if (setting.social == null) {
-                    setting.social = new ArrayList<String>();
-                }
-                setting.social.add(answ);
-                System.out.println(" " + answ);
-            } else if (rule.equalsIgnoreCase("DRONE")) {
-                setting.drone_bonus = Integer.parseInt(answ);
-                System.out.println(" " + answ);
-            } else if (rule.equalsIgnoreCase("FACILITY")) {
-                if (setting.free_facilitys == null) {
-                    setting.free_facilitys = new ArrayList<String>();
-                }
-                setting.free_facilitys.add(answ);
-                System.out.println(" " + answ);
+                case "SOCIAL":
+                    if (setting.social == null) {
+                        setting.social = new ArrayList<String>();
+                    }
+                    setting.social.add(answ);
+                    System.out.println(" " + answ);
+                    break;
+
+                case "DRONE":
+                    setting.drone_bonus = Integer.parseInt(answ);
+                    System.out.println(" " + answ);
+
+                    break;
+
+                case "FACILITY":
+                    if (setting.free_facilitys == null) {
+                        setting.free_facilitys = new ArrayList<String>();
+                    }
+                    setting.free_facilitys.add(answ);
+                    System.out.println(" " + answ);
             }
-            
 
         }
     }
+
+
 
     private List<String> read_section(List<String> strlist, String code) {
 
