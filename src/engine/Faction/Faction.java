@@ -171,9 +171,28 @@ public class Faction {
                     if(tmp==2){
                         setting.unit = FreeUnitType.SCOUT;
                     }
-                 
-                    
                     break;
+                    
+                case "TECHCOST":
+                    setting.techcost = Integer.parseInt(answ);
+                    break;
+                    
+                case "SHARETECH":
+                    setting.sharetech = Integer.parseInt(answ);
+                    break;
+                 
+                case "TECHSHARE":
+                    setting.tech_share = Integer.parseInt(answ)!=0;
+                    break;
+                    
+                case "TERRAFORM":
+                    if (Integer.parseInt(answ)==1){
+                        setting.terraform_cost=50;
+                    }
+                break;
+                
+                    
+                    //TODO: Add rest of faction stats.
             
             }   
 

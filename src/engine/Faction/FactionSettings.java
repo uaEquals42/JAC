@@ -79,13 +79,20 @@ public class FactionSettings {
 	@XmlElement
 	int pop_cap_difference=0;  // Change from the defaults from the population caps for hab domes, etc calculations
 	@XmlElement
-	int hurry; // Percentage of hurry costs.  100% results in no change.
+	int hurry=100; // Percentage of hurry costs.  100% results in no change.
 	@XmlElement
 	FreeUnitType unit = FreeUnitType.NONE; // Free starting unit
 	@XmlElement
-	int techcost; // Tech modifier rate.
+	int techcost=100; // Tech modifier rate.
 	@XmlElement
-	int sharetech;
+	int sharetech = -1;  // Get a free tech when x people know the tech already.  
+        
+        @XmlElement
+        boolean tech_share = false;  //If true, then you have to be spying on the other factions to gain the tech in sharetech..  (via probe, empath, or govener)
+        
+        @XmlElement
+        int terraform_cost = 100;  // Modifier to the terraform rate.  100% is default.  200% will increase time taken by 2.  50 will decrease the time in half.
+        
 	@XmlElement
 	List<String> immunity;
 	@XmlElement
