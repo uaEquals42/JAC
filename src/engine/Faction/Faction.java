@@ -118,19 +118,12 @@ public class Faction {
                         setting.num_of_free_techs = Integer.parseInt(answ);
 
                     } catch (NumberFormatException e) {
-
-                        if (setting.Free_Techs == null) {
-                            setting.Free_Techs = new ArrayList<String>();
-                        }
                         setting.Free_Techs.add(answ);
 
                     }
                     break;
 
                 case "SOCIAL":
-                    if (setting.social == null) {
-                        setting.social = new ArrayList<String>();
-                    }
                     setting.social.add(answ);
                     break;
 
@@ -138,10 +131,7 @@ public class Faction {
                     setting.drone_bonus = Integer.parseInt(answ);
                     break;
 
-                case "FACILITY":
-                    if (setting.free_facilitys == null) {
-                        setting.free_facilitys = new ArrayList<String>();
-                    }
+                case "FACILITY":           
                     setting.free_facilitys.add(answ);
                     break;
                     

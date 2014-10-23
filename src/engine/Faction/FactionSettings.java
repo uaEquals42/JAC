@@ -32,13 +32,13 @@ public class FactionSettings {
 	@XmlElement
 	int ai_growth; // Not sure if I will use this variable the same way.  Might just make them more or less agressive on growth.
 	@XmlElement
-	List<String> Free_Techs; //TODO: List of tech names this faction gets for free.  (What happens when someone uses this with a modded techtree that doesn't have that tech?
+	List<String> Free_Techs = new ArrayList<>(); //TODO: List of tech names this faction gets for free.  (What happens when someone uses this with a modded techtree that doesn't have that tech?
 	
         @XmlElement
         int num_of_free_techs=0; // A number of techs that the player gets to choose for free at the game start.
         
         @XmlElement
-	List<String> social; // social modifiers.
+	List<String> social = new ArrayList<>(); // social modifiers.
 	@XmlElement
 	int morale=0;
 	/*
@@ -57,9 +57,9 @@ public class FactionSettings {
 	@XmlElement
 	int psi=0; // Percentage combat bonus for PSI.  0+;
 	@XmlElement
-	List<String> free_facilitys;  // List of free facilitiy types.
+	List<String> free_facilitys = new ArrayList<>();  // List of free facilitiy types.
 	@XmlElement
-	List<String> free_facility_prereq; // List of free facilities given to player WHEN they get the technology to support it.
+	List<String> free_facility_prereq = new ArrayList<>(); // List of free facilities given to player WHEN they get the technology to support it.
 	@XmlElement
 	int research=0; //free research points per base per turn.
 	@XmlElement
