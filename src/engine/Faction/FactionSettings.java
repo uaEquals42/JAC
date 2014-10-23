@@ -93,12 +93,15 @@ public class FactionSettings {
         @XmlElement
         int terraform_cost = 100;  // Modifier to the terraform rate.  100% is default.  200% will increase time taken by 2.  50 will decrease the time in half.
         
+        @XmlElement
+        List<SocialAreas> robust = new ArrayList<>(); // Halves the intensity of minus effects in the named social area ("ROBUST, EFFIC" halves minus efficiency effects in social model) 
+        
 	@XmlElement
-	List<String> immunity;
+	List<SocialAreas> immunity= new ArrayList<>();
 	@XmlElement
-	List<String> impunity;
+	List<SocialAreas> impunity= new ArrayList<>();
 	@XmlElement
-	List<String> penalty;
+	List<SocialAreas> penalty= new ArrayList<>();
 	@XmlElement
 	int fungus_nutrient=0;
 	@XmlElement
@@ -106,7 +109,7 @@ public class FactionSettings {
 	@XmlElement
 	int fungus_energy=0;
 	@XmlElement
-	boolean extra_frequency=false;
+	int extra_frequency=0;  // 0 no extra frequences at game start.  1 = 1 extra frequency at game start, etc.
 	@XmlElement
 	boolean mind_control_immunity=false; // wtf... there's mind control? Is this somehting SMAX related?
 	@XmlElement

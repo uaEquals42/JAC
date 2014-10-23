@@ -180,26 +180,104 @@ public class Faction {
                 case "SHARETECH":
                     setting.sharetech = Integer.parseInt(answ);
                     break;
-                 
+       
                 case "TECHSHARE":
-                    setting.tech_share = Integer.parseInt(answ)!=0;
+                    setting.tech_share = Integer.parseInt(answ) != 0;
+                    break;
+
+                case "TERRAFORM":
+                    if (Integer.parseInt(answ) == 1) {
+                        setting.terraform_cost = 50;
+                    }
+                    break;
+
+                case "ROBUST":
+                    setting.robust.add(findtype(answ));
                     break;
                     
-                case "TERRAFORM":
-                    if (Integer.parseInt(answ)==1){
-                        setting.terraform_cost=50;
-                    }
-                break;
-                
+                case "IMMUNITY":
+                    setting.immunity.add(findtype(answ));
+                    break;
+                    
+                case "IMPUNITY":
+                    setting.impunity.add(findtype(answ));
+                    break;
+                    
+                case "PENALTY":
+                    setting.penalty.add(findtype(answ));
+                    break;
+                    
+                case "FUNGNUTRIENT":
+                    setting.fungus_nutrient = Integer.parseInt(answ);
+                    break;
+                    
+                case "FUNGMINERALS":
+                    setting.fungus_minerals = Integer.parseInt(answ);
+                    break;
+                    
+                case "FUNGENERGY":
+                    setting.fungus_energy = Integer.parseInt(answ);
+                    break;
+                    
+                case "COMMFREQ":
+                    setting.extra_frequency = Integer.parseInt(answ);
+                    break;
+                    
+                case "MINDCONTROL":
+                    setting.mind_control_immunity = Integer.parseInt(answ)==1;
+                    break;
+                    
+                case "FANATIC":
+                    setting.fanatic = Integer.parseInt(answ)==1;
+                    break;
+                    
+                case "VOTES":
+                    setting.votes = Integer.parseInt(answ);
+                    break;
+                    
+                    
                     
                     //TODO: Add rest of faction stats.
-            
-            }   
+            }
 
         }
     }
 
-
+    /**
+     * #TODO See if I can move to socialAreas.
+     * 
+     * @param social
+     * @return 
+     */
+    private SocialAreas findtype(String social) {
+        switch (social.toUpperCase()) {
+            case "ECONOMY":
+                return SocialAreas.ECONOMY;
+              
+            case "EFFIC":
+                return SocialAreas.EFFIC;
+            case "SUPPORT":
+                return SocialAreas.SUPPORT;
+            case "TALENT":
+                return SocialAreas.TALENT;
+            case "MORALE":
+                return SocialAreas.MORALE;
+            case "POLICE":
+                return SocialAreas.POLICE;
+            case "GROWTH":
+                return SocialAreas.GROWTH;
+            case "PLANET":
+                return SocialAreas.PLANET;
+            case "PROBE":
+                return SocialAreas.PROBE;
+            case "INDUSTRY":
+                return SocialAreas.INDUSTRY;
+            case "RESEARCH":
+                return SocialAreas.RESEARCH;
+        }
+        // TODO: Make it throw and exception.
+        return null;  // this shouldn't happen ever.  
+    }
 
     private List<String> read_section(List<String> strlist, String code) {
 

@@ -3,19 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package engine.Faction;
 
 /**
  *
  * @author grjordan
  */
-public enum FreeUnitType {
-    NONE,
-    COLONIST,
-    TERRAFORMER,
-    SCOUT;
-
+public enum SocialAreas {
+    ECONOMY,
+    EFFIC,
+    SUPPORT,
+    TALENT,
+    MORALE,
+    POLICE,
+    GROWTH,
+    PLANET,
+    PROBE,
+    INDUSTRY,
+    RESEARCH;
     
 }
 
