@@ -15,8 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Gregory
  */
-
-@XmlRootElement()
+@
+XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FactionSettings {
 	
@@ -81,7 +81,7 @@ public class FactionSettings {
 	@XmlElement
 	int hurry; // Percentage of hurry costs.  100% results in no change.
 	@XmlElement
-	String unit; // Free starting unit
+	FreeUnitType unit = FreeUnitType.NONE; // Free starting unit
 	@XmlElement
 	int techcost; // Tech modifier rate.
 	@XmlElement

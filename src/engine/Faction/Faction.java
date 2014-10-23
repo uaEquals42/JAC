@@ -159,7 +159,21 @@ public class Faction {
                     setting.hurry = Integer.parseInt(answ);
                     break;
                     
+                case "UNIT" :
+                  
+                    int tmp = Integer.parseInt(answ);
+                    if(tmp==0){
+                        setting.unit = FreeUnitType.COLONIST;
+                    }
+                    if(tmp==1){
+                        setting.unit = FreeUnitType.TERRAFORMER;
+                    }
+                    if(tmp==2){
+                        setting.unit = FreeUnitType.SCOUT;
+                    }
+                 
                     
+                    break;
             
             }   
 
