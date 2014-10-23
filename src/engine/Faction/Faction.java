@@ -113,7 +113,6 @@ public class Faction {
 
             switch (rule.toUpperCase()) {
                 case "TECH":
-                    System.out.println("TECH!");
                     // This can be either a name of a specific tech or a number of user selected techs.
                     try {
                         setting.num_of_free_techs = Integer.parseInt(answ);
@@ -133,13 +132,10 @@ public class Faction {
                         setting.social = new ArrayList<String>();
                     }
                     setting.social.add(answ);
-                    System.out.println(" " + answ);
                     break;
 
                 case "DRONE":
                     setting.drone_bonus = Integer.parseInt(answ);
-                    System.out.println(" " + answ);
-
                     break;
 
                 case "FACILITY":
@@ -147,8 +143,35 @@ public class Faction {
                         setting.free_facilitys = new ArrayList<String>();
                     }
                     setting.free_facilitys.add(answ);
-                    System.out.println(" " + answ);
-            }
+                    break;
+                    
+                case "TALENT":
+                    setting.talent = Integer.parseInt(answ);
+                    break;
+                    
+                case "ENERGY":
+                    setting.energy = Integer.parseInt(answ);
+                    break;
+                    
+                case "INTEREST":
+                    setting.interest = Integer.parseInt(answ);
+                    break;
+                   
+                case "COMMERCE":
+                    setting.commerce = Integer.parseInt(answ);
+                    break;
+                    
+                case "POPULATION":
+                    setting.pop_cap_difference = Integer.parseInt(answ);
+                    break;
+                   
+                case "HURRY":
+                    setting.hurry = Integer.parseInt(answ);
+                    break;
+                    
+                    
+            
+            }   
 
         }
     }

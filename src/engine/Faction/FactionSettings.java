@@ -65,13 +65,17 @@ public class FactionSettings {
 	@XmlElement
 	int drone_bonus=-1;  // University hits 4 people, one will then be a drone. If -1, then off.
 	@XmlElement
-	int talent=-1; //???
+	int talent=-1; // Free talent per x number of citizens per base.
 	@XmlElement
 	int energy=0; // extra energy at game start
 	
-	// Removed interest rate because it wasn't used. And seems like it would really unbalance the game if it was.
+	
+        @XmlElement
+        int interest = 0;  // Bonus or negative money earned each turn per base!.
+        
+        
 	@XmlElement
-	int commerce;
+	int commerce;  //??????
 	@XmlElement
 	int pop_cap_difference=0;  // Change from the defaults from the population caps for hab domes, etc calculations
 	@XmlElement
