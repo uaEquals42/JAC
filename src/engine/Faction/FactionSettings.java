@@ -118,42 +118,31 @@ public class FactionSettings {
 	int votes;  //TODO: look up what this was supposed to be...
 	@XmlElement
 	boolean freeproto=false;
+        @XmlElement
+        boolean aquatic_faction=false;
+        @XmlElement
+        boolean alien_faction=false;
+        
 	@XmlElement
-	List<String> pro_ideologies;
+	List<String> pro_ideologies = new ArrayList<>();
 	@XmlElement
-	List<String> anti_ideologies;
+	List<String> anti_ideologies = new ArrayList<>();
 	@XmlElement
 	String free_ability; //Gives all applicable units of a faction the chosen special ability for free after discovering the abilities pre-requisite technology, using the ability's number in alpha(x).txt as the parameter. For example, FREEABIL, 1, would give all of your units the Deep Radar special ability for free after discovering Advanced Military Algorithms. This can be used to allow units to have more than two special abilities at once.
 	@XmlElement
-	int revolt_success_modifier; //Give an additional percent chance that other faction's bases with drone revolts will join a faction. For Example, REVOLT, 25, means that a faction is 25% more likely to get a enemy faction's revolting base. There are many factors that go into who gets a revolting base.
+	int revolt_success_modifier=0; //Give an additional percent chance that other faction's bases with drone revolts will join a faction. For Example, REVOLT, 25, means that a faction is 25% more likely to get a enemy faction's revolting base. There are many factors that go into who gets a revolting base.
 	@XmlElement
-	int probe_cost; //This rule alters the percentage cost of your faction's probe team actions. For example, PROBECOST, 75, would make a faction's probe team cost 75% of normal and PROBECOST, 150, would make a faction's probe team cost 150% of normal. The default cost is 100%.
+	int probe_cost=100; //This rule alters the percentage cost of your faction's probe team actions. For example, PROBECOST, 75, would make a faction's probe team cost 75% of normal and PROBECOST, 150, would make a faction's probe team cost 150% of normal. The default cost is 100%.
 	@XmlElement
-	int drone_reduction; //This rule makes a number of drones at each of your bases into normal workers. For example, NODRONE, 2, would make two drones at each of your bases into citizens.
+	int drone_reduction=0; //This rule makes a number of drones at each of your bases into normal workers. For example, NODRONE, 2, would make two drones at each of your bases into citizens.
 	@XmlElement
-	int offence; // This rule alters the strength of the faction's attacking units (including PSI Combat). For example, OFFENSE, 125, would give a strength of 125% (25% above normal) to the faction's attacking units.
+	int offence=100; // This rule alters the strength of the faction's attacking units (including PSI Combat). For example, OFFENSE, 125, would give a strength of 125% (25% above normal) to the faction's attacking units.
 	@XmlElement
-	int defence; //This rule alters the strength of the faction's defending units (including PSI Combat). For example, DEFENSE, 75, would give a strength of 75% (25% below normal) to the faction's defending units. 
-	
+	int defence=100; //This rule alters the strength of the faction's defending units (including PSI Combat). For example, DEFENSE, 75, would give a strength of 75% (25% below normal) to the faction's defending units. 
+	@XmlElement
+        int wormpolice = 1;  //
+        @XmlElement
+        boolean techsteal = false; // Faction steal a tech when it captures a base.... no matter what the rules are set to.
 
-	public void set_pro_ideologies(String addme){
-		if(!addme.equalsIgnoreCase("nil")){
-			if (pro_ideologies == null){
-				pro_ideologies = new ArrayList<String>();
-			}
-			pro_ideologies.add(addme);
-		}
-			
-	}
 	
-	
-	public void set_anti_ideologies(String addme){
-		if(!addme.equalsIgnoreCase("nil")){
-			if (anti_ideologies == null){
-				anti_ideologies = new ArrayList<String>();
-			}
-			anti_ideologies.add(addme);
-		}
-			
-	}
 }

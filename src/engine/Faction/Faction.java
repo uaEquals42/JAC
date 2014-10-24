@@ -73,14 +73,14 @@ public class Faction {
             line++;
             String[] tmparray = fac_in.get(line).split(",");
             for (int i = 0; i < tmparray.length; i++) {
-                setting.set_pro_ideologies(tmparray[i].trim());
+                setting.pro_ideologies.add(tmparray[i].trim());
             }
             System.out.println(setting.pro_ideologies);
 
             line++;
             tmparray = fac_in.get(line).split(",");
             for (int i = 0; i < tmparray.length; i++) {
-                setting.set_anti_ideologies(tmparray[i].trim());
+                setting.anti_ideologies.add(tmparray[i].trim());
             }
             System.out.println(setting.anti_ideologies);
 
@@ -182,13 +182,11 @@ public class Faction {
                     break;
        
                 case "TECHSHARE":
-                    setting.tech_share = Integer.parseInt(answ) != 0;
+                    setting.tech_share = true;
                     break;
 
                 case "TERRAFORM":
-                    if (Integer.parseInt(answ) == 1) {
-                        setting.terraform_cost = 50;
-                    }
+                    setting.terraform_cost = 50;
                     break;
 
                 case "ROBUST":
@@ -220,24 +218,69 @@ public class Faction {
                     break;
                     
                 case "COMMFREQ":
-                    setting.extra_frequency = Integer.parseInt(answ);
+                    setting.extra_frequency = 1;
                     break;
                     
                 case "MINDCONTROL":
-                    setting.mind_control_immunity = Integer.parseInt(answ)==1;
+                    setting.mind_control_immunity = true;
                     break;
                     
                 case "FANATIC":
-                    setting.fanatic = Integer.parseInt(answ)==1;
+                    setting.fanatic = true;
                     break;
                     
                 case "VOTES":
                     setting.votes = Integer.parseInt(answ);
                     break;
                     
+                case "FREEPROTO":
+                    setting.freeproto = true;
+                    break;
                     
+                case "AQUATIC":
+                    setting.aquatic_faction = true;
+                    break;
                     
-                    //TODO: Add rest of faction stats.
+                case "ALIEN":
+                    setting.alien_faction = true;
+                    break;
+                    
+                case "FREEFAC":
+                    setting.free_facility_prereq.add(answ);
+                    break;
+                    
+                case "REVOLT":
+                    setting.revolt_success_modifier = Integer.parseInt(answ);
+                    break;
+                    
+                case "NODRONE":
+                    setting.drone_reduction = Integer.parseInt(answ);
+                    break;
+                    
+                case "WORMPOLICE":
+                    setting.wormpolice = 2;
+                    break;
+                    
+                case "FREEABIL":
+                    setting.free_ability = answ;
+                    break;
+                    
+                case "PROBECOST":
+                    setting.probe_cost = Integer.parseInt(answ);
+                    break;
+                    
+                case "DEFENSE":
+                    setting.defence = Integer.parseInt(answ);
+                    break;
+                
+                case "OFFENSE":
+                    setting.offence = Integer.parseInt(answ);
+                    break;
+
+                case "TECHSTEAL":
+                    setting.techsteal = true;
+                    break;
+               
             }
 
         }
