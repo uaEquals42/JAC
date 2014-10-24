@@ -12,18 +12,16 @@ import java.util.List;
  * @author Gregory
  */
 public class GameEngine {
-	Gameboard gameboard;
-        List<FactionSettings> factions;
-        
-        public void GameEngine(){
-            // Load all the game factions availiable
-             
-            
-        }
-        
-	public void createnewmap(){
-		gameboard = new Gameboard(200,200,50);
-	}
-        
-	
+
+    private Gameboard gameboard;
+    private List<FactionSettings> factions;
+
+    public void GameEngine() {
+
+    }
+
+    public void createnewmap() {
+        gameboard = new Gameboard(200, 200, 50);
+    }
+
 }

@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Gregory
+ * 
+ * @author grjordan
  */
 @
 XmlRootElement()
@@ -22,7 +22,8 @@ public class FactionSettings {
 	
 	// RULES:
 	@XmlElement
-	int ai_fight; // willingness to fight.
+        int ai_fight; // willingness to fight.
+        
 	@XmlElement
 	int ai_power; // interest in power
 	@XmlElement
@@ -75,7 +76,7 @@ public class FactionSettings {
         
         
 	@XmlElement
-	int commerce;  //??????
+	int commerce;  //It gives +X commerce for that faction, same as learning X "boosts commerce rate" techs or having X+2 ECONOMY (although ECONOMY can't give more than +3).
 	@XmlElement
 	int pop_cap_difference=0;  // Change from the defaults from the population caps for hab domes, etc calculations
 	@XmlElement

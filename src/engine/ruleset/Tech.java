@@ -68,14 +68,14 @@ public class Tech {
     
     // I figure doing it this way will increase the modability for modders.
     boolean freetech = false;
-    int probe_bonus = 0;
-    int commerce_bonus = 0;
+    boolean probe_bonus = false;
+    boolean commerce_bonus = false;
     boolean revealmap = false;
     boolean genewar_offence = false;
     boolean genewar_defence = false;
-    int fungus_energy_bonus = 0;
-    int fungus_mineral_bonus = 0;
-    int fungus_nutrient_bonus = 0;
+    boolean fungus_energy_bonus = false;
+    boolean fungus_mineral_bonus = false;
+    boolean fungus_nutrient_bonus = false;
     
     
     

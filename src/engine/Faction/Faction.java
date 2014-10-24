@@ -72,15 +72,19 @@ public class Faction {
             set_rules(tmp);
             line++;
             String[] tmparray = fac_in.get(line).split(",");
-            for (int i = 0; i < tmparray.length; i++) {
-                setting.pro_ideologies.add(tmparray[i].trim());
+            for (String ideology : tmparray) {
+                if (!ideology.trim().equalsIgnoreCase("nil")) {
+                    setting.pro_ideologies.add(ideology.trim());
+                }
             }
             System.out.println(setting.pro_ideologies);
 
             line++;
             tmparray = fac_in.get(line).split(",");
-            for (int i = 0; i < tmparray.length; i++) {
-                setting.anti_ideologies.add(tmparray[i].trim());
+            for (String ideology : tmparray) {
+                if (!ideology.trim().equalsIgnoreCase("nil")) {
+                    setting.anti_ideologies.add(ideology.trim());
+                }
             }
             System.out.println(setting.anti_ideologies);
 
@@ -139,8 +143,9 @@ public class Faction {
                     setting.talent = Integer.parseInt(answ);
                     break;
                     
-                case "ENERGY":
+                case "ENERGY":          
                     setting.energy = Integer.parseInt(answ);
+           
                     break;
                     
                 case "INTEREST":
@@ -336,6 +341,7 @@ public class Faction {
 
         return tmp;
     }
+
 
     public void saveXML() {
         try {
