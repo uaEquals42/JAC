@@ -437,7 +437,7 @@ public class Faction {
         }
         
         try {
-
+            String PREFIX = "./Factions/";
             // create JAXB context and initializing Marshaller  
             JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -446,7 +446,7 @@ public class Faction {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
             //specify the location and name of xml file to be created  
-            String savename = code_name + "_settings.xml";
+            String savename = PREFIX + code_name + "_settings.xml";
             File XMLfile = new File(savename);
 
             // Writing to XML file  
@@ -460,7 +460,7 @@ public class Faction {
             // for getting nice formatted output  
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            savename = code_name + "_English.xml";
+            savename = PREFIX + code_name + "_English.xml";
             XMLfile = new File(savename);
 
             // Writing to XML file  
