@@ -1,0 +1,127 @@
+;
+; Sid Meier's Alpha Centauri
+; Faction Editor
+;
+
+#REAGAN
+Reagan Republic, New USA, Reaganites, M, 1, Reagan, M, 0, 0, 1, 1, 1, 
+TECH, Indust, FACILITY, 7, SOCIAL, None, SOCIAL, +INDUSTRY, SOCIAL, +++ECONOMY, NODRONE, 1, TERRAFORM, 0, MORALE, 1, RESEARCH, 1, ENERGY, 50, TECHCOST, 115, 
+Politics, Democratic, ECONOMY, 
+Future Society, Thought Control, nil, 
+Reaganites, Reaganites
+Alexander Haig, George Bush, New D.C
+President, cunning, power-hungry, cunning, power-hungry, 
+maniac
+enforce freedom for all mankind
+to found a society on the principles of freedom and right to work
+reducing us all to mindless workers of his money-grab plot
+reducing us all to mindless workers of your money-grab plot
+reduce the human population of this world into mindless workers
+laughing like a maniac and mumbling about our destruction
+laughing like a maniac and mumbling about our destruction
+making constant money-grabs
+plot for money, M1
+Reaganomics, M2
+Reaganomics, M2
+fee, M1
+improving the economy
+The Army
+U.S Law
+
+#BASES
+New D.C
+The Hexagon
+New Maryland
+New Virginia
+Democracy's Rise
+Freedom's Hold
+Industry Square
+Lincoln City
+The Price of Freedom
+Innovation Labs
+New N.Y
+Trade Depot
+Yellowstone Park
+New California
+Reagan City
+#END
+
+#WATERBASES
+New Hawaii
+New Miami
+Port Freedom
+New Seattle
+Port America
+#END
+
+#BLURB
+^  Freedom is never more than one generation away from
+extinction. We must fight to protect it, or we will
+spend our sunset years telling our children what it
+was like when men were free.
+^
+^        -- President Ronald Reagan,
+^           "Ensuring Prosperity"
+
+#DATALINKS1
+^LEADER: {Ronald Reagan}
+^BACKGROUND: {United States, 1980's}    
+^AGENDA: {Democracy for all Planet's citizens} 
+^TECH: {Industrial Base}
+
+#DATALINKS2
+^+3 ECONOMY: {Reaganomics}
+^+1 INDUSTRY: {Right to work}
+^
+^Economic Nation: {Free ENERGY BANK at each base}
+^{May not use thought control.}
+^
+^
+^
+
+#FACTIONTRUCE
+#xs 440
+#caption $CAPTION7
+"For the greater good of humanity, $NAME1, a pledge
+of Blood Truce would seem in order."
+
+"Indeed. Blood Truce would be most satisfactory."
+"You are a threat to the well being of all people on
+Planet! I cannot let you continue."
+
+#FACTIONTREATY
+#xs 440
+#caption $CAPTION7
+"$TITLE0 $NAME1, your ideals are admirable if a bit
+misguided and your faction need not pose a threat to
+Reaganomics. Shall we sign a Treaty of Friendship to
+formalize our symbiotic relationship?
+
+"As you wish. The Reaganites seems a valuable friend."
+"No. You are not someone we wish to ally with, $NAME3."
+e, $NAME3."
+
+#ALIENFACTIONTRUCE
+#xs 440
+#caption $CAPTION7
+"As I see no need for this Vendetta to continue, $NAME1,
+a pledge of Blood Truce would seem in order."
+
+"Progenitor: perceive no point either. Mutual agreement:
+truce."
+"Your needs: truth: not same. Continued conflict: beneficial
+to Progenitor!"
+
+#ALIENFACTIONTREATY
+#xs 440
+#caption $CAPTION7
+"$TITLE0 $NAME1, my noninterference philosophies would
+seem to make me the only natural ally for you from among
+these warring human factions. Can't we sign a Treaty
+of Friendship and coexist in peace?
+
+"Hive: safe ally. Treaty: admirable idea."
+"Hive: control: too important. Ally: dangerous. Answer:
+no."
+
+# ; This line must remain at end of file

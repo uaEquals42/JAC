@@ -1,0 +1,140 @@
+;
+; Sid Meier's Alpha Centauri
+; Faction Editor
+; By BlueFlux
+
+#ROME
+New Rome, The Empire, Rome, M, 1, Augustus, M, 1, 1, 0, 1, 0, 
+TECH, Mobile, VOTES, 1, SOCIAL, +GROWTH, SOCIAL, -PROBE, SOCIAL, +ECONOMY, FUNGENERGY, 1, OFFENSE, 110, FANATIC, 0, MORALE, 1, ENERGY, 50, COMMERCE, 2, 
+Values, Wealth, ECONOMY, 
+Economics, Free Market, nil, 
+Rome, Rome
+Gaius, Julias Octavius, Nova Roma
+Caesar, innovative, cruel, conquering, brute, 
+power-hungry freak
+expand our empires
+to found an empire on the principles of security and wealth
+assimilating us into his empire
+assimilating all other humans into your empire
+reduce us all to states of his Empire
+sitting in the war room staring at our countries with hate
+sitting in your war room staring at our countries with hate
+wanting to assimilate you into my empire
+Empire, M1
+Empire, M2
+plans for growth and wealth, M2
+tax, M1
+keeping order
+Roman Military
+Roman Law
+
+#BASES
+Nova Roma
+School of Latin
+Strength Nexus
+Kings Hold
+Block Urban
+House of Trade
+Window of Hope
+Holy Temple
+Great Comb
+Battle Station
+State-State Distribution
+New Sicile
+Tower of Strength
+Tribute to Marius
+New Byzantium
+Constantine the Great
+University of the Arts
+Metal Foundry
+Brush of Iron
+Mars's Temple
+Jupiter Shrine
+Minerva's Temple
+Musical Sermon
+Faith Latch
+Gladiator Arena
+Coastal Lighting
+#END
+
+#WATERBASES
+Portus Magnus
+Sunset Port
+Merchants Hold
+Isle of Constantinople
+Conquest to Afar
+The Punishment for Unlawfulness
+Stone Route
+#END
+
+#BLURB
+^  For a certain order to be established in an Empire,
+you must make an example of those who do not follow
+your laws. Decent treatment surpresses riots better
+than any police, but a lack of police creates a riot.
+^
+^        -- Augustus Caesar,
+^           "The Ethics of Strength and Wealth"
+
+#DATALINKS1
+^LEADER: {Augustus Caesar}
+^BACKGROUND: {Ancient Italy, Caesar of the Roman Empire}
+^AGENDA: {Create the most powerful faction on Chiron}
+^TECH: {Doctrine: Mobility}
+
+#DATALINKS2
+^+1 GROWTH:   {Rapid population growth}
+^+1 ECONOMY: {Slaves, and masters of trade}
+^-1 PROBE:  {Little political freedom}
+^{May not use Free Market policies}
+^
+^
+^
+^
+
+#FACTIONTRUCE
+#xs 440
+#caption $CAPTION7
+"As I see no need for this Vendetta to continue, $NAME1,
+a pledge of Blood Truce would seem in order."
+
+"Indeed. Blood Truce would be most satisfactory."
+"Never! I plan to put an end to your scheming once and
+for all!"
+
+#FACTIONTREATY
+#xs 440
+#caption $CAPTION7
+"$TITLE0 $NAME1, your ideals are admirable if a bit
+misguided and your faction need not pose a threat to
+Roman Law. Shall we sign a Treaty of Friendship to formalize
+our symbiotic relationship?
+
+"As you wish. The Empire seems a valuable friend."
+"No. Your empire is a threat to all humans who live
+on Chiron, $NAME3."
+
+#ALIENFACTIONTRUCE
+#xs 440
+#caption $CAPTION7
+"As I see no need for this Vendetta to continue, $NAME1,
+a pledge of Blood Truce would seem in order."
+
+"Progenitor: perceive no point either. Mutual agreement:
+truce."
+"Your needs: truth: not same. Continued conflict: beneficial
+to Progenitor!"
+
+#ALIENFACTIONTREATY
+#xs 440
+#caption $CAPTION7
+"$TITLE0 $NAME1, my noninterference philosophies would
+seem to make me the only natural ally for you from among
+these warring human factions. Can't we sign a Treaty
+of Friendship and coexist in peace?
+
+"Rome: safe ally. Treaty: admirable idea."
+"Rome: control: too important. Ally: dangerous. Answer:
+no."
+
+# ; This line must remain at end of file
