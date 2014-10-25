@@ -43,6 +43,7 @@ public class Faction {
         dialog = new Faction_Dialog();
         try {
             Path path = Paths.get(FileName);
+            System.out.println(path);
             List<String> fac_in = Files.readAllLines(path, StandardCharsets.UTF_8);
             int line = 0;
 
@@ -72,21 +73,52 @@ public class Faction {
             set_rules(tmp);
             line++;
             String[] tmparray = fac_in.get(line).split(",");
-            for (String ideology : tmparray) {
-                if (!ideology.trim().equalsIgnoreCase("nil")) {
-                    setting.pro_ideologies.add(ideology.trim());
-                }
+           
+            switch (tmparray[2].toUpperCase().trim()) {
+                case "NIL":
+                    setting.ai_emphesis = AI_Emphesis.NIL;
+                    break;
+                case "ECONOMY":
+                    setting.ai_emphesis = AI_Emphesis.ECONOMY;
+                    break;
+                case "EFFIC":
+                    setting.ai_emphesis = AI_Emphesis.EFFIC;
+                    break;
+                case "SUPPORT":
+                    setting.ai_emphesis = AI_Emphesis.SUPPORT;
+                    break;
+                case "TALENT":
+                    setting.ai_emphesis = AI_Emphesis.TALENT;
+                    break;
+                case "MORALE":
+                    setting.ai_emphesis = AI_Emphesis.MORALE;
+                    break;
+                case "POLICE":
+                    setting.ai_emphesis = AI_Emphesis.POLICE;
+                    break;
+                case "GROWTH":
+                    setting.ai_emphesis = AI_Emphesis.GROWTH;
+                    break;
+                case "PLANET":
+                    setting.ai_emphesis = AI_Emphesis.PLANET;
+                    break;
+                case "PROBE":
+                    setting.ai_emphesis = AI_Emphesis.PROBE;
+                    break;
+                case "INDUSTRY":
+                    setting.ai_emphesis = AI_Emphesis.INDUSTRY;
+                    break;
+                case "RESEARCH":
+                    setting.ai_emphesis = AI_Emphesis.RESEARCH;
+                    break;
+
             }
-            System.out.println(setting.pro_ideologies);
+            config_ideology(tmparray[0],tmparray[1],setting.pro_ideologies);
+            
 
             line++;
             tmparray = fac_in.get(line).split(",");
-            for (String ideology : tmparray) {
-                if (!ideology.trim().equalsIgnoreCase("nil")) {
-                    setting.anti_ideologies.add(ideology.trim());
-                }
-            }
-            System.out.println(setting.anti_ideologies);
+           config_ideology(tmparray[0],tmparray[1],setting.anti_ideologies);
 
             // Lets skip the sentences for now
             dialog.land_base_names = read_section(fac_in, "#BASES");
@@ -106,6 +138,62 @@ public class Faction {
 
         }
     }
+    
+    private void config_ideology(String value1, String value2, List<Ideologies> addto){
+
+        value1 = value1.trim().toLowerCase();
+        value2 = value2.trim().toLowerCase();
+       
+        if(value1.equals("politics")){
+            if(value2.equals("")){
+                addto.add(Ideologies.POL_POLICE);
+            }
+            if(value2.equals("democratic")){
+                addto.add(Ideologies.POL_DEMOCRATIC);
+            }
+            if(value2.equals("fundamentalist")){
+                addto.add(Ideologies.POL_FUNDAMENTALIST);
+            }
+            
+        }
+        if(value1.equals("economics")){
+            if(value2.equals("free market")){
+                addto.add(Ideologies.ECON_FREE_MARKET);
+            }
+            if(value2.equals("planned")){
+                addto.add(Ideologies.ECON_PLANNED);
+            }
+            if(value2.equals("green")){
+                addto.add(Ideologies.ECON_GREEN);
+            }
+            
+        }
+        if(value1.equals("values")){
+            if(value2.equals("power")){
+                addto.add(Ideologies.VALUE_POWER);
+            }
+            if(value2.equals("knowledge")){
+                addto.add(Ideologies.VALUE_KNOWLEDGE);
+            }
+            if(value2.equals("wealth")){
+                addto.add(Ideologies.VALUE_WEALTH);
+            }
+            
+        }
+        if(value1.equals("future society")){
+            if(value2.equals("cybernetic")){
+                addto.add(Ideologies.FUTURE_CYBERNETIC);
+            }
+            if(value2.equals("eudaimonic")){
+                addto.add(Ideologies.FUTURE_EUDAIMONIC);
+            }
+            if(value2.equals("thought control")){
+                addto.add(Ideologies.FUTURE_THOUGHT_CONTROL);
+            }
+            
+        }
+    }
+    
 
     private void set_rules(String[] input) {
         String rule;
@@ -343,7 +431,11 @@ public class Faction {
     }
 
 
-    public void saveXML() {
+    public boolean saveXML() {
+        if(setting==null){
+            return false;
+        }
+        
         try {
 
             // create JAXB context and initializing Marshaller  
@@ -375,10 +467,11 @@ public class Faction {
             jaxbMarshaller.marshal(dialog, XMLfile);
             // Writing to console  
             jaxbMarshaller.marshal(dialog, System.out);
-
+            return true;
         } catch (JAXBException e) {
             // some exception occured  
             e.printStackTrace();
+            return false;
         }
     }
 

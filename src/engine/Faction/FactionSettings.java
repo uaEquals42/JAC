@@ -125,9 +125,11 @@ public class FactionSettings {
         boolean alien_faction=false;
         
 	@XmlElement
-	List<String> pro_ideologies = new ArrayList<>();
+	List<Ideologies> pro_ideologies = new ArrayList<>();
 	@XmlElement
-	List<String> anti_ideologies = new ArrayList<>();
+	List<Ideologies> anti_ideologies = new ArrayList<>();
+        @XmlElement
+        AI_Emphesis ai_emphesis = AI_Emphesis.NIL;
 	@XmlElement
 	String free_ability; //Gives all applicable units of a faction the chosen special ability for free after discovering the abilities pre-requisite technology, using the ability's number in alpha(x).txt as the parameter. For example, FREEABIL, 1, would give all of your units the Deep Radar special ability for free after discovering Advanced Military Algorithms. This can be used to allow units to have more than two special abilities at once.
 	@XmlElement

@@ -11,7 +11,8 @@ package engine.Faction;
 public class TestFaction {
 	 public static void main(String[] args) {
        Faction test = new Faction();
-	   test.load_alpha_fac_file("/home/grjordan/.wine/drive_c/GOG Games/Sid Meier's Alpha Centauri/univ.txt");
+	test.load_alpha_fac_file("/home/grjordan/.wine/drive_c/GOG Games/Sid Meier's Alpha Centauri/univ.txt");
+       //test.load_alpha_fac_file("./testfiles/FactionsbyBlueFlux/BFB/boy.txt");
 	   test.saveXML();
     }
 }
