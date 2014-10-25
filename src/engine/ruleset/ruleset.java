@@ -12,4 +12,25 @@ package engine.ruleset;
  */
 public class ruleset {
     
+    public boolean loadxml(){
+        //TODO: implement loadxml
+        return false;
+    }
+    
+    public boolean loadalpha_txt(){
+        
+        return false;
+    }
+    
+    public boolean loadalphax_txt(){
+        //TODO: implement load alphax.txt
+        return false;
+    }
+    
+    private int gotosection(String tag){
+        
+        return 0;
+    }
+    
+    
 }

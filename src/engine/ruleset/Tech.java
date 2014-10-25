@@ -65,6 +65,7 @@ public class Tech {
      * An empty list means there are no pre-requisites.
      */
     List<Tech> pre_requisites = new ArrayList<>(); 
+    List<String> pre_requisites_names = new ArrayList<>(); // I might have to use this for the xml files.
     
     // I figure doing it this way will increase the modability for modders.
     boolean freetech = false;
