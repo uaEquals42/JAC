@@ -16,7 +16,16 @@ public class FactionTest {
     
     public FactionTest() {
     }
+    // This just tries loading in all the different factions in the tests.
     
+    @Test
+    public void load_faction_red(){
+        String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
+        Faction instance = new Faction();
+        boolean expResult = true;
+        boolean result = instance.load_alpha_fac_file(FileName);
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of load_alpha_fac_file method, of class Faction.

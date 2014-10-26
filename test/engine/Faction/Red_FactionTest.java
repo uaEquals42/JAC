@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 package engine.Faction;
-
-import org.junit.After;
-import org.junit.AfterClass;
+import java.lang.Integer;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -16,39 +13,40 @@ import static org.junit.Assert.*;
  *
  * @author grjordan
  */
-public class Rome_FactionTest {
-
-    public Rome_FactionTest() {
+public class Red_FactionTest {
+    
+    public Red_FactionTest() {
     }
     Faction instance;
-
+    
     @Before
     public void setUp() {
-        String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
+        String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         instance = new Faction();
         instance.load_alpha_fac_file(FileName);
 
     }
-
+    
+    
     @Test
     public void testSaveXML2() {
-
         boolean result = instance.saveXML();
         assertEquals("Faction Data has been loaded, should be true", true, result); // We haven't loaded any faction data.  So it should return false.
     }
 
     @Test
+    @SuppressWarnings("BoxingBoxedValue")
     public void socialTest() {
 
-        assertEquals("Growth", 1, (int) instance.setting.social.get(SocialAreas.GROWTH));
-        assertEquals("Probe", -1, (int) instance.setting.social.get(SocialAreas.PROBE));
-        assertEquals("Economy", 1, (int) instance.setting.social.get(SocialAreas.ECONOMY));
+        assertEquals("MORALE", 1,   (int)instance.setting.social.get(SocialAreas.MORALE) );
+        assertEquals("RESEARCH", 1, (int)instance.setting.social.get(SocialAreas.RESEARCH) );
+        assertEquals("ECONOMY", -2, (int)instance.setting.social.get(SocialAreas.ECONOMY));
     }
 
     @Test
     public void test_tech() {
         assertEquals("Tech", 1, (int) instance.setting.Free_Techs.size());
-        assertEquals("Mobile", true, instance.setting.Free_Techs.get(0).equals("Mobile"));
+        assertEquals("InfNet", true, instance.setting.Free_Techs.get(0).equals("InfNet"));
     }
-
+    
 }
