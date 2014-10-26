@@ -5,10 +5,6 @@
  */
 package engine.Faction;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,14 +17,24 @@ public class FactionTest {
     public FactionTest() {
     }
     
-    
 
     /**
      * Test of load_alpha_fac_file method, of class Faction.
      */
     @Test
-    public void testLoad_alpha_fac_file() {
+    public void testLoad_alpha_fac_file_rome() {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
+        Faction instance = new Faction();
+        boolean expResult = true;
+        boolean result = instance.load_alpha_fac_file(FileName);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+
+    }
+    
+    @Test
+    public void testLoad_alpha_fac_file_reagan() {
+        String FileName = "./testfiles/FactionsbyBlueFlux/Reagan/reagan.txt";
         Faction instance = new Faction();
         boolean expResult = true;
         boolean result = instance.load_alpha_fac_file(FileName);
