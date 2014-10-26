@@ -30,6 +30,7 @@ public class ruleset {
     
     public boolean loadalphax_txt(){
         //TODO: implement load alphax.txt
+        //TODO: Load SMAC ideologies from SOCIO
         return false;
     }
     
@@ -38,13 +39,7 @@ public class ruleset {
         return 0;
     }
     
-    private void create_SMAC_ideologies(){
-        Ideology frontier = new Ideology("Politics","Frontier","");
-        Ideology police_state = new Ideology("Politics","Police State","DocLoy");
-        police_state.add_socialmod(SocialAreas.POLICE, 2);
-        police_state.add_socialmod(SocialAreas.SUPPORT, 2);
-        police_state.add_socialmod(SocialAreas.EFFIC, -2);
-    }
+    
     
     
 }
