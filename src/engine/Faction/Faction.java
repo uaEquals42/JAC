@@ -139,59 +139,15 @@ public class Faction {
         }
     }
     
-    private void config_ideology(String value1, String value2, List<Ideologies> addto){
+    private void config_ideology(String value1, String value2, List<String[]> addto){
 
         value1 = value1.trim().toLowerCase();
         value2 = value2.trim().toLowerCase();
        
-        if(value1.equals("politics")){
-            if(value2.equals("")){
-                addto.add(Ideologies.POL_POLICE);
-            }
-            if(value2.equals("democratic")){
-                addto.add(Ideologies.POL_DEMOCRATIC);
-            }
-            if(value2.equals("fundamentalist")){
-                addto.add(Ideologies.POL_FUNDAMENTALIST);
-            }
-            
-        }
-        if(value1.equals("economics")){
-            if(value2.equals("free market")){
-                addto.add(Ideologies.ECON_FREE_MARKET);
-            }
-            if(value2.equals("planned")){
-                addto.add(Ideologies.ECON_PLANNED);
-            }
-            if(value2.equals("green")){
-                addto.add(Ideologies.ECON_GREEN);
-            }
-            
-        }
-        if(value1.equals("values")){
-            if(value2.equals("power")){
-                addto.add(Ideologies.VALUE_POWER);
-            }
-            if(value2.equals("knowledge")){
-                addto.add(Ideologies.VALUE_KNOWLEDGE);
-            }
-            if(value2.equals("wealth")){
-                addto.add(Ideologies.VALUE_WEALTH);
-            }
-            
-        }
-        if(value1.equals("future society")){
-            if(value2.equals("cybernetic")){
-                addto.add(Ideologies.FUTURE_CYBERNETIC);
-            }
-            if(value2.equals("eudaimonic")){
-                addto.add(Ideologies.FUTURE_EUDAIMONIC);
-            }
-            if(value2.equals("thought control")){
-                addto.add(Ideologies.FUTURE_THOUGHT_CONTROL);
-            }
-            
-        }
+        String[] tmp = {value1, value2};
+        addto.add(tmp);
+         
+       
     }
     
 
@@ -216,7 +172,7 @@ public class Faction {
                     break;
 
                 case "SOCIAL":
-                    setting.social.add(answ);
+                    social_mods(answ);
                     break;
 
                 case "DRONE":
@@ -379,6 +335,36 @@ public class Faction {
         }
     }
 
+    
+    private boolean social_mods(String input){
+        // we need to count the number of + or - in front of the name.
+        int direction = 0;
+        int count = 0;
+        input = input.trim();
+        if(input.charAt(0)!='-'&&input.charAt(0)!='+'){
+            return false;
+        }
+        
+        char[] tmp = input.toCharArray();
+        int position = 0;
+        for(int i = 0; i < tmp.length; i++){
+            
+            if(tmp[i]=='+'){
+                count=+1;
+            }
+            else if(tmp[i]=='-'){
+                count=-1;
+            }
+            else{
+                position = i;
+                i = tmp.length;  // There has got to be a cleaner way to do this.
+            }
+        }
+        
+        setting.social.put(findtype(input.substring(position)), count);
+        return true;
+    }
+    
     /**
      * #TODO See if I can move to socialAreas.
      * 

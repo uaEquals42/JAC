@@ -5,7 +5,9 @@
 package engine.Faction;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -39,7 +41,7 @@ public class FactionSettings {
         int num_of_free_techs=0; // A number of techs that the player gets to choose for free at the game start.
         
         @XmlElement
-	List<String> social = new ArrayList<>(); // social modifiers.
+	Map<SocialAreas, Integer> social = new EnumMap<>(SocialAreas.class); // social modifiers.
 	@XmlElement
 	int morale=0;
 	/*
@@ -125,9 +127,9 @@ public class FactionSettings {
         boolean alien_faction=false;
         
 	@XmlElement
-	List<Ideologies> pro_ideologies = new ArrayList<>();
+	List<String[]> pro_ideologies = new ArrayList<>();
 	@XmlElement
-	List<Ideologies> anti_ideologies = new ArrayList<>();
+	List<String[]> anti_ideologies = new ArrayList<>();
         @XmlElement
         AI_Emphesis ai_emphesis = AI_Emphesis.NIL;
 	@XmlElement
