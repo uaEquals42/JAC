@@ -338,7 +338,7 @@ public class Faction {
     
     private boolean social_mods(String input){
         // we need to count the number of + or - in front of the name.
-        int direction = 0;
+      
         int count = 0;
         input = input.trim();
         if(input.charAt(0)!='-'&&input.charAt(0)!='+'){
@@ -348,12 +348,11 @@ public class Faction {
         char[] tmp = input.toCharArray();
         int position = 0;
         for(int i = 0; i < tmp.length; i++){
-            
             if(tmp[i]=='+'){
-                count=+1;
+                count+=1;
             }
             else if(tmp[i]=='-'){
-                count=-1;
+                count-=1;
             }
             else{
                 position = i;
