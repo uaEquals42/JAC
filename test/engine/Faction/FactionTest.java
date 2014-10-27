@@ -51,6 +51,25 @@ public class FactionTest {
         // TODO review the generated test code and remove the default call to fail.
 
     }
+    
+    @Test
+    public void test_loading_original_factions(){
+        Faction instance = new Faction();
+        assertEquals("Load Gains", true, instance.load_alpha_fac_file("./testfiles/SMACX/GAIANS.TXT"));
+        assertEquals("Load Morgan", true, instance.load_alpha_fac_file("./testfiles/SMACX/MORGAN.TXT"));
+        assertEquals("Load Peacekeepers", true, instance.load_alpha_fac_file("./testfiles/SMACX/PEACE.TXT"));
+        assertEquals("Load Angels", true, instance.load_alpha_fac_file("./testfiles/SMACX/angels.txt"));
+        assertEquals("Load Believers", true, instance.load_alpha_fac_file("./testfiles/SMACX/believe.txt"));
+        assertEquals("Load Caretakers", true, instance.load_alpha_fac_file("./testfiles/SMACX/caretake.txt"));
+        assertEquals("Load Cyborg", true, instance.load_alpha_fac_file("./testfiles/SMACX/cyborg.txt"));
+        assertEquals("Load Fungboy", true, instance.load_alpha_fac_file("./testfiles/SMACX/fungboy.txt"));
+        assertEquals("Load hive", true, instance.load_alpha_fac_file("./testfiles/SMACX/hive.txt"));
+        assertEquals("Load Pirates", true, instance.load_alpha_fac_file("./testfiles/SMACX/pirates.txt"));
+        assertEquals("Load Spartans", true, instance.load_alpha_fac_file("./testfiles/SMACX/spartans.txt"));
+        assertEquals("Load University", true, instance.load_alpha_fac_file("./testfiles/SMACX/univ.txt"));
+        assertEquals("Load Usurper", true, instance.load_alpha_fac_file("./testfiles/SMACX/usurper.txt"));
+              
+    }
 
     /**
      * Test of saveXML method, of class Faction.
