@@ -6,7 +6,6 @@
 
 package engine.ruleset;
 
-import engine.Faction.SocialAreas;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +19,18 @@ public class ruleset {
     
     public boolean loadxml(){
         //TODO: implement loadxml
-        return false;
+        return true;
     }
     
     public boolean loadalpha_txt(){
         
-        return false;
+        return true;
     }
     
     public boolean loadalphax_txt(){
         //TODO: implement load alphax.txt
         //TODO: Load SMAC ideologies from SOCIO
-        return false;
+        return true;
     }
     
     private int gotosection(String tag){
