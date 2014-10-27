@@ -38,10 +38,12 @@ public class Faction {
      */
     public boolean load_alpha_fac_file(String FileName) {
 
-        setting = new FactionSettings();
 
-        dialog = new Faction_Dialog();
         try {
+            setting = new FactionSettings();
+
+            dialog = new Faction_Dialog();
+            
             Path path = Paths.get(FileName);
             System.out.println(path);
             List<String> fac_in = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -239,19 +241,19 @@ public class Faction {
                     break;
 
                 case "ROBUST":
-                    setting.robust.add(findtype(answ));
+                    setting.robust.add(SocialAreas.findtype(answ));
                     break;
                     
                 case "IMMUNITY":
-                    setting.immunity.add(findtype(answ));
+                    setting.immunity.add(SocialAreas.findtype(answ));
                     break;
                     
                 case "IMPUNITY":
-                    setting.impunity.add(findtype(answ));
+                    setting.impunity.add(SocialAreas.findtype(answ));
                     break;
                     
                 case "PENALTY":
-                    setting.penalty.add(findtype(answ));
+                    setting.penalty.add(SocialAreas.findtype(answ));
                     break;
                     
                 case "FUNGNUTRIENT":
@@ -360,45 +362,11 @@ public class Faction {
             }
         }
         
-        setting.social.put(findtype(input.substring(position)), count);
+        setting.social.put(SocialAreas.findtype(input.substring(position)), count);
         return true;
     }
     
-    /**
-     * #TODO See if I can move to socialAreas.
-     * 
-     * @param social
-     * @return 
-     */
-    private SocialAreas findtype(String social) {
-        switch (social.toUpperCase()) {
-            case "ECONOMY":
-                return SocialAreas.ECONOMY;
-              
-            case "EFFIC":
-                return SocialAreas.EFFIC;
-            case "SUPPORT":
-                return SocialAreas.SUPPORT;
-            case "TALENT":
-                return SocialAreas.TALENT;
-            case "MORALE":
-                return SocialAreas.MORALE;
-            case "POLICE":
-                return SocialAreas.POLICE;
-            case "GROWTH":
-                return SocialAreas.GROWTH;
-            case "PLANET":
-                return SocialAreas.PLANET;
-            case "PROBE":
-                return SocialAreas.PROBE;
-            case "INDUSTRY":
-                return SocialAreas.INDUSTRY;
-            case "RESEARCH":
-                return SocialAreas.RESEARCH;
-        }
-        // TODO: Make it throw and exception.
-        return null;  // this shouldn't happen ever.  
-    }
+    
 
     private List<String> read_section(List<String> strlist, String code) {
 
