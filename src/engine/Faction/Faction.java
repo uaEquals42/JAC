@@ -174,7 +174,7 @@ public class Faction {
                     break;
 
                 case "SOCIAL":
-                    social_mods(answ);
+                    SocialAreas.social_mods(answ);
                     break;
 
                 case "DRONE":
@@ -338,33 +338,7 @@ public class Faction {
     }
 
     
-    private boolean social_mods(String input){
-        // we need to count the number of + or - in front of the name.
-      
-        int count = 0;
-        input = input.trim();
-        if(input.charAt(0)!='-'&&input.charAt(0)!='+'){
-            return false;
-        }
-        
-        char[] tmp = input.toCharArray();
-        int position = 0;
-        for(int i = 0; i < tmp.length; i++){
-            if(tmp[i]=='+'){
-                count+=1;
-            }
-            else if(tmp[i]=='-'){
-                count-=1;
-            }
-            else{
-                position = i;
-                i = tmp.length;  // There has got to be a cleaner way to do this.
-            }
-        }
-        
-        setting.social.put(SocialAreas.findtype(input.substring(position)), count);
-        return true;
-    }
+
     
     
 

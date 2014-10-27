@@ -21,10 +21,36 @@ public enum SocialAreas {
     PROBE,
     INDUSTRY,
     RESEARCH;
-    
+
+    static public SocialModifier social_mods(String input) {
+        // we need to count the number of + or - in front of the name.
+
+        int count = 0;
+        input = input.trim();
+        if (input.charAt(0) != '-' && input.charAt(0) != '+') {
+            return null;
+        }
+
+        char[] tmp = input.toCharArray();
+        int position = 0;
+        for (int i = 0; i < tmp.length; i++) {
+            if (tmp[i] == '+') {
+                count += 1;
+            } else if (tmp[i] == '-') {
+                count -= 1;
+            } else {
+                position = i;
+                i = tmp.length;  // There has got to be a cleaner way to do this.
+            }
+        }
+
+        return new SocialModifier(count, SocialAreas.findtype(input.substring(position)));
+
+    }
+
     /**
-     * #TODO See if I can move to socialAreas.
-     * 
+     *
+     *
      * @param social
      * @return 
      */
