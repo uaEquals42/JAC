@@ -6,7 +6,9 @@
 package engine.ruleset;
 
 import engine.Faction.SocialAreas;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,14 +18,16 @@ import java.util.Map;
 public class Ideology {
     String category;
     String name;
-    String pre_req;
+    List<String> pre_req = new ArrayList<>();
     
     Map<SocialAreas, Integer> effects = new EnumMap<>(SocialAreas.class);
     
-    Ideology(String category, String name, String pre_req){
+    Ideology(String category, String name, List<String> pre_reqs){
         this.category = category;
         this.name = name;
-        this.pre_req = pre_req;
+        System.out.println(pre_reqs.size());
+        this.pre_req.addAll(pre_reqs);
+        
     }
     
     public void add_socialmod(SocialAreas area, int modifier){

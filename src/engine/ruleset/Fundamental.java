@@ -10,7 +10,7 @@ package engine.ruleset;
  *
  * @author grjordan
  */
-public class fundamental {
+public class Fundamental {
     int road_movement_rate;
     int nutrient_intake_per_citizen; //Nutrient intake requirement for citizens
     // TODO:  3,2      ; Numerator & Denominator for artillery fire damage

@@ -61,6 +61,8 @@ public class Tech {
     int infrastructure;
     int colonize;
     
+
+    
     /**
      * An empty list means there are no pre-requisites.
      */
@@ -79,8 +81,29 @@ public class Tech {
     boolean fungus_nutrient_bonus = false;
     
     
+    // Smac/x does reaserch costs via a formula.
+    boolean cost_from_formula = true;  
+    int reasearch_cost = 5;  // Added this here for modders, so that if they want to have fixed research costs, they can.
     
-    
+    Tech(String name, String id, List<String> pre_reqs, boolean freetech, boolean probe_bonus, 
+            boolean commerce_bonus, boolean revealmap, boolean genewar_offence, boolean genewar_defence,
+            boolean fungus_energy_bonus, boolean fungus_mineral_bonus,boolean fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
+        
+        this.name = name;
+        this.id = id;
+        this.pre_requisites_names.addAll(pre_reqs);
+        this.freetech = freetech;
+        this.probe_bonus = probe_bonus;
+        this.commerce_bonus = commerce_bonus;
+        this.revealmap = revealmap;
+        this.genewar_offence = genewar_offence;
+        this.genewar_defence = genewar_defence;
+        this.fungus_energy_bonus = fungus_energy_bonus;
+        this.fungus_mineral_bonus = fungus_mineral_bonus;
+        this.fungus_nutrient_bonus = fungus_nutrient_bonus;
+        
+        
+    }
     
     
 }
