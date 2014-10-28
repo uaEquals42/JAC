@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author grjordan
  */
-public class rulesetTest {
+public class RulesetTest {
     
-    public rulesetTest() {
+    public RulesetTest() {
     }
     
 
@@ -32,12 +32,12 @@ public class rulesetTest {
     }
 
     /**
-     * Test of loadxml method, of class ruleset.
+     * Test of loadxml method, of class Ruleset.
      */
     @Test
     public void testLoadxml() {
         System.out.println("loadxml");
-        ruleset instance = new ruleset();
+        Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadxml();
         assertEquals(expResult, result);
@@ -46,25 +46,25 @@ public class rulesetTest {
     }
 
     /**
-     * Test of loadalpha_txt method, of class ruleset.
+     * Test of loadalpha_txt method, of class Ruleset.
      */
     @Test
     public void testLoadalpha_txt() {
         System.out.println("loadalpha_txt");
-        ruleset instance = new ruleset();
+        Ruleset instance = new Ruleset();
         boolean expResult = true;
-        boolean result = instance.loadalpha_txt();
+        boolean result = instance.loadalpha_txt("./testfiles/SMACX/alpha.txt");
         assertEquals(expResult, result);
  
     }
 
     /**
-     * Test of loadalphax_txt method, of class ruleset.
+     * Test of loadalphax_txt method, of class Ruleset.
      */
     @Test
     public void testLoadalphax_txt() {
         System.out.println("loadalphax_txt");
-        ruleset instance = new ruleset();
+        Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadalphax_txt();
         assertEquals(expResult, result);
