@@ -70,31 +70,33 @@ public class Ruleset {
             Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#SOCIO not found.");
             System.out.println("Failure");
             return false;
-           
+
         } else {
             pos++;
-            for(;!input.get(pos).trim().isEmpty();pos++){
+            for (; !input.get(pos).trim().isEmpty(); pos++) {
                 String[] row = input.get(pos).split(",");
-                List<String> pre_reqs = new ArrayList<>();
-                if(!row[6].trim().equalsIgnoreCase("None")){
-                    pre_reqs.add(row[6].trim());
+                if (!row[6].trim().equalsIgnoreCase("Disable")) {
+                    List<String> pre_reqs = new ArrayList<>();
+                    if (!row[6].trim().equalsIgnoreCase("None")) {
+                        pre_reqs.add(row[6].trim());
+                    }
+                    if (!row[7].trim().equalsIgnoreCase("None")) {
+                        pre_reqs.add(row[7].trim());
+                    }
+
+                    char[] flags = row[8].trim().toCharArray();
+                    Tech new_tech;
+                    new_tech = new Tech(row[0].trim(), row[1].trim(), pre_reqs,
+                            flags[8] == '1', flags[7] == '1', flags[6] == '1', flags[5] == '1',
+                            flags[4] == '1', flags[3] == '1', flags[2] == '1', flags[1] == '1',
+                            flags[0] == '1', Integer.parseInt(row[2].trim()),
+                            Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
+                            Integer.parseInt(row[5].trim()));
+                    technologies.add(new_tech);
                 }
-                if(!row[7].trim().equalsIgnoreCase("None")){
-                    pre_reqs.add(row[7].trim());
-                }
-                
-                
-                char[] flags = row[8].trim().toCharArray();
-                Tech new_tech;
-                new_tech = new Tech(row[0].trim(), row[1].trim(), pre_reqs,
-                        flags[8]=='1',flags[7]=='1',flags[6]=='1',flags[5]=='1',
-                        flags[4]=='1',flags[3]=='1',flags[2]=='1',flags[1]=='1',
-                        flags[0]=='1', Integer.parseInt(row[2].trim()), 
-                        Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()), 
-                        Integer.parseInt(row[5].trim()));
-                technologies.add(new_tech);
+
             }
-            
+
         }
         return true;
     }

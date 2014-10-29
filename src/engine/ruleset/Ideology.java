@@ -19,6 +19,7 @@ public class Ideology {
     String category;
     String name;
     List<String> pre_req = new ArrayList<>();
+       
     
     Map<SocialAreas, Integer> effects = new EnumMap<>(SocialAreas.class);
     
