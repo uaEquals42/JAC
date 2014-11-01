@@ -5,10 +5,45 @@
  */
 package engine.ruleset;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author grjordan
  */
 public class Weapon {
+    
+
+    String name;
+    String name2;
+    int offence; // -1 if psi combat.
+    CombatMode com_mode;
+    int cost;
+    List<String> pre_req_keys = new ArrayList<>();
+    List<Tech> pre_req_tech = new ArrayList<>();
+
+    Weapon(String name, String name2, int offence, int cost, String key){
+        this.name = name;
+        this.name2 = name2;
+        this.offence = offence;
+        this.cost = cost;
+        pre_req_keys.add(key);
+    }
+    
+    public boolean config_Techs(List<Tech> techlist){
+        for(String key : pre_req_keys){
+            for(Tech tech : techlist){
+                if(key.equalsIgnoreCase(tech.id)){
+                    pre_req_tech.add(tech);
+                }
+            }
+        }
+        
+        if(pre_req_keys.size()==pre_req_tech.size()){
+            return true;
+        }
+        return false;
+    }
     
 }
