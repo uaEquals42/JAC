@@ -6,9 +6,7 @@
 package engine.ruleset;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -80,5 +78,28 @@ public class SMAC_Test {
         
         
     }
+    
+    @Test
+    public void test_Technologies(){
+        assertEquals("Number of technologies", 77, rules.technologies.size());
+        assertEquals("Centari Ecology name", "Centauri Ecology", rules.technologies.get(6).name);
+        assertEquals("Centari Ecology code", "Ecology", rules.technologies.get(6).id);
+        assertEquals("Centari Ecology has no prerequisites", 0, rules.technologies.get(6).pre_requisites_names.size());
+        assertEquals("Centari Ecology flag", 1, rules.technologies.get(6).fungus_nutrient_bonus);
+        
+        assertEquals("Thresh flag", 1, rules.find_tech("Thresh").fungus_mineral_bonus);
+        assertEquals("Thresh flag", 0, rules.find_tech("Thresh").fungus_nutrient_bonus);
+        
+        assertEquals("AlphCen flag", 1, rules.find_tech("AlphCen").fungus_energy_bonus);
+        assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").revealmap);
+        assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").freetech);
+        
+        assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_defence);
+        assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_offence);
+        
+        
+        
+    
+}
     
 }
