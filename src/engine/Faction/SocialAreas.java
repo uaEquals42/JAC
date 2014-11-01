@@ -5,6 +5,9 @@
  */
 package engine.Faction;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 /**
  *
  * @author grjordan
@@ -22,13 +25,13 @@ public enum SocialAreas {
     INDUSTRY,
     RESEARCH;
 
-    static public SocialModifier social_mods(String input) {
+    static public Map social_mods(String input) {
         // we need to count the number of + or - in front of the name.
-
+        Map<SocialAreas, Integer> effect = new EnumMap<>(SocialAreas.class);
         int count = 0;
         input = input.trim();
         if (input.charAt(0) != '-' && input.charAt(0) != '+') {
-            return null;
+            return effect;
         }
 
         char[] tmp = input.toCharArray();
@@ -43,8 +46,9 @@ public enum SocialAreas {
                 i = tmp.length;  // There has got to be a cleaner way to do this.
             }
         }
-
-        return new SocialModifier(count, SocialAreas.findtype(input.substring(position)));
+        
+        effect.put(SocialAreas.findtype(input.substring(position)), count);
+        return effect;
 
     }
 
