@@ -39,6 +39,7 @@ public class Ruleset {
            
             load_ideologies(input);
             load_technologies(input);
+            load_facilities(input);
 
             return true;
         } catch (IOException ex) {
@@ -64,6 +65,19 @@ public class Ruleset {
     }
 
     
+    Tech find_tech(String key){
+        for(Tech test : technologies){
+            if(test.id.equalsIgnoreCase(key)){
+                return test;
+            }
+        }
+        return null;
+    }
+    
+    private boolean load_facilities(List<String> input){
+        return true;
+    }
+    
     private boolean load_technologies(List<String> input){
         int pos = gotosection("#TECHNOLOGY", input);
         if (pos == -1) {
@@ -85,11 +99,17 @@ public class Ruleset {
                     }
 
                     char[] flags = row[8].trim().toCharArray();
+                    int probe = Integer.parseInt(row[8].trim().substring(7, 8));
+                    int commerce_bonus = Integer.parseInt(row[8].trim().substring(6, 7));
+                    int fungus_nutrient_bonus = Integer.parseInt(row[8].trim().substring(0, 1));
+                    int fungus_mineral_bonus = Integer.parseInt(row[8].trim().substring(1, 2));
+                    int fungus_energy_bonus = Integer.parseInt(row[8].trim().substring(2, 3));
                     Tech new_tech;
                     new_tech = new Tech(row[0].trim(), row[1].trim(), pre_reqs,
-                            flags[8] == '1', flags[7] == '1', flags[6] == '1', flags[5] == '1',
-                            flags[4] == '1', flags[3] == '1', flags[2] == '1', flags[1] == '1',
-                            flags[0] == '1', Integer.parseInt(row[2].trim()),
+                            flags[8] == '1', probe, commerce_bonus, 
+                            flags[5]=='1', flags[3] == '1', flags[4]=='1', 
+                            fungus_energy_bonus, fungus_mineral_bonus,
+                            fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
                             Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
                             Integer.parseInt(row[5].trim()));
                     technologies.add(new_tech);
