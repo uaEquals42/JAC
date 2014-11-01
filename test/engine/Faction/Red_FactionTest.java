@@ -37,7 +37,9 @@ public class Red_FactionTest {
     @Test
     @SuppressWarnings("BoxingBoxedValue")
     public void socialTest() {
-
+        System.out.println("Social test");
+        System.out.println(instance.setting.social.size());
+        System.out.println(instance.setting.social.keySet());
         assertEquals("MORALE", 1,   (int)instance.setting.social.get(SocialAreas.MORALE) );
         assertEquals("RESEARCH", 1, (int)instance.setting.social.get(SocialAreas.RESEARCH) );
         assertEquals("ECONOMY", -2, (int)instance.setting.social.get(SocialAreas.ECONOMY));
