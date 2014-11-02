@@ -14,22 +14,40 @@ import java.util.List;
  */
 public class Chasis {
 
-    private String name1;
-    private String name2;  // These should be stored or accessed in a translation location.
-    private String name3;
-    private String name4;
-    private String name5;
-    private String name6;
-    
     int speed;
     MovementType triad;
     boolean missle;
     private int base_cargo;
     int cost;
     List<String> pre_req_str = new ArrayList<>();
-    int key;  // for looking up translations.
+    List<Tech> pre_req_techs = new ArrayList<>();
+    private String key;  // for looking up translations.
+    Translation tran;
+
+    Chasis(Translation tran, String key, List<String> names, boolean missle, int base_cargo, int cost, String pre_req) {
+        this.key = key;
+        this.tran = tran;
+        tran.chasis.put(key, names);
+        this.missle = missle;
+        this.base_cargo = base_cargo;
+        this.cost = cost;
+        if(pre_req.trim().length() > 0){
+            pre_req_str.add(pre_req.trim());
+        }
+    }
+    
+    public String key(){
+        return key;
+    }
+    public List<String> names(){
+        return tran.chasis.get(key);
+    }
+    
+    public int base_cargo(){
+        return base_cargo;
+    }
     
     
-    
-    
+
+
 }
