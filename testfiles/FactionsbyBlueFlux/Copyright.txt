@@ -1,0 +1,5 @@
+The factions in this folder were created by BlueFlux and used here with permission.
+They are here to help ensure that there are test cases that will work even without the original SMAC/SMACX files.
+
+
+http://alphacentauri2.info/index.php?topic=12217.0
