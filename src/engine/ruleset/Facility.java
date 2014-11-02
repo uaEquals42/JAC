@@ -39,7 +39,11 @@ public class Facility {
      The Xenoempathy Dome,         30, 0, CentMed, Disable,  Fungus Movement Bonus,           0,-1, 0, 0, 2,
     */
     
+    boolean secret_project = false;
+    
     void Facility(String name, int cost, int maintence, Tech prereq){
+        
+        
         
     }
     
