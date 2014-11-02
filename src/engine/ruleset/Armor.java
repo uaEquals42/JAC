@@ -11,4 +11,10 @@ package engine.ruleset;
  */
 public class Armor {
     
+    Translation tran;
+    
+    Armor(Translation tran){
+        this.tran = tran;
+        
+    }
 }

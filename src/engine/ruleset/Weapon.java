@@ -15,20 +15,23 @@ import java.util.List;
 public class Weapon {
     
 
-    String name;
-    String name2;
+    
     int offence; // -1 if psi combat.
     CombatMode com_mode;
     int cost;
     List<String> pre_req_keys = new ArrayList<>();
     List<Tech> pre_req_tech = new ArrayList<>();
+    final int id;
 
-    Weapon(String name, String name2, int offence, int cost, String key){
-        this.name = name;
-        this.name2 = name2;
+    Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
+        String[] names = new String[2];
+        names[0] = name;
+        names[1] = name2;
+        this.id = id;
+        tran.weapons.put(id, names);
         this.offence = offence;
         this.cost = cost;
-        pre_req_keys.add(key);
+        pre_req_keys.add(pre_req_key);
     }
     
     public boolean config_Techs(List<Tech> techlist){

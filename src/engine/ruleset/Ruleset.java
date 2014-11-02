@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +40,7 @@ public class Ruleset {
             Path path = Paths.get(filename);
             System.out.println(path);
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
-           tran = new Translation();
+           tran = new Translation(Locale.ENGLISH);
             load_ideologies(input);
             load_technologies(input);
             load_facilities(input);

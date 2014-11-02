@@ -8,6 +8,7 @@ package engine.Faction;
 import engine.dialog.Quote;
 import engine.dialog.SentenceFragment;
 import java.util.List;
+import java.util.Locale;
 //import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,6 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Faction_Dialog {
+    @XmlElement    
+    Locale language;
         @XmlElement
 	String faction_name_title;
         @XmlElement
@@ -74,5 +77,9 @@ public class Faction_Dialog {
 	@XmlElement
 	Quote faction_blurb;
 	//Map<String,List<QuestionYN>> com_questions;
+        
+        Faction_Dialog(Locale lang){
+            language = lang;
+        }
 	
 }

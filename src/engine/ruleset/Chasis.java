@@ -17,20 +17,22 @@ public class Chasis {
     int speed;
     MovementType triad;
     boolean missle;
-    private int base_cargo;
+    int base_cargo;
     int cost;
     List<String> pre_req_str = new ArrayList<>();
     List<Tech> pre_req_techs = new ArrayList<>();
-    private String key;  // for looking up translations.
+    private final String key;  // for looking up translations.
     Translation tran;
 
-    Chasis(Translation tran, String key, List<String> names, boolean missle, int base_cargo, int cost, String pre_req) {
+    Chasis(Translation tran, String key, List<String> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
         this.key = key;
         this.tran = tran;
         tran.chasis.put(key, names);
         this.missle = missle;
         this.base_cargo = base_cargo;
         this.cost = cost;
+        this.speed = speed;
+        this.triad = triad;
         if(pre_req.trim().length() > 0){
             pre_req_str.add(pre_req.trim());
         }

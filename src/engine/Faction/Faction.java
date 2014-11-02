@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 
 import javax.xml.bind.JAXBContext;
@@ -42,7 +43,7 @@ public class Faction {
         try {
             setting = new FactionSettings();
 
-            dialog = new Faction_Dialog();
+            dialog = new Faction_Dialog(Locale.ENGLISH);
             
             Path path = Paths.get(FileName);
             System.out.println(path);
@@ -174,7 +175,7 @@ public class Faction {
                     break;
 
                 case "SOCIAL":
-                    SocialAreas.social_mods(answ);
+                    setting.social.putAll(SocialAreas.social_mods(answ));
                     break;
 
                 case "DRONE":
