@@ -5,6 +5,9 @@
  */
 package engine.ruleset;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author grjordan
@@ -12,9 +15,29 @@ package engine.ruleset;
 public class Armor {
     
     Translation tran;
+    int id;
+    int armor;
+    DefenceMode mode;
+    int cost;
+    List<String> pre_reqs = new ArrayList<>();
     
-    Armor(Translation tran){
+    Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
         this.tran = tran;
-        
+        this.id = id;
+        pre_reqs.add(pre_req);
+        this.armor = armor;
+        this.mode = mode;
+        String[] names = new String[2];
+        names[0] = name1;
+        names[1] = name2;
+        tran.armor.put(id, names);
+    }
+    
+    public String name1(){
+        return tran.armor.get(id)[0];
+    }
+    
+    public String name2(){
+        return tran.armor.get(id)[1];
     }
 }

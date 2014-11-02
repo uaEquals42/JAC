@@ -19,6 +19,7 @@ public class Translation {
     Map<String, String> technames = new HashMap<>();
     Map<String, List<String>> chasis = new HashMap<>();
     Map<Integer, String[]> weapons = new HashMap<>();  // TODO: Should I use Linked Map instead?  a linked List?  arggggg....
+    Map<Integer, String[]> armor = new HashMap<>();
     
     Translation(Locale lang){
         this.language = lang;
