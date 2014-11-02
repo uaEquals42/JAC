@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Tech {
    
-    String name;
+    
     String id;
     
     // these 4 values are hints to the ai to indicate how good the particular tech is in each category.
@@ -48,11 +48,11 @@ public class Tech {
     boolean cost_from_formula = true;  
     int reasearch_cost = 5;  // Added this here for modders, so that if they want to have fixed research costs, they can.
     
-    Tech(String name, String id, List<String> pre_reqs, boolean freetech, int probe_bonus, 
+    Tech(String id, List<String> pre_reqs, boolean freetech, int probe_bonus, 
             int commerce_bonus, boolean revealmap, boolean genewar_offence, boolean genewar_defence,
             int fungus_energy_bonus, int fungus_mineral_bonus,int fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
         
-        this.name = name;
+       
         this.id = id;
         this.pre_requisites_names.addAll(pre_reqs);
         this.freetech = freetech;

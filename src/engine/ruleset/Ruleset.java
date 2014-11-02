@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,7 +25,9 @@ import java.util.logging.Logger;
 public class Ruleset {
 
     List<Ideology> ideologies = new ArrayList<>();
-    List<Tech> technologies = new ArrayList<>();
+    Map<String, Tech> technologies = new HashMap<>();
+    Translation tran;
+    
 
     public boolean loadxml() {
         //TODO: implement loadxml
@@ -36,7 +39,7 @@ public class Ruleset {
             Path path = Paths.get(filename);
             System.out.println(path);
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
-           
+           tran = new Translation();
             load_ideologies(input);
             load_technologies(input);
             load_facilities(input);
@@ -66,12 +69,7 @@ public class Ruleset {
 
     
     Tech find_tech(String key){
-        for(Tech test : technologies){
-            if(test.id.equalsIgnoreCase(key)){
-                return test;
-            }
-        }
-        return null;
+       return technologies.get(key);
     }
     
     private boolean load_facilities(List<String> input){
@@ -105,14 +103,17 @@ public class Ruleset {
                     int fungus_mineral_bonus = Integer.parseInt(row[8].trim().substring(1, 2));
                     int fungus_energy_bonus = Integer.parseInt(row[8].trim().substring(2, 3));
                     Tech new_tech;
-                    new_tech = new Tech(row[0].trim(), row[1].trim(), pre_reqs,
+                    
+                   
+                    new_tech = new Tech(row[1].trim(), pre_reqs,
                             flags[8] == '1', probe, commerce_bonus, 
                             flags[5]=='1', flags[3] == '1', flags[4]=='1', 
                             fungus_energy_bonus, fungus_mineral_bonus,
                             fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
                             Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
                             Integer.parseInt(row[5].trim()));
-                    technologies.add(new_tech);
+                    tran.technames.put(new_tech.id, row[0].trim());
+                    technologies.put(new_tech.id, new_tech);
                 }
 
             }
