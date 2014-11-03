@@ -6,6 +6,7 @@
 package engine.ruleset;
 
 import engine.Faction.SocialAreas;
+import engine.dialog.Noun;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -28,6 +29,7 @@ public class Ruleset {
     List<Ideology> ideologies = new ArrayList<>();
     Map<String, Tech> technologies = new HashMap<>();
     Translation tran;
+    List<Chasis> chasises = new ArrayList<>();
     
 
     public boolean loadxml() {
@@ -40,10 +42,10 @@ public class Ruleset {
             Path path = Paths.get(filename);
             System.out.println(path);
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
-           tran = new Translation(Locale.ENGLISH);
+            tran = new Translation(Locale.ENGLISH);
             load_ideologies(input);
             load_technologies(input);
-            load_facilities(input);
+            load_facilities(input); // TODO: Does nothing right now.
 
             return true;
         } catch (IOException ex) {
@@ -77,11 +79,48 @@ public class Ruleset {
         return true;
     }
     
+    private boolean load_chasis(List<String> input){
+        int pos = gotosection("#CHASSIS", input);
+        if (pos == -1) {
+            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#CHASSIS not found.");
+            System.out.println("Failure");
+            return false;
+
+        } else {
+            pos++;
+            for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
+
+                String[] line = input.get(pos + key).split(",");
+                List<Noun> names = new ArrayList<>();
+                names.add(new Noun(line[0], line[1]));
+                names.add(new Noun(line[2], line[3]  ));
+                names.add(new Noun(line[4], line[5]  ));
+                names.add(new Noun(line[6], line[7] ));
+                               
+                int speed = Integer.parseInt(line[8].trim());
+                MovementType mtype = MovementType.convert(Integer.parseInt(line[9].trim()));
+                int range = Integer.parseInt(line[10].trim());
+                boolean missle = line[11].trim().equals("1");
+                int cargo = Integer.parseInt(line[12].trim());
+                int cost = Integer.parseInt(line[13].trim());
+                String pre_req = line[14].trim();
+                names.add(new Noun(line[15], line[16]  ));
+                names.add(new Noun(line[17], line[18]  ));
+ 
+                chasises.add(new Chasis(tran, key, names, speed, mtype, missle, cargo, cost, pre_req));
+
+            }
+
+        }
+        return false;
+    }
+    
     private boolean load_technologies(List<String> input){
         int pos = gotosection("#TECHNOLOGY", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#SOCIO not found.");
+            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#TECHNOLOGY not found.");
             System.out.println("Failure");
+            
             return false;
 
         } else {

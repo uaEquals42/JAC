@@ -5,6 +5,7 @@
  */
 package engine.ruleset;
 
+import engine.dialog.Noun;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,12 +18,12 @@ import java.util.Map;
 public class Translation {
     Locale language;
     Map<String, String> technames = new LinkedHashMap<>();
-    Map<String, List<String>> chasis = new LinkedHashMap<>();
+    Map<Integer, List<Noun>> chasis = new LinkedHashMap<>();
     Map<Integer, String[]> weapons = new LinkedHashMap<>();  // TODO: Should I use Linked Map instead?  a linked List?  arggggg....
     Map<Integer, String[]> armor = new LinkedHashMap<>();  // TODO: I'm not happy with this solution.
     Map<Integer, String[]> reactors = new LinkedHashMap<>();  // Will it xml?
     
-    Translation(Locale lang){
+    public Translation(Locale lang){
         this.language = lang;
     }
 }

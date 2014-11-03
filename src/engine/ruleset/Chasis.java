@@ -5,6 +5,7 @@
  */
 package engine.ruleset;
 
+import engine.dialog.Noun;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class Chasis {
     int cost;
     List<String> pre_req_str = new ArrayList<>();
     List<Tech> pre_req_techs = new ArrayList<>();
-    private final String key;  // for looking up translations.
+    private final int key;  // for looking up translations.
     Translation tran;
 
-    Chasis(Translation tran, String key, List<String> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
+    Chasis(Translation tran, int key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
         this.key = key;
         this.tran = tran;
         tran.chasis.put(key, names);
@@ -34,14 +35,17 @@ public class Chasis {
         this.speed = speed;
         this.triad = triad;
         if(pre_req.trim().length() > 0){
-            pre_req_str.add(pre_req.trim());
+            if(!pre_req.equalsIgnoreCase("None")){
+                pre_req_str.add(pre_req.trim());
+            }
+            
         }
     }
     
-    public String key(){
+    public int key(){
         return key;
     }
-    public List<String> names(){
+    public List<Noun> names(){
         return tran.chasis.get(key);
     }
     

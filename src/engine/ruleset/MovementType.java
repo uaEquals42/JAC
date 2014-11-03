@@ -13,4 +13,17 @@ public enum MovementType {
     LAND,
     SEA,
     AIR;
+    
+    public static MovementType convert(int type){
+        if(type == 0){
+            return LAND;
+        }
+        if(type == 1){
+            return SEA;
+        }
+        if(type == 2){
+            return AIR;
+        }
+        throw new IllegalArgumentException();
+    }
 }
