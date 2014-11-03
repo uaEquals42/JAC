@@ -35,6 +35,10 @@ public class Armor {
         tran.armor.put(id, names);
     }
     
+    public int cost_get(){
+        return cost;
+    }
+    
     public String name1(){
         return tran.armor.get(id)[0];
     }

@@ -49,10 +49,16 @@ public class Chasis {
         return tran.chasis.get(key);
     }
     
+    public int speed(){
+        return speed;
+    }
     public int base_cargo(){
         return base_cargo;
     }
     
+    public MovementType mode(){
+        return triad;
+    }
     
 
 
