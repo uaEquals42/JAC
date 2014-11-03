@@ -47,6 +47,7 @@ public class Ruleset {
             load_technologies(input);
             load_facilities(input); // TODO: Does nothing right now.
             load_chasis(input);
+            load_reactor(input);
 
             return true;
         } catch (IOException ex) {
@@ -78,6 +79,25 @@ public class Ruleset {
     
     private boolean load_facilities(List<String> input){
         return true;
+    }
+    
+    private boolean load_reactor(List<String> input){
+        int pos = gotosection("#REACTORS", input);
+        if (pos == -1) {
+            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#REACTORS not found.");
+            System.out.println("Failure");
+            return false;
+
+        } else {
+            pos++;
+            for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
+                String[] line = input.get(pos + key).split(",");
+                Reactor tmp = new Reactor(tran, key, Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
+            }
+            
+            return true;
+        }
+        
     }
     
     private boolean load_chasis(List<String> input){

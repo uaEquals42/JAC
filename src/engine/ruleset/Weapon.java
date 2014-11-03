@@ -23,7 +23,7 @@ public class Weapon {
     List<Tech> pre_req_tech = new ArrayList<>();
     final int id;
 
-    Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
+    public Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
         String[] names = new String[2];
         names[0] = name;
         names[1] = name2;

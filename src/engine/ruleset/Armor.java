@@ -21,7 +21,7 @@ public class Armor {
     int cost;
     List<String> pre_reqs = new ArrayList<>();
     
-    Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
+    public Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
         this.tran = tran;
         this.id = id;
         pre_reqs.add(pre_req);
