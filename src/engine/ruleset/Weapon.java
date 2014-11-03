@@ -25,13 +25,16 @@ public class Weapon {
 
     public Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
         String[] names = new String[2];
-        names[0] = name;
-        names[1] = name2;
+        names[0] = name.trim();
+        names[1] = name2.trim();
         this.id = id;
         tran.weapons.put(id, names);
         this.offence = offence;
         this.cost = cost;
-        pre_req_keys.add(pre_req_key);
+        if(!pre_req_key.trim().equalsIgnoreCase("None")){
+            pre_req_keys.add(pre_req_key.trim());
+        }
+        
     }
     
     public boolean config_Techs(List<Tech> techlist){
