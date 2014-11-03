@@ -78,28 +78,37 @@ public class SMAC_Test {
         
         
     }
-    
+ 
     @Test
-    public void test_Technologies(){
+    public void test_Technologies() {
         assertEquals("Number of technologies", 77, rules.technologies.size());
         assertEquals("Centari Ecology name", "Centauri Ecology", rules.tran.technames.get("Ecology"));
         assertEquals("Centari Ecology code", "Ecology", rules.find_tech("Ecology").id);
         assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("Ecology").pre_requisites_names.size());
         assertEquals("Centari Ecology flag", 1, rules.find_tech("Ecology").fungus_nutrient_bonus);
-        
+
         assertEquals("Thresh flag", 1, rules.find_tech("Thresh").fungus_mineral_bonus);
         assertEquals("Thresh flag", 0, rules.find_tech("Thresh").fungus_nutrient_bonus);
-        
+
         assertEquals("AlphCen flag", 1, rules.find_tech("AlphCen").fungus_energy_bonus);
         assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").revealmap);
         assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").freetech);
-        
+
         assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_defence);
         assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_offence);
+
+    }
+
+    @Test
+    public void test_Chasis(){
+        // Test a couple of the chasis to make sure the data is right.
+        assertEquals("Infantry movment", 1, rules.chasises.get(0).speed);
+        assertEquals("Infantry cost", 1, rules.chasises.get(0).cost);
+        assertEquals("Infantry Prereqs", 0, rules.chasises.get(0).pre_req_str.size());
+        assertEquals("Infantry", MovementType.LAND, rules.chasises.get(0).triad);
         
-        
-        
-    
-}
-    
+        assertEquals("Missile prereqs", "Orbital", rules.chasises.get(8).pre_req_str.get(0));
+        assertEquals("Missile is a missle?", true, rules.chasises.get(8).missle);
+        assertEquals("Missle is an air unit?", MovementType.AIR, rules.chasises.get(8).triad);
+    }
 }

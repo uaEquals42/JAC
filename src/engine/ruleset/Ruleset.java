@@ -46,6 +46,7 @@ public class Ruleset {
             load_ideologies(input);
             load_technologies(input);
             load_facilities(input); // TODO: Does nothing right now.
+            load_chasis(input);
 
             return true;
         } catch (IOException ex) {
