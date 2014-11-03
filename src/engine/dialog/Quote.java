@@ -47,10 +47,20 @@ public class Quote {
 			tmp_quote = tmp_quote + strlist.get(line).trim()+" ";
 			line++;
 		}
-		quote = tmp_quote;
+		quote = tmp_quote.trim();
 		line++;
 		person = strlist.get(line).substring(1).trim(); //TODO:  Make sure to get rid of , -- etc from this line.
+                if(person.endsWith(",")){
+                    person = person.substring(0, person.length()-1);
+                }
+                if(person.startsWith("--")){
+                    person = person.substring(2);
+                }
+                person=person.trim();
 		line++;
 		source = strlist.get(line).substring(1).trim(); //TODO: Is it always in quotes?
+                if(source.endsWith("\"") && source.startsWith("\"")){
+                    source = source.substring(1, source.length()-1).trim();
+                }
 	}
 }
