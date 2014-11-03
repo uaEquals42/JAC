@@ -12,7 +12,8 @@ package engine.ruleset;
 public enum DefenceMode {
     PROJECTILE, 
     ENERGY,
-    BINARY;
+    BINARY,
+    PSI;
     
     /**
      * For converting the old SMAC/X ints into an enum.

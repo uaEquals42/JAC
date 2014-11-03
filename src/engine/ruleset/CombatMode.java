@@ -13,6 +13,7 @@ public enum CombatMode {
     PROJECTILE, 
     ENERGY, 
     MISSLE,
+    PSI,
     TRANSPORT,
     COLONIST,
     TERRAFORMER,

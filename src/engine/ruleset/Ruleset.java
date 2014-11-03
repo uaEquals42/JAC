@@ -32,6 +32,7 @@ public class Ruleset {
     List<Chasis> chasises = new ArrayList<>();
     List<Reactor> reactors = new ArrayList<>();
     List<Armor> armors = new ArrayList<>();
+    List<Weapon> weapons = new ArrayList<>();
     
 
     public boolean loadxml() {
@@ -52,6 +53,7 @@ public class Ruleset {
             load_chasis(input);
             load_reactor(input);
             load_armor(input);
+            load_weapon(input);
 
             return true;
         } catch (IOException ex) {
@@ -85,6 +87,33 @@ public class Ruleset {
         return true;
     }
     
+    private boolean load_weapon(List<String> input){
+        int pos = gotosection("#WEAPONS", input);
+        if (pos == -1) {
+            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#WEAPONS not found.");
+            System.out.println("Failure");
+            return false;
+
+        } else {
+            pos++;
+            for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
+                String[] line = input.get(pos + key).split(",");
+                CombatMode mode;
+                int damage = Integer.parseInt(line[2].trim());
+                
+                if(damage==-1){
+                    mode = CombatMode.PSI;
+                }
+                else{
+                    mode = CombatMode.convert(Integer.parseInt(line[3].trim()));
+                }
+                
+                weapons.add(new Weapon(tran, key, line[0], line[1],damage, Integer.parseInt(line[4].trim()), line[6]));
+            }
+            return true;
+        }
+    }
+    
     private boolean load_armor(List<String> input){
         int pos = gotosection("#DEFENSES", input);
         if (pos == -1) {
@@ -96,8 +125,18 @@ public class Ruleset {
             pos++;
             for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
                 String[] line = input.get(pos + key).split(",");
+                DefenceMode mode;
+                int rating =  Integer.parseInt(line[2].trim());
                 
-                armors.add(new Armor(tran, key, Integer.parseInt(line[2].trim()), DefenceMode.convert(Integer.parseInt(line[3].trim())),
+                if(rating==-1){
+                    mode = DefenceMode.PSI;
+                    
+                }
+                else{
+                    mode = DefenceMode.convert(Integer.parseInt(line[3].trim()));
+                }
+             
+                armors.add(new Armor(tran, key, rating, mode,
                         Integer.parseInt(line[4].trim()),line[5],line[0],line[1]));
             }
             
