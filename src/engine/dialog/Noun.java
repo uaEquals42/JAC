@@ -13,13 +13,13 @@ public class Noun {
     String noun;
     NounSex sex_sp;
     
-    Noun(String noun, String sex){
-        this.noun = noun;
-        sex_sp = NounSex.convert(sex);
-        
-    }
-    Noun(String noun, NounSex sp){
-        this.noun = noun;
+    
+    public Noun(String noun, NounSex sp){
+        this.noun = noun.trim();
         sex_sp = sp;
+    }
+    
+    public Noun(String noun, String sex){
+      this(noun, NounSex.convert(sex.trim()));  
     }
 }
