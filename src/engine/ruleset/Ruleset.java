@@ -31,6 +31,7 @@ public class Ruleset {
     Translation tran;
     List<Chasis> chasises = new ArrayList<>();
     List<Reactor> reactors = new ArrayList<>();
+    List<Armor> armors = new ArrayList<>();
     
 
     public boolean loadxml() {
@@ -50,6 +51,7 @@ public class Ruleset {
             load_facilities(input); // TODO: Does nothing right now.
             load_chasis(input);
             load_reactor(input);
+            load_armor(input);
 
             return true;
         } catch (IOException ex) {
@@ -95,6 +97,8 @@ public class Ruleset {
             for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
                 String[] line = input.get(pos + key).split(",");
                 
+                armors.add(new Armor(tran, key, Integer.parseInt(line[2].trim()), DefenceMode.convert(Integer.parseInt(line[3].trim())),
+                        Integer.parseInt(line[4].trim()),line[5],line[0],line[1]));
             }
             
             return true;
