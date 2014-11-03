@@ -24,12 +24,14 @@ public class Armor {
     public Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
         this.tran = tran;
         this.id = id;
-        pre_reqs.add(pre_req);
+        if (!pre_req.equalsIgnoreCase("None")) {
+            pre_reqs.add(pre_req);
+        }
         this.armor = armor;
         this.mode = mode;
         String[] names = new String[2];
-        names[0] = name1;
-        names[1] = name2;
+        names[0] = name1.trim();
+        names[1] = name2.trim();
         tran.armor.put(id, names);
     }
     
