@@ -5,6 +5,7 @@
 package engine.Faction;
 
 //import engine.dialog.QuestionYN;
+import engine.dialog.NounSex;
 import engine.dialog.Quote;
 import engine.dialog.SentenceFragment;
 import java.util.List;
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+
 
 /**
  *
@@ -37,13 +38,15 @@ public class Faction_Dialog {
     String noun; // Plural noun
 
     @XmlElement
-    String fac_name_gender;
-    @XmlElement
-    String singular_plural;
+    NounSex faction_name_sexP; // The faction names gender and plurality.
+    
+    //String fac_name_gender;
+    //@XmlElement
+    //String singular_plural;
     @XmlElement
     String leaders_name;
     @XmlElement
-    String leaders_gender;
+    NounSex leaders_gender;
     @XmlElement
     String leaders_title;
     @XmlElement
