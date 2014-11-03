@@ -18,5 +18,31 @@ public enum CombatMode {
     TERRAFORMER,
     CONVOY,
     INFOWAR,
-    ARTIFACT;                  
+    ARTIFACT;  
+    
+    public static CombatMode convert(int mode){
+     
+        switch(mode){
+            case 0:
+                return PROJECTILE;
+            case 1:
+                return ENERGY;
+            case 2:
+                return MISSLE;
+            case 7:
+                return TRANSPORT;
+            case 8:
+                return COLONIST;
+            case 9:
+                return TERRAFORMER;
+            case 10:
+                return CONVOY;
+            case 11:
+                return INFOWAR;
+            case 12:
+                return ARTIFACT;    
+        }
+        
+        throw new IllegalArgumentException();
+    }
 }

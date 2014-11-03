@@ -14,4 +14,22 @@ public enum DefenceMode {
     ENERGY,
     BINARY;
     
+    /**
+     * For converting the old SMAC/X ints into an enum.
+     * @param mode accepts 0,1,2.
+     * @return The correct DefenceMode.
+     */
+    public static DefenceMode convert(int mode){
+        switch (mode){
+            case 0:
+                return PROJECTILE;
+            case 1:
+                return ENERGY;
+            case 2: 
+                return BINARY;
+        }
+        
+        throw new IllegalArgumentException();
+    }
+    
 }
