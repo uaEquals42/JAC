@@ -79,12 +79,13 @@ public class Faction_Dialog {
     Quote faction_blurb;
 	//Map<String,List<QuestionYN>> com_questions;
 
+    public Faction_Dialog() {
+    }
+    
     public Faction_Dialog(Locale lang) {
         language = lang;
     }
 
-    public Faction_Dialog() {
 
-    }
 
 }

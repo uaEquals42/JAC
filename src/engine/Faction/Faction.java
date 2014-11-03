@@ -7,7 +7,9 @@ package engine.Faction;
 import engine.dialog.Quote;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +22,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.util.logging.Logger;
+import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -30,6 +33,7 @@ public class Faction {
     FactionSettings setting;
     Faction_Dialog dialog;
     String code_name;
+    private final String PREFIX = "./Factions/";
 
     /**
      * Load in the old SMAC/X config files for the factions.
@@ -359,13 +363,43 @@ public class Faction {
     }
 
 
+    public boolean readXML(String name){
+        if(name.length()==0){
+            return false;
+        }
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            //StringReader sr = new StringReader(xml);
+            String filename = name + "_settings.xml";
+            Path file = Paths.get(PREFIX, filename);     
+            this.setting = (FactionSettings) jaxbUnmarshaller.unmarshal(file.toFile());
+            
+            
+            jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
+            jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            filename = name + "_English.xml"; // TODO: make this work for multiple languages.
+            file = Paths.get(PREFIX, filename);
+            this.dialog = (Faction_Dialog) jaxbUnmarshaller.unmarshal(file.toFile());
+            
+            this.code_name = name;
+            return true;
+        
+        } catch (JAXBException e) {
+            // some exception occured  
+            e.printStackTrace();
+            return false;
+        } 
+        
+    }
+    
     public boolean saveXML() {
         if(setting==null){
             return false;
         }
         
         try {
-            String PREFIX = "./Factions/";
+            
             // create JAXB context and initializing Marshaller  
             JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -374,8 +408,8 @@ public class Faction {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
             //specify the location and name of xml file to be created  
-            String savename = PREFIX + code_name + "_settings.xml";
-            File XMLfile = new File(savename);
+            String savename = code_name + "_settings.xml";
+            File XMLfile = new File(PREFIX,savename);
 
             // Writing to XML file  
             jaxbMarshaller.marshal(setting, XMLfile);
@@ -388,8 +422,8 @@ public class Faction {
             // for getting nice formatted output  
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            savename = PREFIX + code_name + "_English.xml";
-            XMLfile = new File(savename);
+            savename =  code_name + "_English.xml";
+            XMLfile = new File(PREFIX, savename);
 
             // Writing to XML file  
             jaxbMarshaller.marshal(dialog, XMLfile);

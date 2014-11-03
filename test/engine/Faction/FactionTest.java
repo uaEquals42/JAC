@@ -90,4 +90,18 @@ public class FactionTest {
         assertEquals("Faction Data has been loaded, should be true", true, result); 
     }
     
+     @Test
+    public void test_load_XML() {
+        Faction instance = new Faction();
+        String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
+        instance.load_alpha_fac_file(FileName);
+        boolean result = instance.saveXML();
+        assertEquals("Faction Data has been loaded, should be true", true, result); 
+        
+        instance = new Faction();
+        result = instance.readXML("ROME");
+        assertEquals("Faction Data has been loaded, should be true", true, result); 
+        
+    }
+    
 }

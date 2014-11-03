@@ -33,6 +33,8 @@ public class Rome_FactionTest {
         boolean result = instance.saveXML();
         assertEquals("Faction Data has been loaded, should be true", true, result); // We haven't loaded any faction data.  So it should return false.
     }
+    
+    
 
     @Test
     public void socialTest() {
