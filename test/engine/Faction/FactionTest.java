@@ -87,7 +87,7 @@ public class FactionTest {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
         instance.load_alpha_fac_file(FileName);
         boolean result = instance.saveXML();
-        assertEquals("Faction Data has been loaded, should be true", true, result); // We haven't loaded any faction data.  So it should return false.
+        assertEquals("Faction Data has been loaded, should be true", true, result); 
     }
     
 }
