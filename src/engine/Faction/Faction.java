@@ -4,6 +4,7 @@
  */
 package engine.Faction;
 
+import engine.dialog.NounSex;
 import engine.dialog.Quote;
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class Faction {
             
             Path path = Paths.get(FileName);
             System.out.println(path);
+            
             List<String> fac_in = Files.readAllLines(path, StandardCharsets.UTF_8);
             int line = 0;
 
@@ -61,10 +63,15 @@ public class Faction {
             dialog.faction_name_title = tmp[0];
             dialog.fact_short_description_of_ideology = tmp[1].trim();
             dialog.noun = tmp[2].trim();
-            dialog.fac_name_gender = tmp[3].trim();
-            dialog.singular_plural = tmp[4].trim();
+            
+            String str_tmp = tmp[3].trim()+tmp[4].trim();
+            System.out.println(str_tmp);
+                    
+            dialog.faction_name_sexP = NounSex.convert(str_tmp);
+            System.out.println(dialog.faction_name_sexP);
+
             dialog.leaders_name = tmp[5].trim();
-            dialog.leaders_gender = tmp[6].trim();
+            dialog.leaders_gender = NounSex.convert(tmp[6].trim()+1); // Yes, I'm making it so that the leader can be plural.  A council.  The elder's.  an alien hive mind. etc.
 
             setting.ai_fight = Integer.parseInt(tmp[7].trim());
             setting.ai_power = Integer.parseInt(tmp[8].trim());
