@@ -30,7 +30,7 @@ public enum DefenceMode {
                 return BINARY;
         }
         
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Values can only be between 0 and 2");
     }
     
 }
