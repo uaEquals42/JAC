@@ -30,6 +30,7 @@ public class Ruleset {
     Map<String, Tech> technologies = new HashMap<>();
     Translation tran;
     List<Chasis> chasises = new ArrayList<>();
+    List<Reactor> reactors = new ArrayList<>();
     
 
     public boolean loadxml() {
@@ -43,6 +44,7 @@ public class Ruleset {
             System.out.println(path);
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
             tran = new Translation(Locale.ENGLISH);
+            // TODO: Test that these are all true.  If not throw an error.
             load_ideologies(input);
             load_technologies(input);
             load_facilities(input); // TODO: Does nothing right now.
@@ -81,6 +83,24 @@ public class Ruleset {
         return true;
     }
     
+    private boolean load_armor(List<String> input){
+        int pos = gotosection("#DEFENSES", input);
+        if (pos == -1) {
+            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#DEFENSES not found.");
+            System.out.println("Failure");
+            return false;
+
+        } else {
+            pos++;
+            for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
+                String[] line = input.get(pos + key).split(",");
+                
+            }
+            
+            return true;
+        }
+    }
+    
     private boolean load_reactor(List<String> input){
         int pos = gotosection("#REACTORS", input);
         if (pos == -1) {
@@ -93,6 +113,7 @@ public class Ruleset {
             for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
                 String[] line = input.get(pos + key).split(",");
                 Reactor tmp = new Reactor(tran, key, Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
+                reactors.add(tmp);
             }
             
             return true;
