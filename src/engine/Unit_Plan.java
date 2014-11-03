@@ -34,7 +34,7 @@ public class Unit_Plan {
         armor = def;
         weapon = weap;
         
-        max_health = reactor.reactor_power()*10;  //TODO: I don't know the actuall formula for calculating this.
+        max_health = reactor.reactor_power()*10;  //TODO: This is correct.  I wonder if I should have the health multiplier stored in the rules file.
         
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
         int def_cost = armor.cost_get();
