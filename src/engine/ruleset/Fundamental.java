@@ -72,8 +72,6 @@ Gravity, ; Technology to allow orbital insertion w/o Space Elevator
 EcoEng2, ; Technology for +1 mining platform bonus
 PlaEcon, ; Technology for economic victory
 1,       ; If non-zero, probe teams can steal technologies
-1,       ; If non-zero, humans can always contact each other in net games
-1,       ; If non-zero, humans can always contact each other in hotseat/email games
 50,      ; Maximum % damage inflicted by arty versus units in base/bunker
 99,      ; Maximum % damage inflicted by arty versus units in open
 100,     ; Maximum % damage inflicted by arty versus units at sea
