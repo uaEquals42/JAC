@@ -9,6 +9,7 @@ package engine.dialog;
  *
  * @author grjordan
  */
+
 public enum NounSex {
     MALE_SINGULAR(false),
     MALE_PLURAL(true),
@@ -17,13 +18,14 @@ public enum NounSex {
     NEUTER_SINGULAR(false),
     NEUTER_PLURAL(true);
     
+ 
     final boolean plural;
     
     NounSex(boolean plural){
         this.plural = plural;
     }
     
-    static NounSex convert(String input){
+    public static NounSex convert(String input){
         switch (input.trim()){
             case "M1":
                 return MALE_SINGULAR;
@@ -44,7 +46,7 @@ public enum NounSex {
                 return NEUTER_PLURAL;
                 
             default:
-                return null;  // This should actually never happen.  Not sure if I should have it default to something or what.
+                throw new IllegalArgumentException();  // This should actually never happen.  Not sure if I should have it default to something or what.
         }
     }
 }
