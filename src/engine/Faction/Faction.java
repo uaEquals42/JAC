@@ -367,7 +367,12 @@ public class Faction {
         return tmp;
     }
 
-
+    /**
+     * Will read in the given XML.  This function is likely to be edited in the future.
+     * TODO: Update this when the factions data layout is figured out better. (for translations)
+     * @param name
+     * @return
+     */
     public boolean readXML(String name){
         if(name.length()==0){
             return false;
@@ -398,6 +403,10 @@ public class Faction {
         
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean saveXML() {
         if(setting==null){
             return false;

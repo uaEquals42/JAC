@@ -13,6 +13,7 @@ import java.util.Map;
  * @author grjordan
  */
 public enum SocialAreas {
+
     ECONOMY,
     EFFIC,
     SUPPORT,
@@ -25,6 +26,15 @@ public enum SocialAreas {
     INDUSTRY,
     RESEARCH;
 
+    /**
+     * This is used for converting the SMAC/X notation of ++PROBE or ---PLANET, 
+     * into a mapping of the Enum and a int representation of the number of + or -.
+     * ++PROBE would become [PROBE:2]
+     * ---PLANET would become [PLANET:-3]
+     * 
+     * @param input  A string. 
+     * @return Map<SocialAreas, Integer>
+     */
     static public Map social_mods(String input) {
         // we need to count the number of + or - in front of the name.
         Map<SocialAreas, Integer> effect = new EnumMap<>(SocialAreas.class);
@@ -53,10 +63,11 @@ public enum SocialAreas {
     }
 
     /**
+     * A helper function (mostly for converting the SMAC/X settings) that takes a string
+     * And figures out what enum it should be.
      *
-     *
-     * @param social
-     * @return 
+     * @param social A String with the word we are trying to figure out.
+     * @return  A SocialAreas
      */
     static public SocialAreas findtype(String social) {
         social = social.trim();

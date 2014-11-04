@@ -86,9 +86,16 @@ public class Faction_Dialog {
     Quote faction_blurb;
 	//Map<String,List<QuestionYN>> com_questions;
 
+    /**
+     * Do Not Use!  Exists for the xml parser to not freak out.
+     */
     public Faction_Dialog() {
     }
     
+    /**
+     * Use to create and set the language of the dialog.
+     * @param lang
+     */
     public Faction_Dialog(Locale lang) {
         language = lang;
     }
