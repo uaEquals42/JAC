@@ -43,6 +43,14 @@ public class Tech {
     int fungus_mineral_bonus = 0;
     int fungus_nutrient_bonus = 0;
     
+    // Special variables that I added.  Not in the default constructer for reading in.
+    boolean allow_orbital_insertion = false;
+    boolean allow_economic_victory = false;
+    boolean allow_2_abilities = false;//TODO: make these allow x.
+    boolean tech_allow_3_nutrients = false; //TODO: make these allow x.
+    boolean tech_allow_3_minerals = false;//TODO: make these allow x.
+    boolean tech_allow_3_energy = false;//TODO: make these allow x.
+    boolean enable_mining_platform_bonus = false;
     
     // Smac/x does reaserch costs via a formula.
     boolean cost_from_formula = true;  

@@ -75,13 +75,10 @@ public class Fundamental {
     String tech_fungus_move;    //Move at full speed in fungus.
     String tech_fungus_roads;  // build roads in fungus
 
-    String tech_allow_2_abilities; //TODO: I KNOW this should be stored in the tech object.  and it should be for x abilities.
-    String tech_allow_3_nutrients; //TODO: I KNOW this should be stored in the tech object.
-    String tech_allow_3_minerals;//TODO: I KNOW this should be stored in the tech object.
-    String tech_allow_3_energy;//TODO: I KNOW this should be stored in the tech object.
-    String tech_allow_orbitial_insertion;//TODO: I KNOW this should be stored in the tech object.
-    String tech_allow_mining_platform_bonus;//TODO: I KNOW this should be stored in the tech object.
-    String tech_allow_economic_vicotry;//TODO: I KNOW this should be stored in the tech object.
+    int start_abilities; // Max Number of abilities for units without any tech researched.
+    int start_nutrients; // Max Number of nutrients per square without any tech researched.
+    int start_minerals; // Max number of minerals per square without any tech researched.
+    int start_energy; // Max number of energy per square without any tech researched.
 
     boolean probe_teams_steal_tech;
 
