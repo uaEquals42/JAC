@@ -45,7 +45,7 @@ public class Unit_Plan {
             def_cost= def_cost*2;
         }
         
-        int abilility = 0;  // TODO: Have this load the ability costs.
+        int ability = 0;  // TODO: Have this load the ability costs.
         int wep_cost = def_cost;
         if(wep_cost*2 < def_cost){
             wep_cost = def_cost/2;
@@ -62,7 +62,32 @@ public class Unit_Plan {
             c = c / 4;
         }
         
-        c = c + (abilility/4) * c;
+        /*
+         ; Special Unit Abilities
+
+; Cost   = Cost factor of ability
+;          1+ = Straight Cost; 25% increase per unit of cost
+;           0 = None
+;          -1 = Increases w/ ratio of weapon to armor: 0, 1, or 2.
+;               Rounded DOWN. Never higher than 2.
+;               Examples: For a W1,A2 unit, cost is 0
+;                         For a W3,A2 unit, cost is 1 (3/2 rounded down)
+;                         For a W6,A3 unit, cost is 2
+;          -2 = Increases w/ weapon value
+;          -3 = Increases w/ armor value
+;          -4 = Increases w/ speed value
+;          -5 = Increases w/ weapon+armor value
+;          -6 = Increases w/ weapon+speed value
+;          -7 = Increases w/ armor+speed value
+        */
+        if(ability > 0){
+            c = c + (ability/4) * c;
+        }
+        else if(ability==-1){
+            //TODO: All this stuff.
+        }
+                
+        
         
         if(wep_cost>1 && def_cost>1){
             c = c + 10;

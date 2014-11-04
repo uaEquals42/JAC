@@ -24,6 +24,7 @@ public class QuestionYN {
 	
 	/**
 	 * Configure the variables.
+         * @param key
 	 * @param dialog The question being asked.
 	 * @param agree What is said when agreeing to the question.
 	 * @param dis_agree What is said when dis-agreeing to the question.
