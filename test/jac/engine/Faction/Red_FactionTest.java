@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package engine.Faction;
+package jac.engine.Faction;
+import jac.engine.Faction.SocialAreas;
+import jac.engine.Faction.Faction;
 import java.lang.Integer;
 import org.junit.Before;
 import org.junit.Test;

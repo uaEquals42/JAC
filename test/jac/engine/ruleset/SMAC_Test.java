@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package engine.ruleset;
+package jac.engine.ruleset;
 
+import jac.engine.ruleset.MovementType;
+import jac.engine.ruleset.Ruleset;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

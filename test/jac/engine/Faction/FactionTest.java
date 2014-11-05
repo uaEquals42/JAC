@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package engine.Faction;
+package jac.engine.Faction;
+
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,11 +16,14 @@ import static org.junit.Assert.*;
 public class FactionTest {
     
     public FactionTest() {
+
+        
     }
     // This just tries loading in all the different factions in the tests.
     
     @Test
     public void load_faction_red(){
+   
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         Faction instance = new Faction();
         boolean expResult = true;
