@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Ruleset {
 
-    private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
     List<Ideology> ideologies = new ArrayList<>();
     Map<String, Tech> technologies = new HashMap<>();
     Translation tran;
