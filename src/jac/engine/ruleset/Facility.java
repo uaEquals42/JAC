@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package jac;
-
-
+package jac.engine.ruleset;
 
 /**
  *
  * @author grjordan
  */
-public class Jac {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-       
+public class Facility {
+    
+    
+    boolean secret_project = false;
+    
+    void Facility(String name, int cost, int maintence, Tech prereq){
+        
+        
+        
     }
+    
     
 }

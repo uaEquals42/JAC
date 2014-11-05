@@ -4,21 +4,18 @@
  * and open the template in the editor.
  */
 
-package jac;
-
-
+package jac.engine.Faction;
 
 /**
  *
  * @author grjordan
  */
-public class Jac {
+public enum FreeUnitType {
+    NONE,
+    COLONIST,
+    TERRAFORMER,
+    SCOUT;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-       
-    }
     
 }
+

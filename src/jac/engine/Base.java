@@ -3,22 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package jac;
-
-
+package jac.engine;
 
 /**
  *
  * @author grjordan
  */
-public class Jac {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-       
+public class Base {
+    int population;
+    int growth;
+    String name;
+    
+    
+    void Base(String name){
+        this.name = name;
     }
     
 }
