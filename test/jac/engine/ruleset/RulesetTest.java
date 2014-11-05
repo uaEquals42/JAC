@@ -35,7 +35,7 @@ public class RulesetTest {
      */
     @Test
     public void testLoadxml() {
-        System.out.println("loadxml");
+        //System.out.println("loadxml");
         Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadxml();
@@ -49,7 +49,7 @@ public class RulesetTest {
      */
     @Test
     public void testLoadalpha_txt() {
-        System.out.println("loadalpha_txt");
+        //System.out.println("loadalpha_txt");
         Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadalpha_txt("./testfiles/SMACX/alpha.txt");
@@ -62,7 +62,7 @@ public class RulesetTest {
      */
     @Test
     public void testLoadalphax_txt() {
-        System.out.println("loadalphax_txt");
+        //System.out.println("loadalphax_txt");
         Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadalphax_txt();
