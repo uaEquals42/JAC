@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -26,6 +25,7 @@ import java.util.logging.Logger;
  */
 public class Ruleset {
 
+    private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass().getName());
     List<Ideology> ideologies = new ArrayList<>();
     Map<String, Tech> technologies = new HashMap<>();
     Translation tran;
@@ -33,7 +33,6 @@ public class Ruleset {
     List<Reactor> reactors = new ArrayList<>();
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
-    
 
     public boolean loadxml() {
         //TODO: implement loadxml
@@ -57,7 +56,7 @@ public class Ruleset {
 
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("File {} not found!", filename);
             return false;
         }
     }
@@ -71,6 +70,7 @@ public class Ruleset {
     private int gotosection(String tag, List<String> input) {
         for (int line = 0; line < input.size(); line++) {
             if (input.get(line).trim().equalsIgnoreCase(tag)) {
+                log.trace("gotosection tag: {}  line: {}", tag, line);
                 return line;
             }
         }
@@ -78,20 +78,18 @@ public class Ruleset {
         return -1;
     }
 
-    
-    Tech find_tech(String key){
-       return technologies.get(key);
+    Tech find_tech(String key) {
+        return technologies.get(key);
     }
-    
-    private boolean load_facilities(List<String> input){
+
+    private boolean load_facilities(List<String> input) {
         return true;
     }
-    
-    private boolean load_weapon(List<String> input){
+
+    private boolean load_weapon(List<String> input) {
         int pos = gotosection("#WEAPONS", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#WEAPONS not found.");
-            System.out.println("Failure");
+            log.error("Section #WEAPONS not found!");
             return false;
 
         } else {
@@ -100,25 +98,24 @@ public class Ruleset {
                 String[] line = input.get(pos + key).split(",");
                 CombatMode mode;
                 int damage = Integer.parseInt(line[2].trim());
-                
-                if(damage==-1){
+
+                if (damage == -1) {
                     mode = CombatMode.PSI;
-                }
-                else{
+                } else {
                     mode = CombatMode.convert(Integer.parseInt(line[3].trim()));
                 }
-                
-                weapons.add(new Weapon(tran, key, line[0], line[1],damage, Integer.parseInt(line[4].trim()), line[6]));
+
+                weapons.add(new Weapon(tran, key, line[0], line[1], damage, Integer.parseInt(line[4].trim()), line[6]));
             }
+            log.debug("Loaded {} weapons", weapons.size());
             return true;
         }
     }
-    
-    private boolean load_armor(List<String> input){
+
+    private boolean load_armor(List<String> input) {
         int pos = gotosection("#DEFENSES", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#DEFENSES not found.");
-            System.out.println("Failure");
+            log.error("Section #DEFENSES not found!");
             return false;
 
         } else {
@@ -126,29 +123,27 @@ public class Ruleset {
             for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
                 String[] line = input.get(pos + key).split(",");
                 DefenceMode mode;
-                int rating =  Integer.parseInt(line[2].trim());
-                
-                if(rating==-1){
+                int rating = Integer.parseInt(line[2].trim());
+
+                if (rating == -1) {
                     mode = DefenceMode.PSI;
-                    
-                }
-                else{
+
+                } else {
                     mode = DefenceMode.convert(Integer.parseInt(line[3].trim()));
                 }
-             
+
                 armors.add(new Armor(tran, key, rating, mode,
-                        Integer.parseInt(line[4].trim()),line[5],line[0],line[1]));
+                        Integer.parseInt(line[4].trim()), line[5], line[0], line[1]));
             }
-            
+            log.debug("Loaded {} armors.", armors.size());
             return true;
         }
     }
-    
-    private boolean load_reactor(List<String> input){
+
+    private boolean load_reactor(List<String> input) {
         int pos = gotosection("#REACTORS", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#REACTORS not found.");
-            System.out.println("Failure");
+            log.error("Section #REACTORS not found!");
             return false;
 
         } else {
@@ -158,17 +153,16 @@ public class Ruleset {
                 Reactor tmp = new Reactor(tran, key, Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
                 reactors.add(tmp);
             }
-            
+
             return true;
         }
-        
+
     }
-    
-    private boolean load_chasis(List<String> input){
+
+    private boolean load_chasis(List<String> input) {
         int pos = gotosection("#CHASSIS", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#CHASSIS not found.");
-            System.out.println("Failure");
+            log.error("Section #CHASSIS not found!");
             return false;
 
         } else {
@@ -178,10 +172,10 @@ public class Ruleset {
                 String[] line = input.get(pos + key).split(",");
                 List<Noun> names = new ArrayList<>();
                 names.add(new Noun(line[0], line[1]));
-                names.add(new Noun(line[2], line[3]  ));
-                names.add(new Noun(line[4], line[5]  ));
-                names.add(new Noun(line[6], line[7] ));
-                               
+                names.add(new Noun(line[2], line[3]));
+                names.add(new Noun(line[4], line[5]));
+                names.add(new Noun(line[6], line[7]));
+
                 int speed = Integer.parseInt(line[8].trim());
                 MovementType mtype = MovementType.convert(Integer.parseInt(line[9].trim()));
                 int range = Integer.parseInt(line[10].trim());
@@ -189,9 +183,9 @@ public class Ruleset {
                 int cargo = Integer.parseInt(line[12].trim());
                 int cost = Integer.parseInt(line[13].trim());
                 String pre_req = line[14].trim();
-                names.add(new Noun(line[15], line[16]  ));
-                names.add(new Noun(line[17], line[18]  ));
- 
+                names.add(new Noun(line[15], line[16]));
+                names.add(new Noun(line[17], line[18]));
+
                 chasises.add(new Chasis(tran, key, names, speed, mtype, missle, cargo, cost, pre_req));
 
             }
@@ -199,13 +193,12 @@ public class Ruleset {
         }
         return false;
     }
-    
-    private boolean load_technologies(List<String> input){
+
+    private boolean load_technologies(List<String> input) {
         int pos = gotosection("#TECHNOLOGY", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#TECHNOLOGY not found.");
-            System.out.println("Failure");
-            
+            log.error("Section #TECHNOLOGY not found!");
+
             return false;
 
         } else {
@@ -228,11 +221,10 @@ public class Ruleset {
                     int fungus_mineral_bonus = Integer.parseInt(row[8].trim().substring(1, 2));
                     int fungus_energy_bonus = Integer.parseInt(row[8].trim().substring(2, 3));
                     Tech new_tech;
-                    
-                   
+
                     new_tech = new Tech(row[1].trim(), pre_reqs,
-                            flags[8] == '1', probe, commerce_bonus, 
-                            flags[5]=='1', flags[3] == '1', flags[4]=='1', 
+                            flags[8] == '1', probe, commerce_bonus,
+                            flags[5] == '1', flags[3] == '1', flags[4] == '1',
                             fungus_energy_bonus, fungus_mineral_bonus,
                             fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
                             Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
@@ -246,15 +238,14 @@ public class Ruleset {
         }
         return true;
     }
-    
+
     private boolean load_ideologies(List<String> input) {
-        
+
         int pos = gotosection("#SOCIO", input);
         if (pos == -1) {
-            Logger.getLogger(Ruleset.class.getName()).log(Level.SEVERE, "#SOCIO not found.");
-            System.out.println("Failure");
+            log.error("Section #SOCIO not found!");
             return false;
-           
+
         } else {
             //System.out.println(input.get(pos));
             pos += 3;
@@ -264,14 +255,12 @@ public class Ruleset {
                 for (int i = 0; i < 4; i++) {
                     String[] tmp = input.get(pos).split(",");
                     String idol_name = tmp[0].trim();
-                    
+
                     String prereq = tmp[1].trim();
                     List<String> pp = new ArrayList<>();
-                    if(!prereq.equalsIgnoreCase("None")){
+                    if (!prereq.equalsIgnoreCase("None")) {
                         pp.add(prereq);
                     }
-
-                    
 
                     //TODO: This and the ideology code is kindof shitty.  I need to refactor this into a more elegant format.
                     Ideology idol = new Ideology(cat.trim(), idol_name, pp);
@@ -281,7 +270,7 @@ public class Ruleset {
                         idol.effects.putAll(tmpmod);
                     }
                     ideologies.add(idol);
-                    pos+=1;
+                    pos += 1;
                 }
             }
 
@@ -290,6 +279,4 @@ public class Ruleset {
         return true;
     }
 
-    
-    
 }
