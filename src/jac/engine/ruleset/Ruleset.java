@@ -43,7 +43,7 @@ public class Ruleset {
     public boolean loadalpha_txt(String filename) {
         try {
             Path path = Paths.get(filename);
-            System.out.println(path);
+            //System.out.println(path);
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
             tran = new Translation(Locale.ENGLISH);
             // TODO: Test that these are all true.  If not throw an error.
@@ -256,7 +256,7 @@ public class Ruleset {
             return false;
            
         } else {
-            System.out.println(input.get(pos));
+            //System.out.println(input.get(pos));
             pos += 3;
             String[] categories = input.get(pos).split(",");
             pos += 1;

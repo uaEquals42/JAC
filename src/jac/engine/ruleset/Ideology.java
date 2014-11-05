@@ -26,7 +26,7 @@ public class Ideology {
     Ideology(String category, String name, List<String> pre_reqs){
         this.category = category;
         this.name = name;
-        System.out.println(pre_reqs.size());
+        //System.out.println(pre_reqs.size());
         this.pre_req.addAll(pre_reqs);
         
     }

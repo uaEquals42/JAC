@@ -429,7 +429,7 @@ public class Faction {
             // Writing to XML file  
             jaxbMarshaller.marshal(setting, XMLfile);
             // Writing to console  
-            jaxbMarshaller.marshal(setting, System.out); // TODO: move this to the logging system.
+            //jaxbMarshaller.marshal(setting, System.out); // TODO: move this to the logging system.
 
             jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
             jaxbMarshaller = jaxbContext.createMarshaller();
@@ -443,7 +443,7 @@ public class Faction {
             // Writing to XML file  
             jaxbMarshaller.marshal(dialog, XMLfile);
             // Writing to console  
-            jaxbMarshaller.marshal(dialog, System.out);
+            //jaxbMarshaller.marshal(dialog, System.out);
             return true;
         } catch (JAXBException e) {
             // some exception occured  
