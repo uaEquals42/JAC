@@ -7,77 +7,125 @@ package jac.engine.ruleset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
  * @author grjordan
  */
 public class UnitAbility {
+
     int cost; // Doing this differently.  
     List<String> pre_reqs = new ArrayList<>();
-    boolean land_unit;  // allowed for land units.
-    boolean sea_unit;
-    boolean air_unit;   
-    boolean combat_unit;
-    
+    boolean land_unit=true;  // allowed for land units.
+    boolean sea_unit=true;
+    boolean air_unit=true;
+    boolean combat_unit=true;
+   
+    String key;
+
     // Decided to remove the double negatives.
-    boolean psi_unit;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
-    
+    boolean psi_unit=true;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
+
     // Broke it up into individual non-combat types.
-    boolean terraformer_units; // allowed for terraformers
-    boolean probe_units;
-    boolean transport_units;
-    boolean convoy_units;
-    
+    boolean terraformer_units=true; // allowed for terraformers
+    boolean probe_units=true;
+    boolean transport_units=true;
+    boolean convoy_unit=true;
+
     int max_speed_allowed = -1;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
-    
-    boolean cost_increased_land; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
-    
+
+    boolean cost_increased_land=false; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
+
     /*
-           00000000001 = Allowed for Land units
-;          00000000010 = Allowed for Sea units
-;          00000000100 = Allowed for Air units
-;          00000001000 = Allowed for Combat units
-;          00000010000 = Allowed for Terraformer units
-;          00000100000 = Allowed for Noncombat units (non-terraformer)
-;          00001000000 = Not allowed for probe teams
-;          00010000000 = Not allowed for psi units
-;          00100000000 = Transport units only
-;          01000000000 = Not allowed for fast-moving units
-;          10000000000 = Cost increased for land units
-    */
-    
-    public UnitAbility(Translation tran, String name, String abbreviation, String description, int cost_code, String pre_req, String smacFlags){
-        // This is the function for 
+     00000000001 = Allowed for Land units
+     ;          00000000010 = Allowed for Sea units
+     ;          00000000100 = Allowed for Air units
+     ;          00000001000 = Allowed for Combat units
+     ;          00000010000 = Allowed for Terraformer units
+     ;          00000100000 = Allowed for Noncombat units (non-terraformer)
+     ;          00001000000 = Not allowed for probe teams
+     ;          00010000000 = Not allowed for psi units
+     ;          00100000000 = Transport units only
+     ;          01000000000 = Not allowed for fast-moving units
+     ;          10000000000 = Cost increased for land units
+                01234567890
+     */
+    /**
+     * This is the version for importing from SMAC files. Will have to create a
+     * different version for the editor.
+     *
+     * @param tran
+     * @param name
+     * @param abbreviation
+     * @param description
+     * @param cost_code
+     * @param pre_req
+     * @param smacFlags
+     */
+    public UnitAbility(Translation tran, String name, String abbreviation, String description, int cost_code, String pre_req, String smacFlags) {
+        String[] basic = new String[4];
+        basic[0] = name;
+        basic[1] = abbreviation;
+        basic[2] = description;
+        this.key = name.toUpperCase(Locale.ENGLISH);
+        tran.unit_abilities.put(key, basic);
+
+        this.cost = cost_code;
+        pre_reqs.add(pre_req);
+        
+        
+        smacFlags = smacFlags.trim();
+        if (smacFlags.charAt(0) == '1') {
+            cost_increased_land = true;
+        }
+        if (smacFlags.charAt(1) == '1') {
+            max_speed_allowed = 1;
+        }
+        if (smacFlags.charAt(2) == '1') {
+            combat_unit = false;
+            terraformer_units=false;
+            probe_units=false;
+            convoy_unit=false;
+        }
+        if (smacFlags.charAt(3) == '1') {
+            //Not allowed for psi units
+            psi_unit = false;
+
+        }
+        if (smacFlags.charAt(4) == '1') {
+            probe_units=false;
+        }
+        if (smacFlags.charAt(5) == '0') {
+            probe_units=false;
+            convoy_unit=false;
+            transport_units = false;
+
+        }
+        if (smacFlags.charAt(6) == '0') {
+            terraformer_units=false;
+        }
+        if (smacFlags.charAt(7) == '0') {
+            combat_unit = false;
+
+        }
+        if (smacFlags.charAt(8) == '0') {
+            air_unit=false;
+
+        }
+        if (smacFlags.charAt(9) == '0') {
+            sea_unit=false;
+
+        }
+        if (smacFlags.charAt(10) == '0') {
+            land_unit=false;
+        }
+        
+        
+        //TODO: Get the effects stored in here somehow.
+
     }
-    
+
     // http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Special_Ability
-    /*
-    #ABILITIES
-Super Former,           1, EcoEng2,  Super,     00000010111, Terraform rate doubled
-Deep Radar,             0, MilAlg,   ,          10000111111, Sees 2 spaces
-Cloaking Device,        1, Surface,  Cloaked,   00001111001, Invisible; Ignores ZOCs
-Amphibious Pods,        1, DocInit,  Amphibious,00000001001, Attacks from ship
-Drop Pods,              2, MindMac,  Drop,      00000111001, Makes air drops
-Air Superiority,        1, DocAir,   SAM,       00000001111, Attacks air units
-Deep Pressure Hull,     1, Metal,    Sub,       00000111010, Operates underwater
-Carrier Deck,           1, Metal,    Carrier,   00101101010, Mobile Airbase
-AAA Tracking,           1, MilAlg,   AAA,       00010001011, x2 vs. air attacks
-Comm Jammer,           -1, Subat,    ECM,       00010111001, +50% vs. fast units
-Antigrav Struts,        1, Gravity,  Grav,      00000111001, +1 movement rate (or +Reactor*2 for Air)
-Empath Song,            2, CentEmp,  Empath,    00010001111, +50% attack vs. Psi
-Polymorphic Encryption, 1, Algor,    Secure,    00000111111, x2 cost to subvert
-Fungicide Tanks,        1, Fossil,   Fungicidal,00000010111, Clear fungus at double speed
-High Morale,            1, Integ,    Trained,   00000001111, Gains morale upgrade
-Heavy Artillery,       -7, Poly,     Artillery, 00010001001, Bombards
-Clean Reactor,          2, BioEng,   Clean,     00000111111, Requires no support
-Blink Displacer,        1, Matter,   Blink,     00000001111, Bypass base defenses
-Hypnotic Trance,       -1, Brain,    Trance,    00010111111, +50% defense vs. PSI
-Heavy Transport,        1, Disable,  Heavy,     00100100111, +50% transport capacity
-Nerve Gas Pods,         1, Chemist,  X,         00011001101, Can +50% offense (Atrocity)
-Repair Bay,             1, Metal,    Repair,    00100100111, Repairs ground units on board
-Non-Lethal Methods,     1, Integ,    Police,    00000001001, x2 Police powers
-    */
-    
- 
+
 }
