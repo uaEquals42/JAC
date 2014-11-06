@@ -34,6 +34,7 @@ public class Ruleset {
     List<Reactor> reactors = new ArrayList<>();
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
+    Map<String, UnitAbility> unit_abilities = new HashMap<>();
 
     public boolean loadxml() {
         //TODO: implement loadxml
@@ -43,7 +44,7 @@ public class Ruleset {
     public boolean loadalpha_txt(String filename) {
         try {
             Path path = Paths.get(filename);
-            //System.out.println(path);
+            
             List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
             tran = new Translation(Locale.ENGLISH);
             // TODO: Test that these are all true.  If not throw an error.
@@ -54,6 +55,7 @@ public class Ruleset {
             load_reactor(input);
             load_armor(input);
             load_weapon(input);
+            load_unit_abilities(input);
 
             return true;
         } catch (IOException ex) {
@@ -108,7 +110,28 @@ public class Ruleset {
 
                 weapons.add(new Weapon(tran, key, line[0], line[1], damage, Integer.parseInt(line[4].trim()), line[6]));
             }
-            log.debug("Loaded {} weapons", weapons.size());
+            log.trace("Loaded {} weapons", weapons.size());
+            return true;
+        }
+    }
+
+    private boolean load_unit_abilities(List<String> input) {
+        int pos = gotosection("#ABILITIES", input);
+        if (pos == -1) {
+            log.error("Section #ABILITIES not found!");
+            return false;
+
+        } else {
+            pos++;
+            for (; !input.get(pos).trim().isEmpty(); pos++) {
+                String[] line = input.get(pos).split(",");
+
+                if (!line[2].trim().equalsIgnoreCase("Disable")) {
+                    UnitAbility abile = new UnitAbility(tran, line[0], line[3], line[5], Integer.parseInt(line[1].trim()), line[2], line[4]);
+                    unit_abilities.put(line[0].trim().toUpperCase(Locale.ENGLISH), abile);
+                }
+
+            }
             return true;
         }
     }
@@ -136,7 +159,7 @@ public class Ruleset {
                 armors.add(new Armor(tran, key, rating, mode,
                         Integer.parseInt(line[4].trim()), line[5], line[0], line[1]));
             }
-            log.debug("Loaded {} armors.", armors.size());
+            log.trace("Loaded {} armors.", armors.size());
             return true;
         }
     }
@@ -192,7 +215,8 @@ public class Ruleset {
             }
 
         }
-        return false;
+        
+        return true;
     }
 
     private boolean load_technologies(List<String> input) {
@@ -248,7 +272,7 @@ public class Ruleset {
             return false;
 
         } else {
-            //System.out.println(input.get(pos));
+            
             pos += 3;
             String[] categories = input.get(pos).split(",");
             pos += 1;

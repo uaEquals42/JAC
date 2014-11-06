@@ -65,14 +65,17 @@ public class UnitAbility {
      */
     public UnitAbility(Translation tran, String name, String abbreviation, String description, int cost_code, String pre_req, String smacFlags) {
         String[] basic = new String[4];
-        basic[0] = name;
-        basic[1] = abbreviation;
-        basic[2] = description;
-        this.key = name.toUpperCase(Locale.ENGLISH);
+        basic[0] = name.trim();
+        basic[1] = abbreviation.trim();
+        basic[2] = description.trim();
+        this.key = name.trim().toUpperCase(Locale.ENGLISH);
         tran.unit_abilities.put(key, basic);
 
         this.cost = cost_code;
-        pre_reqs.add(pre_req);
+        if(!pre_req.trim().equalsIgnoreCase("None")){
+            pre_reqs.add(pre_req);
+        }
+        
         
         
         smacFlags = smacFlags.trim();
