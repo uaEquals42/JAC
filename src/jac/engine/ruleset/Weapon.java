@@ -13,9 +13,7 @@ import java.util.List;
  * @author grjordan
  */
 public class Weapon {
-    
-
-    
+       
     int offence; // -1 if psi combat.
     CombatMode com_mode;
     int cost;

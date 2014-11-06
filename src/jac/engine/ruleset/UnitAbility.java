@@ -15,7 +15,8 @@ import java.util.Locale;
  */
 public class UnitAbility {
 
-    int cost; // Doing this differently.  
+    int cost; // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
+    int cost_code;
     List<String> pre_reqs = new ArrayList<>();
     boolean land_unit=true;  // allowed for land units.
     boolean sea_unit=true;
@@ -37,20 +38,7 @@ public class UnitAbility {
 
     boolean cost_increased_land=false; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
 
-    /*
-     00000000001 = Allowed for Land units
-     ;          00000000010 = Allowed for Sea units
-     ;          00000000100 = Allowed for Air units
-     ;          00000001000 = Allowed for Combat units
-     ;          00000010000 = Allowed for Terraformer units
-     ;          00000100000 = Allowed for Noncombat units (non-terraformer)
-     ;          00001000000 = Not allowed for probe teams
-     ;          00010000000 = Not allowed for psi units
-     ;          00100000000 = Transport units only
-     ;          01000000000 = Not allowed for fast-moving units
-     ;          10000000000 = Cost increased for land units
-                01234567890
-     */
+   
     /**
      * This is the version for importing from SMAC files. Will have to create a
      * different version for the editor.
@@ -71,7 +59,9 @@ public class UnitAbility {
         this.key = name.trim().toUpperCase(Locale.ENGLISH);
         tran.unit_abilities.put(key, basic);
 
-        this.cost = cost_code;
+        
+        this.cost_code = cost_code;
+        
         if(!pre_req.trim().equalsIgnoreCase("None")){
             pre_reqs.add(pre_req);
         }
