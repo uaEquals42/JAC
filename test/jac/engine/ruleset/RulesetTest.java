@@ -10,13 +10,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author grjordan
  */
 public class RulesetTest {
-    
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
     public RulesetTest() {
     }
     
@@ -36,6 +38,7 @@ public class RulesetTest {
     @Test
     public void testLoadxml() {
         //System.out.println("loadxml");
+        
         Ruleset instance = new Ruleset();
         boolean expResult = true;
         boolean result = instance.loadxml();

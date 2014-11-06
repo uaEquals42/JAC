@@ -11,14 +11,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author grjordan
  */
 public class SMAC_Test {
-    
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
     public SMAC_Test() {
+        
     }
     
     Ruleset rules;
@@ -35,6 +38,7 @@ public class SMAC_Test {
 
     @Test
     public void checkidologies(){
+        
         assertEquals("Number of ideologies", 16, (int) rules.ideologies.size());
         
         assertEquals("Frontier Category ", "Politics", rules.ideologies.get(0).category);
