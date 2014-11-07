@@ -6,6 +6,8 @@ package jac.engine.dialog;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -13,12 +15,13 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class Quote {
         @XmlElement
-	String quote;
+        String quote;
         @XmlElement
 	String person;
         @XmlElement
 	String source;
 
+        private static final Logger log = LoggerFactory.getLogger(Quote.class);
 	
 	/**
 	 *
@@ -32,6 +35,12 @@ public class Quote {
         public Quote(){
             
         }
+        
+        public Quote(String quote, String person, String source){
+            this.quote = quote;
+            this.person = person;
+            this.source = source;
+        }
 	
         @Override
 	public String toString(){
@@ -40,15 +49,25 @@ public class Quote {
 	
 	public void readblurb(int line, List<String> strlist){
 		String tmp_quote;
-                tmp_quote = strlist.get(line).substring(1).trim()+" ";
+               
+                if(strlist.get(line).startsWith("^")){
+                    tmp_quote = strlist.get(line).substring(1).trim()+" ";
+                }
+                else{
+                    tmp_quote = strlist.get(line).trim()+" ";
+                }
+                
                 line++;
-		while(!strlist.get(line).startsWith("^")){
+		while(!strlist.get(line).trim().startsWith("^")){
 			tmp_quote = tmp_quote + strlist.get(line).trim()+" ";
 			line++;
 		}
 		quote = tmp_quote.trim();
-		line++;
-		person = strlist.get(line).substring(1).trim(); //TODO:  Make sure to get rid of , -- etc from this line.
+                
+		if(strlist.get(line).trim().substring(1).trim().length()==0){
+                    line++;
+                }
+		person = strlist.get(line).trim().substring(1).trim(); 
                 if(person.endsWith(",")){
                     person = person.substring(0, person.length()-1);
                 }
@@ -57,9 +76,14 @@ public class Quote {
                 }
                 person=person.trim();
 		line++;
-		source = strlist.get(line).substring(1).trim(); //TODO: Is it always in quotes?
+                log.debug("person {}", person);
+		source = strlist.get(line).trim().substring(1).trim();
                 if(source.endsWith("\"") && source.startsWith("\"")){
                     source = source.substring(1, source.length()-1).trim();
                 }
+                log.trace(quote);
+                log.trace(person);
+                log.trace(source);
+                
 	}
 }
