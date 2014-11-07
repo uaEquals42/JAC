@@ -41,30 +41,27 @@ public class Ruleset {
         return true;
     }
 
-    public boolean loadalpha_txt(String filename) {
-        try {
-            Path path = Paths.get(filename);
-            
-            List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
-            tran = new Translation(Locale.ENGLISH);
-            // TODO: Test that these are all true.  If not throw an error.
-            load_ideologies(input);
-            load_technologies(input);
-            load_facilities(input); // TODO: Does nothing right now.
-            load_chasis(input);
-            load_reactor(input);
-            load_armor(input);
-            load_weapon(input);
-            load_unit_abilities(input);
+    public void loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
+        log.debug("loadalpha_txt: {}", filename);
 
-            return true;
-        } catch (IOException ex) {
-            log.error("File {} not found!", filename);
-            return false;
-        }
+        Path path = Paths.get(filename);
+
+        List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
+        tran = new Translation(Locale.ENGLISH);
+
+        //TODO: should I throw and errors instead of return true/false?
+        load_ideologies(input);
+        load_technologies(input);
+        load_facilities(input); // TODO: Does nothing right now.
+        load_chasis(input);
+        load_reactor(input);
+        load_armor(input);
+        load_weapon(input);
+        load_unit_abilities(input);
+
     }
 
-    public boolean loadalphax_txt() {
+    public boolean loadalphax_txt()  throws SectionNotFoundException, IOException {
         //TODO: implement load alphax.txt
         //TODO: Load SMAC ideologies from SOCIO
         return true;
@@ -86,14 +83,15 @@ public class Ruleset {
     }
 
     private boolean load_facilities(List<String> input) {
+        
         return true;
     }
 
-    private boolean load_weapon(List<String> input) {
+    private boolean load_weapon(List<String> input) throws SectionNotFoundException {
         int pos = gotosection("#WEAPONS", input);
         if (pos == -1) {
             log.error("Section #WEAPONS not found!");
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             pos++;
@@ -115,11 +113,12 @@ public class Ruleset {
         }
     }
 
-    private boolean load_unit_abilities(List<String> input) {
+    private boolean load_unit_abilities(List<String> input) throws SectionNotFoundException {
         int pos = gotosection("#ABILITIES", input);
         if (pos == -1) {
             log.error("Section #ABILITIES not found!");
-            return false;
+            throw new SectionNotFoundException();
+            
 
         } else {
             pos++;
@@ -136,11 +135,11 @@ public class Ruleset {
         }
     }
 
-    private boolean load_armor(List<String> input) {
+    private boolean load_armor(List<String> input)  throws SectionNotFoundException {
         int pos = gotosection("#DEFENSES", input);
         if (pos == -1) {
             log.error("Section #DEFENSES not found!");
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             pos++;
@@ -164,11 +163,11 @@ public class Ruleset {
         }
     }
 
-    private boolean load_reactor(List<String> input) {
+    private boolean load_reactor(List<String> input)  throws SectionNotFoundException {
         int pos = gotosection("#REACTORS", input);
         if (pos == -1) {
             log.error("Section #REACTORS not found!");
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             pos++;
@@ -183,11 +182,11 @@ public class Ruleset {
 
     }
 
-    private boolean load_chasis(List<String> input) {
+    private boolean load_chasis(List<String> input)  throws SectionNotFoundException {
         int pos = gotosection("#CHASSIS", input);
         if (pos == -1) {
             log.error("Section #CHASSIS not found!");
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             pos++;
@@ -219,12 +218,12 @@ public class Ruleset {
         return true;
     }
 
-    private boolean load_technologies(List<String> input) {
+    private boolean load_technologies(List<String> input)  throws SectionNotFoundException {
         int pos = gotosection("#TECHNOLOGY", input);
         if (pos == -1) {
             log.error("Section #TECHNOLOGY not found!");
 
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             pos++;
@@ -264,12 +263,12 @@ public class Ruleset {
         return true;
     }
 
-    private boolean load_ideologies(List<String> input) {
+    private boolean load_ideologies(List<String> input)  throws SectionNotFoundException {
 
         int pos = gotosection("#SOCIO", input);
         if (pos == -1) {
             log.error("Section #SOCIO not found!");
-            return false;
+            throw new SectionNotFoundException();
 
         } else {
             
