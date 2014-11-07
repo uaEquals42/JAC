@@ -7,10 +7,13 @@ package jac.engine.ruleset;
 
 import jac.engine.ruleset.MovementType;
 import jac.engine.ruleset.Ruleset;
+import java.io.IOException;
+import java.util.logging.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +22,25 @@ import org.slf4j.LoggerFactory;
  * @author grjordan
  */
 public class SMAC_Test {
-    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private static Logger log = LoggerFactory.getLogger(SMAC_Test.class);
     public SMAC_Test() {
         
     }
     
-    Ruleset rules;
+    static Ruleset rules;
     
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         rules = new Ruleset();
-        rules.loadalpha_txt("./testfiles/SMACX/alpha.txt");
+        try {
+            rules.loadalpha_txt("./testfiles/SMACX/alpha.txt");
+        } catch (SectionNotFoundException ex) {
+            log.error(ex.toString());
+            fail("Section wasn't found it alpha.txt");
+        } catch (IOException ex) {
+            log.error(ex.toString());
+            fail("File wasn't found.");
+        }
     }
     
     @After

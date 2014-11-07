@@ -6,6 +6,8 @@
 package jac.engine.ruleset;
 
 import jac.engine.ruleset.Ruleset;
+import java.io.IOException;
+import java.util.logging.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * @author grjordan
  */
 public class RulesetTest {
-    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    private static Logger log = LoggerFactory.getLogger(RulesetTest.class);
     public RulesetTest() {
     }
     
@@ -54,9 +56,17 @@ public class RulesetTest {
     public void testLoadalpha_txt() {
         //System.out.println("loadalpha_txt");
         Ruleset instance = new Ruleset();
-        boolean expResult = true;
-        boolean result = instance.loadalpha_txt("./testfiles/SMACX/alpha.txt");
-        assertEquals(expResult, result);
+        
+        try {
+            instance.loadalpha_txt("./testfiles/SMACX/alpha.txt");
+        } catch (SectionNotFoundException ex) {
+            log.error(ex.toString());
+            fail("Section wasn't found it alpha.txt");
+        } catch (IOException ex) {
+            log.error(ex.toString());
+            fail("File wasn't found.");
+        }
+        
  
     }
 
@@ -67,9 +77,17 @@ public class RulesetTest {
     public void testLoadalphax_txt() {
         //System.out.println("loadalphax_txt");
         Ruleset instance = new Ruleset();
-        boolean expResult = true;
-        boolean result = instance.loadalphax_txt();
-        assertEquals(expResult, result);
+
+        try {
+            instance.loadalphax_txt();
+        } catch (SectionNotFoundException ex) {
+            log.error(ex.toString());
+            fail("Section wasn't found it alpha.txt");
+        } catch (IOException ex) {
+            log.error(ex.toString());
+            fail("File wasn't found.");
+        }
+        
 
     }
     

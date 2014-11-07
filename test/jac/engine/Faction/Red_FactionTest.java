@@ -10,6 +10,7 @@ import java.lang.Integer;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -19,10 +20,10 @@ public class Red_FactionTest {
     
     public Red_FactionTest() {
     }
-    Faction instance;
+    static Faction instance;
     
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         instance = new Faction();
         instance.load_alpha_fac_file(FileName);
