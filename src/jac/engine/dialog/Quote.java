@@ -4,9 +4,11 @@
  */
 package jac.engine.dialog;
 
+import jac.engine.xmladaptors.XMLQuoteAdaptor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,18 +16,19 @@ import org.slf4j.LoggerFactory;
  *
  * @author Gregory
  */
+@XmlJavaTypeAdapter(XMLQuoteAdaptor.class)
 public class Quote {
 
     @XmlElement
-    String quote;
+    public  String quote;
     @XmlElement
-    String person;
+    public  String person;
     @XmlElement
-    String source;
+    public  String source;
     @XmlElement
-    String date;
+    public  String date;
     @XmlElement
-    String note;
+    public  String note;
 
     private static final Logger log = LoggerFactory.getLogger(Quote.class);
 

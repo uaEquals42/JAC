@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jac.engine.Faction;
+package jac.engine.xmladaptors;
 import java.util.Locale;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

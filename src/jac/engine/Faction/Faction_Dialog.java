@@ -5,6 +5,7 @@
 package jac.engine.Faction;
 
 //import engine.dialog.QuestionYN;
+import jac.engine.xmladaptors.JAXLanguageAdaptor;
 import jac.engine.dialog.NounSex;
 import jac.engine.dialog.Quote;
 import jac.engine.dialog.SentenceFragment;
