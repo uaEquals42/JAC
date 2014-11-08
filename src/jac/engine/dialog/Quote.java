@@ -24,6 +24,8 @@ public class Quote {
     String source;
     @XmlElement
     String date;
+    @XmlElement
+    String note;
 
     private static final Logger log = LoggerFactory.getLogger(Quote.class);
 
@@ -33,21 +35,24 @@ public class Quote {
         this.quote = quote;
         this.person = person;
         this.source = source;
-        
-        log.debug("Q  :{}", quote);
-        log.debug("By :{}", person);
-        log.debug("F  :{}", source);
+
+        log.debug("Quote :{}", quote);
+        log.debug("By    :{}", person);
+        log.debug("Source:{}", source);
     }
-    
-    public Quote(String quote, String person, String source, String date) {
+
+    public Quote(String quote, String person, String source, String date, String note) {
         this.quote = quote;
         this.person = person;
         this.source = source;
         this.date = date;
+        this.note = note;
         
-        log.debug("Q  :{}", quote);
-        log.debug("By :{}", person);
-        log.debug("F  :{}", source);
+        log.debug("Quote :{}", quote);
+        log.debug("By    :{}", person);
+        log.debug("Source:{}", source);
+        log.debug("Date  :{}", date);
+        log.debug("Note  :{}", note);
     }
 
     @Override
@@ -77,12 +82,12 @@ public class Quote {
      * No consistancy in how the quotes where displayed.  So parsing them means lots of corner cases.
      * @param line - The line in the String list to start on.
      * @param strlist
-     * @return List<Quote> Is a list of quotes that it has found for the given subject.  Necessary since there is one that has two quotes.
+     * @return Is a list of quotes that it has found for the given subject.  Necessary since there is one that has two quotes.
      */
     public static List<Quote> readblurb(int line, List<String> strlist) {
-        String quote="";
-        String person="";
-        String source="";
+        String quote;
+        String person;
+        String source;
         List<Quote> l_quotes = new ArrayList<>();
         
         
@@ -125,11 +130,15 @@ public class Quote {
 
         }
         if (tmp_string.size() == 3) {
-            person = clean(tmp_string.get(0));
-            source = clean(tmp_string.get(1));
-            String date = tmp_string.get(2);
+            // To handle project PYRRHO.  Its given me so much trouble.
+            String[] split = tmp_string.get(0).split(",");
+            person = clean(split[1].trim() + ", " + split[2].trim());
+            source = clean(split[0]);
+            String date = tmp_string.get(1);
+            String note = tmp_string.get(2);
             
-            l_quotes.add(new Quote(quote,person, source, date));
+            
+            l_quotes.add(new Quote(quote,person, source, date,note));
         }
         
         if (tmp_string.size() == 2) {
