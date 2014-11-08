@@ -12,21 +12,22 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  *
  * @author grjordan
  */
-public class XMLQuoteAdaptor  extends XmlAdapter<String[], Quote>{
+public class XMLQuoteAdaptor  extends XmlAdapter<AdaptedQuote, Quote>{
     
     @Override
-    public Quote unmarshal(String[] aquote) throws Exception {
-        return new Quote(aquote[0],aquote[1],aquote[2],aquote[3],aquote[4]);
+    public Quote unmarshal(AdaptedQuote aquote) throws Exception {
+        return new Quote(aquote.quote, aquote.person, aquote.source, aquote.date, aquote.note);
     }
  
     @Override
-    public String[] marshal(Quote quote) throws Exception {
-        String[] tmp = new String[5];
-        tmp[0] = quote.quote;
-        tmp[1] = quote.person;
-        tmp[2] = quote.source;
-        tmp[3] = quote.date;
-        tmp[4] = quote.note;
+    public AdaptedQuote marshal(Quote quote) throws Exception {
+        AdaptedQuote tmp = new AdaptedQuote();
+        
+        tmp.quote = quote.quote;
+        tmp.person = quote.person;
+        tmp.source = quote.source;
+        tmp.date = quote.date;
+        tmp.note = quote.note;
         return tmp;
     }
     
