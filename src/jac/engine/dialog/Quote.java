@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 @XmlJavaTypeAdapter(XMLQuoteAdaptor.class)
 public class Quote {
 
+    
     public final String quote;
     public final String person;
     public final String source;
@@ -27,12 +28,24 @@ public class Quote {
     private static final Logger log = LoggerFactory.getLogger(Quote.class);
 
     
-
+    /**
+     * Most quotes only need this.
+     * @param quote
+     * @param person
+     * @param source 
+     */
     public Quote(String quote, String person, String source) { 
         this(quote, person, source, "", "");    
     }
 
-    
+    /**
+     * Holds the various quotes in the game in an easy to read format.
+     * @param quote 
+     * @param person
+     * @param source - The book, article, etc that it came from.
+     * @param date - If available.
+     * @param note
+     */
     public Quote(String quote, String person, String source, String date, String note) {
         this.quote = quote;
         this.person = person;
@@ -40,14 +53,14 @@ public class Quote {
         this.date = date;
         this.note = note;
         
-        log.debug("Quote :{}", quote);
-        log.debug("By    :{}", person);
-        log.debug("Source:{}", source);
+        log.trace("Quote :{}", quote);
+        log.trace("By    :{}", person);
+        log.trace("Source:{}", source);
         if(date.length()!=0){
-            log.debug("Date  :{}", date);
+            log.trace("Date  :{}", date);
         }
         if(note.length()!=0){
-            log.debug("Note  :{}", note);
+            log.trace("Note  :{}", note);
         }
         
         
