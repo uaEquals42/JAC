@@ -7,7 +7,6 @@ package jac.engine.dialog;
 import jac.engine.xmladaptors.XMLQuoteAdaptor;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +18,10 @@ import org.slf4j.LoggerFactory;
 @XmlJavaTypeAdapter(XMLQuoteAdaptor.class)
 public class Quote {
 
-    @XmlElement
     public final String quote;
-    @XmlElement
     public final String person;
-    @XmlElement
     public final String source;
-    @XmlElement
     public final String date;
-    @XmlElement
     public final String note;
 
     private static final Logger log = LoggerFactory.getLogger(Quote.class);
@@ -38,6 +32,7 @@ public class Quote {
         this(quote, person, source, "", "");    
     }
 
+    
     public Quote(String quote, String person, String source, String date, String note) {
         this.quote = quote;
         this.person = person;
@@ -103,6 +98,7 @@ public class Quote {
 
         line++;
         
+        // Took way longer than I want to think about to come up with a loop that would work for all the quotes.
         while (strlist.get(line).trim().length() > 1 && !strlist.get(line).trim().substring(1).trim().startsWith("--")) {
             if (strlist.get(line).startsWith("^")) {
                 quote = quote + strlist.get(line).substring(1).trim() + " ";
