@@ -35,7 +35,7 @@ public enum SocialAreas {
      * @param input  A string. 
      * @return Map<SocialAreas, Integer>
      */
-    static public Map social_mods(String input) {
+    static public Map<SocialAreas, Integer> social_mods(String input) {
         // we need to count the number of + or - in front of the name.
         Map<SocialAreas, Integer> effect = new EnumMap<>(SocialAreas.class);
         int count = 0;

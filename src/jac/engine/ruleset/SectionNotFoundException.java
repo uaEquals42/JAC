@@ -10,7 +10,7 @@ package jac.engine.ruleset;
  * @author grjordan
  */
 public class SectionNotFoundException extends Exception {
-
+    static final long serialVersionUID = 1;
     /**
      * Creates a new instance of <code>SectionNotFoundException</code> without
      * detail message.

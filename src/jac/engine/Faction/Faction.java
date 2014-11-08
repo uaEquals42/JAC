@@ -355,7 +355,7 @@ public class Faction {
 
     private List<String> read_section(List<String> strlist, String code) {
 
-        ArrayList<String> tmp = new <String>ArrayList();
+        ArrayList<String> tmp = new ArrayList<>();
         int line = findkey(strlist, code);
 
         // now we read in strings until we hit #END
