@@ -9,6 +9,7 @@ import jac.engine.ruleset.Armor;
 import jac.engine.ruleset.Chasis;
 import jac.engine.ruleset.MovementType;
 import jac.engine.ruleset.Reactor;
+import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Weapon;
 import java.util.Map;
 
