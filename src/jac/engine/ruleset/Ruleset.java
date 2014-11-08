@@ -46,8 +46,7 @@ public class Ruleset {
         Map<String, List<Quote>> blurbs = new HashMap<>();
         log.debug("Load blurbs");
         List<String> input = Files.readAllLines(location, StandardCharsets.UTF_8);
-
-        boolean start_quote = false;
+       
         for (int ii = 0; ii < input.size(); ii++) {
             if (input.get(ii).contains("##")) {
                 ii++;
@@ -84,10 +83,10 @@ public class Ruleset {
 
     }
 
-    public boolean loadalphax_txt() throws SectionNotFoundException, IOException {
+    public void loadalphax_txt() throws SectionNotFoundException, IOException {
         //TODO: implement load alphax.txt
         //TODO: Load SMAC ideologies from SOCIO
-        return true;
+        log.warn("Function not implemented yet.");
     }
 
     /**
@@ -123,12 +122,39 @@ public class Ruleset {
     private void load_facilities(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
         int pos = gotosection("#FACILITIES", input);
         pos++;
+        int facility_count = 0;
+        int secret_count = 0;
         for (; !input.get(pos).trim().isEmpty(); pos++) {
             String[] row = input.get(pos).split(",");
-            
+
+            int cost = Integer.parseInt(row[1].trim());
+            int maintence = Integer.parseInt(row[2].trim());
+
+            Facility tmp_facility;
+            // calculate the key we will be needing.
+            String key;
             if (row.length == 11) {
                 // then it is a secret project.
+                key = "#PROJECT" + secret_count;
+
+                tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5]).project().pre_req(row[3]).
+                        quotes(blurbs.get(key)).build();
+
+                secret_count++;
+            } else {
+                key = "#FAC" + facility_count;
+                
+                tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5]).pre_req(row[3]).
+                        quotes(blurbs.get(key)).build();
+                
+                
+                facility_count++;
             }
+            
+            
+            facilities.put(key, tmp_facility);
+            
+            
         }
 
     }

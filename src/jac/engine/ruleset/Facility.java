@@ -48,11 +48,11 @@ public class Facility {
          * @param short_description
          */
         public Builder(String key, Translation tran, int cost, int maintence, String name, String short_description) {
-            this.key = key;
+            this.key = key.trim();
             this.tran = tran;
             this.cost = cost;
             this.maintence = maintence;
-            this.name_descript = new String[]{name, short_description};
+            this.name_descript = new String[]{name.trim(), short_description.trim()};
         }
 
         public Builder project() {
@@ -61,7 +61,10 @@ public class Facility {
         }
 
         public Builder pre_req(String pre_requisite) {
-            pre_reqs.add(pre_requisite);
+            if(!pre_requisite.trim().equalsIgnoreCase("None")){
+                pre_reqs.add(pre_requisite.trim());
+            }
+            
             return this;
         }
 
