@@ -5,11 +5,8 @@
  */
 package jac.engine.ruleset;
 
-import jac.engine.ruleset.Ruleset;
 import java.io.IOException;
 import java.util.logging.Level;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.slf4j.Logger;
@@ -26,28 +23,6 @@ public class RulesetTest {
     
 
     
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of loadxml method, of class Ruleset.
-     */
-    @Test
-    public void testLoadxml() {
-        //System.out.println("loadxml");
-        
-        Ruleset instance = new Ruleset();
-        boolean expResult = true;
-        boolean result = instance.loadxml();
-        assertEquals(expResult, result);
-   
-       
-    }
 
     /**
      * Test of loadalpha_txt method, of class Ruleset.

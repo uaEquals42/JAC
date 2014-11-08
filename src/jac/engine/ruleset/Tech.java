@@ -50,7 +50,7 @@ public class Tech {
     boolean cost_from_formula = true;  
     int reasearch_cost = 5;  // Added this here for modders, so that if they want to have fixed research costs, they can.
     
-    Tech(Translation tran, String id, List<Quote> quotes, List<String> pre_reqs, boolean freetech, int probe_bonus, 
+    Tech(Translation tran, String id, String name, List<Quote> quotes, List<String> pre_reqs, boolean freetech, int probe_bonus, 
             int commerce_bonus, boolean revealmap, boolean genewar_offence, boolean genewar_defence,
             int fungus_energy_bonus, int fungus_mineral_bonus,int fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
         
@@ -70,8 +70,11 @@ public class Tech {
         this.tech = tech;
         this.infrastructure = infrastructure;
         this.colonize = colonize;
+        
+        // Do not put in xml file.
         this.tran = tran;
         tran.tech_quotes.put(id, quotes);
+        tran.technames.put(id, name);
         
         
     }
@@ -82,6 +85,10 @@ public class Tech {
      */
     public void set_Translation(Translation tran){
         this.tran = tran;
+    }
+    
+    public String getName(){
+        return tran.technames.get(id);
     }
     
     public List<Quote> getQuotes(){
