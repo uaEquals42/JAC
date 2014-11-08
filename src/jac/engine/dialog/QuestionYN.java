@@ -37,7 +37,7 @@ public class QuestionYN {
 	}
 	public void addtag(String tag){
 		if(tags==null){
-			tags = new  ArrayList<String>();
+			tags = new ArrayList<String>();
 		}
 		tags.add(tag);
 	}

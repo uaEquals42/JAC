@@ -6,6 +6,9 @@
 
 package jac;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -13,11 +16,14 @@ package jac;
  * @author grjordan
  */
 public class Jac {
-
+private static final Logger log = LoggerFactory.getLogger(Jac.class);
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        
+       
        
     }
     

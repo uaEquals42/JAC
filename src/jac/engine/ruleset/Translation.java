@@ -24,6 +24,7 @@ public class Translation {
     Map<Integer, String[]> armor = new HashMap<>();  
     Map<Integer, String[]> reactors = new HashMap<>();  
     Map<String, String[]> unit_abilities = new HashMap<>();
+    Map<Integer, String[]> facilities = new LinkedHashMap<>();
     
     public Translation(Locale lang){
         this.language = lang;
