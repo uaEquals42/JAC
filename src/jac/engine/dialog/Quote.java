@@ -20,28 +20,22 @@ import org.slf4j.LoggerFactory;
 public class Quote {
 
     @XmlElement
-    public  String quote;
+    public final String quote;
     @XmlElement
-    public  String person;
+    public final String person;
     @XmlElement
-    public  String source;
+    public final String source;
     @XmlElement
-    public  String date;
+    public final String date;
     @XmlElement
-    public  String note;
+    public final String note;
 
     private static final Logger log = LoggerFactory.getLogger(Quote.class);
 
     
 
-    public Quote(String quote, String person, String source) {
-        this.quote = quote;
-        this.person = person;
-        this.source = source;
-
-        log.debug("Quote :{}", quote);
-        log.debug("By    :{}", person);
-        log.debug("Source:{}", source);
+    public Quote(String quote, String person, String source) { 
+        this(quote, person, source, "", "");    
     }
 
     public Quote(String quote, String person, String source, String date, String note) {
@@ -54,8 +48,14 @@ public class Quote {
         log.debug("Quote :{}", quote);
         log.debug("By    :{}", person);
         log.debug("Source:{}", source);
-        log.debug("Date  :{}", date);
-        log.debug("Note  :{}", note);
+        if(date.length()!=0){
+            log.debug("Date  :{}", date);
+        }
+        if(note.length()!=0){
+            log.debug("Note  :{}", note);
+        }
+        
+        
     }
 
     @Override
