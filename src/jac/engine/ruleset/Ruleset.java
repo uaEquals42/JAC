@@ -36,7 +36,7 @@ public class Ruleset {
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
     Map<String, UnitAbility> unit_abilities = new HashMap<>();
-    Map<String, List<Quote>> blurbs = new HashMap<>();
+    
 
     public boolean loadxml() {
         //TODO: implement loadxml
@@ -44,8 +44,9 @@ public class Ruleset {
     }
 
     
-    private void load_blurbs_txt(Path location) throws IOException{
+    private Map<String, List<Quote>> load_blurbs_txt(Path location) throws IOException{
         // Blurbs.txt
+        Map<String, List<Quote>> blurbs = new HashMap<>();
         log.debug("Load blurbs");
         List<String> input = Files.readAllLines(location, StandardCharsets.UTF_8);
         
@@ -60,7 +61,7 @@ public class Ruleset {
                 blurbs.put(key, quotes);
             }
         }
-        
+        return blurbs;
     }
     
     
@@ -73,17 +74,20 @@ public class Ruleset {
         List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
         tran = new Translation(Locale.ENGLISH);
 
-        //TODO: should I throw and errors instead of return true/false?
+        // load these in first.
+        Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
+        tran.opening_quote = blurbs.get("#OPENING").get(0);
+        
         load_ideologies(input);
-        load_technologies(input);
-        load_facilities(input); // TODO: Does nothing right now.
+        load_technologies(input, blurbs);
+        load_facilities(input); 
         load_chasis(input);
         load_reactor(input);
         load_armor(input);
         load_weapon(input);
         load_unit_abilities(input);
         
-        load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
+        
         
 
     }
@@ -105,7 +109,7 @@ public class Ruleset {
         return -1;
     }
 
-    Tech find_tech(String key) {
+     Tech find_tech(String key) {
         return technologies.get(key);
     }
 
@@ -256,7 +260,7 @@ public class Ruleset {
 
     }
 
-    private void load_technologies(List<String> input) throws SectionNotFoundException {
+    private void load_technologies(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
         int pos = gotosection("#TECHNOLOGY", input);
         if (pos == -1) {
             log.error("Section #TECHNOLOGY not found!");
@@ -265,8 +269,9 @@ public class Ruleset {
 
         } else {
             pos++;
-            for (; !input.get(pos).trim().isEmpty(); pos++) {
-                String[] row = input.get(pos).split(",");
+            for (int key = 0; !input.get(pos+key).trim().isEmpty(); key++) {
+                String[] row = input.get(pos+key).split(",");
+                String id = "#TECH"+key;
                 if (!row[6].trim().equalsIgnoreCase("Disable")) {
                     List<String> pre_reqs = new ArrayList<>();
                     if (!row[6].trim().equalsIgnoreCase("None")) {
@@ -284,15 +289,15 @@ public class Ruleset {
                     int fungus_energy_bonus = Integer.parseInt(row[8].trim().substring(2, 3));
                     Tech new_tech;
 
-                    new_tech = new Tech(row[1].trim(), pre_reqs,
+                    new_tech = new Tech(tran, id, blurbs.get(id), pre_reqs,
                             flags[8] == '1', probe, commerce_bonus,
                             flags[5] == '1', flags[3] == '1', flags[4] == '1',
                             fungus_energy_bonus, fungus_mineral_bonus,
                             fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
                             Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
                             Integer.parseInt(row[5].trim()));
-                    tran.technames.put(new_tech.id, row[0].trim());
-                    technologies.put(new_tech.id, new_tech);
+                    tran.technames.put(id, row[0].trim());
+                    technologies.put(id, new_tech);
                 }
 
             }

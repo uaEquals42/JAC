@@ -99,20 +99,20 @@ public class SMAC_Test {
     @Test
     public void test_Technologies() {
         assertEquals("Number of technologies", 77, rules.technologies.size());
-        assertEquals("Centari Ecology name", "Centauri Ecology", rules.tran.technames.get("Ecology"));
-        assertEquals("Centari Ecology code", "Ecology", rules.find_tech("Ecology").id);
-        assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("Ecology").pre_requisites_names.size());
-        assertEquals("Centari Ecology flag", 1, rules.find_tech("Ecology").fungus_nutrient_bonus);
+        assertEquals("Centari Ecology name", "Centauri Ecology", rules.tran.technames.get("#TECH6"));
+        
+        assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("#TECH6").pre_requisites_names.size());
+        assertEquals("Centari Ecology flag", 1, rules.find_tech("#TECH6").fungus_nutrient_bonus);
 
-        assertEquals("Thresh flag", 1, rules.find_tech("Thresh").fungus_mineral_bonus);
-        assertEquals("Thresh flag", 0, rules.find_tech("Thresh").fungus_nutrient_bonus);
+        assertEquals("Thresh flag", 1, rules.find_tech("#TECH56").fungus_mineral_bonus);
+        assertEquals("Thresh flag", 0, rules.find_tech("#TECH56").fungus_nutrient_bonus);
 
-        assertEquals("AlphCen flag", 1, rules.find_tech("AlphCen").fungus_energy_bonus);
-        assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").revealmap);
-        assertEquals("AlphCen flag", true, rules.find_tech("AlphCen").freetech);
+        assertEquals("AlphCen flag", 1, rules.find_tech("#TECH64").fungus_energy_bonus);
+        assertEquals("AlphCen flag", true, rules.find_tech("#TECH64").revealmap);
+        assertEquals("AlphCen flag", true, rules.find_tech("#TECH64").freetech);
 
-        assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_defence);
-        assertEquals("Viral flag", true, rules.find_tech("Viral").genewar_offence);
+        assertEquals("Viral flag", true, rules.find_tech("#TECH76").genewar_defence);
+        assertEquals("Viral flag", true, rules.find_tech("#TECH76").genewar_offence);
 
     }
 

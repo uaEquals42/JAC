@@ -5,6 +5,7 @@
  */
 package jac.engine.ruleset;
 
+import jac.engine.dialog.Quote;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +44,13 @@ public class Tech {
     int fungus_mineral_bonus = 0;
     int fungus_nutrient_bonus = 0;
     
+    Translation tran;
     
     // Smac/x does reaserch costs via a formula.
     boolean cost_from_formula = true;  
     int reasearch_cost = 5;  // Added this here for modders, so that if they want to have fixed research costs, they can.
     
-    Tech(String id, List<String> pre_reqs, boolean freetech, int probe_bonus, 
+    Tech(Translation tran, String id, List<Quote> quotes, List<String> pre_reqs, boolean freetech, int probe_bonus, 
             int commerce_bonus, boolean revealmap, boolean genewar_offence, boolean genewar_defence,
             int fungus_energy_bonus, int fungus_mineral_bonus,int fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
         
@@ -68,8 +70,22 @@ public class Tech {
         this.tech = tech;
         this.infrastructure = infrastructure;
         this.colonize = colonize;
+        this.tran = tran;
+        tran.tech_quotes.put(id, quotes);
         
         
+    }
+    
+    /**
+     * Used to set/change the translation being used.
+     * @param tran 
+     */
+    public void set_Translation(Translation tran){
+        this.tran = tran;
+    }
+    
+    public List<Quote> getQuotes(){
+        return tran.tech_quotes.get(id);
     }
     
     
