@@ -16,11 +16,11 @@ import java.util.List;
 public class Facility {
 
     private final String key;
-    boolean secret_project = false;
-    int cost;
-    int maintence;
-    List<String> pre_reqs = new ArrayList<>();
-    Translation tran;
+    private final boolean secret_project;
+    private final int cost;
+    private final int maintence;
+    private final List<String> pre_reqs;
+    private Translation tran;
 
     public static class Builder {
 
@@ -90,6 +90,24 @@ public class Facility {
         secret_project = builder.secret_project;
     }
 
+    
+    public boolean isSecret_project() {
+        return secret_project;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public int getMaintence() {
+        return maintence;
+    }
+
+    public List<String> getPre_reqs() {
+        return pre_reqs;
+    }
+    
+    
     /**
      * Used to set/change the translation being used.
      *
