@@ -141,7 +141,7 @@ public class Faction {
 
 
             line = findkey(fac_in, "#BLURB");
-            dialog.faction_blurb = new Quote(line + 1, fac_in);
+            dialog.faction_blurb = Quote.readblurb(line + 1, fac_in).get(0);
 
 
             return true; // SUCESS
