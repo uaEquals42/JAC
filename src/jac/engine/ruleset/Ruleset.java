@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,7 +36,8 @@ public class Ruleset {
     List<Reactor> reactors = new ArrayList<>();
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
-    Map<String, UnitAbility> unit_abilities = new HashMap<>();
+    Map<String, UnitAbility> unit_abilities = new LinkedHashMap<>();
+    Map<String, Facility> facilities = new LinkedHashMap<>();
 
     
 
@@ -73,7 +75,7 @@ public class Ruleset {
 
         load_ideologies(input);
         load_technologies(input, blurbs);
-        load_facilities(input);
+        load_facilities(input, blurbs);
         load_chasis(input);
         load_reactor(input);
         load_armor(input);
@@ -112,12 +114,18 @@ public class Ruleset {
         return technologies.get(key);
     }
 
-    private void load_facilities(List<String> input) throws SectionNotFoundException {
+    /**
+     * This is for loading in the facilities and secret projects.
+     * @param input - the file being read as a list of strings.  Should be alpha.txt
+     * @param blurbs - List of quotes.  Will add the appropriate ones to the facility info.
+     * @throws SectionNotFoundException Will throw if it can't find the "#FACILITIES" section.
+     */
+    private void load_facilities(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
         int pos = gotosection("#FACILITIES", input);
         pos++;
         for (; !input.get(pos).trim().isEmpty(); pos++) {
             String[] row = input.get(pos).split(",");
-
+            
             if (row.length == 11) {
                 // then it is a secret project.
             }
