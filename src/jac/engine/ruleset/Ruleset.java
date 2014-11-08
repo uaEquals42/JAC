@@ -7,6 +7,7 @@ package jac.engine.ruleset;
 
 import jac.engine.Faction.SocialAreas;
 import jac.engine.dialog.Noun;
+import jac.engine.dialog.Quote;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -35,12 +36,35 @@ public class Ruleset {
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
     Map<String, UnitAbility> unit_abilities = new HashMap<>();
+    Map<String, List<Quote>> blurbs = new HashMap<>();
 
     public boolean loadxml() {
         //TODO: implement loadxml
         return true;
     }
 
+    
+    private void load_blurbs_txt(Path location) throws IOException{
+        // Blurbs.txt
+        log.debug("Load blurbs");
+        List<String> input = Files.readAllLines(location, StandardCharsets.UTF_8);
+        
+        boolean start_quote = false;
+        for(int ii = 0; ii < input.size(); ii++){
+            if(input.get(ii).contains("##")){
+                ii++;
+                String key = input.get(ii).trim();
+                ii++;
+                List<Quote> quotes = Quote.readblurb(ii,input);
+                
+                blurbs.put(key, quotes);
+            }
+        }
+        
+    }
+    
+    
+    
     public void loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
         log.debug("loadalpha_txt: {}", filename);
 
@@ -58,6 +82,9 @@ public class Ruleset {
         load_armor(input);
         load_weapon(input);
         load_unit_abilities(input);
+        
+        load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
+        
 
     }
 
@@ -82,8 +109,22 @@ public class Ruleset {
         return technologies.get(key);
     }
 
-    private boolean load_facilities(List<String> input) {
+    private boolean load_facilities(List<String> input) throws SectionNotFoundException {
+    int pos = gotosection("#FACILITIES", input);
+        if (pos == -1) {
+            log.error("Section #FACILITIES not found!");
+            throw new SectionNotFoundException();
 
+        } else {
+            for (; !input.get(pos).trim().isEmpty(); pos++) {
+                String[] row = input.get(pos).split(",");
+                
+                if(row.length==11){
+                    // then it is a secret project.
+                }
+            }
+            
+        }
         return true;
     }
 
@@ -260,6 +301,7 @@ public class Ruleset {
 
     }
 
+    
     private void load_ideologies(List<String> input) throws SectionNotFoundException {
 
         int pos = gotosection("#SOCIO", input);
