@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class UnitAbility {
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -299,6 +299,7 @@ public class UnitAbility {
                 break;
             default:
                 log.error("Reached end of switch statement.  Invalid number supplied.");
+                // This could should never be reached.  Its mostly here in cose someone accidently removes a check someplace.
                 throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
                 
                 

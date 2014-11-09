@@ -7,7 +7,7 @@ package jac.engine.Faction;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public enum AI_Emphesis {
     NIL,

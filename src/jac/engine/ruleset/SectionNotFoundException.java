@@ -7,7 +7,7 @@ package jac.engine.ruleset;
 
 /**
  * If a section isn't found in a data file thats being read in.
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class SectionNotFoundException extends Exception {
     static final long serialVersionUID = 1;

@@ -11,7 +11,7 @@ import jac.engine.Faction.Faction_Dialog;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Player {
     String player_name;

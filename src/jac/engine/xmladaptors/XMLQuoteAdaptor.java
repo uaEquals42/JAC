@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class XMLQuoteAdaptor  extends XmlAdapter<AdaptedQuote, Quote>{
     

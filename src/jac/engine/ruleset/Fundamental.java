@@ -8,7 +8,7 @@ package jac.engine.ruleset;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Fundamental {
 
@@ -22,11 +22,15 @@ public class Fundamental {
     int technology_discover_rate = 100; // Technology discovery rate as a percentage of standard
     int min_increase_limit;  // Limits mineral increase for mine without road in square
     int mine_nutrient_effect; //(0 or -1)
+    
     int min_base_size_specialists; // 5,       ; Minimum base size to support specialists
 
 // 1,       ; Drones induced by Genejack factory  This should be loaded into the facility data.
 //7,       ; Population limit w/o hab complex   This should be loaded into the facility data.
 //14,      ; Population limit w/o hab dome      This should be loaded into the facility data.
+    
+    int base_pop_limit; // before modifiers.  This is the cap on the max size a base can be.  -1 means no limit.
+    
     int land_prototype; // Extra percentage cost of prototype land unit.
     int sea_prototype;  // "         "        "  "     "      sea
     int air_prototype;  // "         "        "  "     "      air
@@ -80,7 +84,7 @@ public class Fundamental {
     int start_minerals; // Max number of minerals per square without any tech researched.
     int start_energy; // Max number of energy per square without any tech researched.
     
-        
+   // TODO: get thee to the Tech!  
     String tech_allow_2_abilities; 
     String tech_allow_3_nutrients; 
     String tech_allow_3_minerals;

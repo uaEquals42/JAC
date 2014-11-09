@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Translation {
     Locale language;

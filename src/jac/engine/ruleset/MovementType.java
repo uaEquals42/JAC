@@ -7,7 +7,7 @@ package jac.engine.ruleset;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public enum MovementType {
     LAND,

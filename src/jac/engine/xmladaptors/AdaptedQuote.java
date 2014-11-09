@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class AdaptedQuote {
     @XmlElement

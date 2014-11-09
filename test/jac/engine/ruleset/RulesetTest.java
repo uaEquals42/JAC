@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class RulesetTest {
     private static Logger log = LoggerFactory.getLogger(RulesetTest.class);

@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Red_FactionTest {
     

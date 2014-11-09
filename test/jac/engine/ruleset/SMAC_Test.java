@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class SMAC_Test {
     private static Logger log = LoggerFactory.getLogger(SMAC_Test.class);

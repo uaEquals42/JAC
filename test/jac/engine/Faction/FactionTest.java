@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class FactionTest {
     

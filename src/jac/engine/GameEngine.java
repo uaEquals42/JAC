@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Gregory
+ * @author Gregory Jordan
  */
 public class GameEngine {
 

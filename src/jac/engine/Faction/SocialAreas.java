@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public enum SocialAreas {
 

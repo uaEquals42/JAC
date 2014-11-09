@@ -7,7 +7,7 @@ package jac.engine.dialog;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Noun {
     String noun;

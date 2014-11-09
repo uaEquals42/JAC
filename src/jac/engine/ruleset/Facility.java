@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * A representation of facilities - regular and secret.
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Facility {
 

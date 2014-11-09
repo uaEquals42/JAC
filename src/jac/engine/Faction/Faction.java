@@ -25,7 +25,7 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  *
- * @author Gregory
+ * @author Gregory Jordan
  */
 public class Faction {
 

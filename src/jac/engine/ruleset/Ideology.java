@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Ideology {
     String category;

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class JAXLanguageAdaptor extends XmlAdapter<String, Locale>{
 

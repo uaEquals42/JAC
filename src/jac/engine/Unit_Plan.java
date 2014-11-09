@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Unit_Plan {
 

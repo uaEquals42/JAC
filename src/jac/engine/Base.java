@@ -7,7 +7,7 @@ package jac.engine;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Base {
     int population;

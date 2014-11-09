@@ -8,7 +8,7 @@ package jac.engine.Faction;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public enum FreeUnitType {
     NONE,

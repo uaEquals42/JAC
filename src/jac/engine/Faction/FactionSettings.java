@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
- * @author grjordan
+ * @author Gregory Jordan
  */
 @
 XmlRootElement()

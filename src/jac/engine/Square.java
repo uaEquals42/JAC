@@ -6,7 +6,7 @@ package jac.engine;
 
 /**
  *
- * @author Gregory
+ * @author Gregory Jordan
  */
 public class Square {
     int altitude;

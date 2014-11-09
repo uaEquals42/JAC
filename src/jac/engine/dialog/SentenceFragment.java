@@ -6,7 +6,7 @@ package jac.engine.dialog;
 
 /**
  *
- * @author Gregory
+ * @author Gregory Jordan
  */
 public class SentenceFragment {
 	String fragment;

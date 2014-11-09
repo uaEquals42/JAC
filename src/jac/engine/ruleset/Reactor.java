@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Reactor {
   

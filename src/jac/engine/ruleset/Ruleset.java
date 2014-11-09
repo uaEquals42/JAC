@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author grjordan
+ * @author Gregory Jordan
  */
 public class Ruleset {
 
@@ -55,10 +55,11 @@ public class Ruleset {
                 for(;input.get(ii).trim().length()>0; ii++){
                     entry = entry + input.get(ii);
                 }
-                log.debug(entry);
+                //log.trace(entry);
                 techlongs.put(key, entry);
             }
         }
+        log.trace("Loaded {} techlongs", techlongs.size());
         return techlongs;
     }
 

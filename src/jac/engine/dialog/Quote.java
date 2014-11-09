@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Gregory
+ * @author Gregory Jordan
  */
 @XmlJavaTypeAdapter(XMLQuoteAdaptor.class)
 public class Quote {
