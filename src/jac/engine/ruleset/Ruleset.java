@@ -40,12 +40,17 @@ public class Ruleset {
     Map<String, Facility> facilities = new LinkedHashMap<>();
 
     
+    
+    private void load_techlongs(Path location) throws IOException{
+        log.debug("Load techlongs: {}", location);
+        List<String> input = Files.readAllLines(location, StandardCharsets.ISO_8859_1);
+    }
 
     private Map<String, List<Quote>> load_blurbs_txt(Path location) throws IOException {
         // Blurbs.txt
         Map<String, List<Quote>> blurbs = new HashMap<>();
         log.debug("Load blurbs");
-        List<String> input = Files.readAllLines(location, StandardCharsets.UTF_8);
+        List<String> input = Files.readAllLines(location, StandardCharsets.ISO_8859_1);
        
         for (int ii = 0; ii < input.size(); ii++) {
             if (input.get(ii).contains("##")) {
@@ -65,12 +70,14 @@ public class Ruleset {
 
         Path path = Paths.get(filename);
 
-        List<String> input = Files.readAllLines(path, StandardCharsets.UTF_8);
+        List<String> input = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
         tran = new Translation(Locale.ENGLISH);
 
         // load these in first.
         Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
         tran.opening_quote = blurbs.get("#OPENING").get(0);
+        
+        load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
 
         load_ideologies(input);
         load_technologies(input, blurbs);
