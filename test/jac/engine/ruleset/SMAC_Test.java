@@ -5,12 +5,7 @@
  */
 package jac.engine.ruleset;
 
-import jac.engine.ruleset.MovementType;
-import jac.engine.ruleset.Ruleset;
 import java.io.IOException;
-import java.util.logging.Level;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -43,14 +38,11 @@ public class SMAC_Test {
         }
     }
     
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void checkidologies(){
         
-        assertEquals("Number of ideologies", 16, (int) rules.ideologies.size());
+        assertEquals("Number of ideologies", 16, rules.ideologies.size());
         
         assertEquals("Frontier Category ", "Politics", rules.ideologies.get(0).category);
         assertEquals("Police State Category ", "Politics", rules.ideologies.get(1).category);
@@ -99,7 +91,8 @@ public class SMAC_Test {
     @Test
     public void test_Technologies() {
         assertEquals("Number of technologies", 77, rules.technologies.size());
-        assertEquals("Centari Ecology name", "Centauri Ecology", rules.tran.technames.get("#TECH6"));
+        assertEquals("Centari Ecology name", "Centauri Ecology", rules.technologies.get("#TECH6").getName());
+        assertEquals("Centari Ecology Quote", "Lady Deirdre Skye", rules.technologies.get("#TECH6").getQuotes().get(0).person);
         
         assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("#TECH6").pre_requisites_names.size());
         assertEquals("Centari Ecology flag", 1, rules.find_tech("#TECH6").fungus_nutrient_bonus);
@@ -127,5 +120,11 @@ public class SMAC_Test {
         assertEquals("Missile prereqs", "Orbital", rules.chasises.get(8).pre_req_str.get(0));
         assertEquals("Missile is a missle?", true, rules.chasises.get(8).missle);
         assertEquals("Missle is an air unit?", MovementType.AIR, rules.chasises.get(8).triad);
+    }
+    
+    
+    @Test
+    public void test_Facility(){
+        
     }
 }
