@@ -41,9 +41,25 @@ public class Ruleset {
 
     
     
-    private void load_techlongs(Path location) throws IOException{
+    private Map<String, String> load_techlongs(Path location) throws IOException{
         log.debug("Load techlongs: {}", location);
         List<String> input = Files.readAllLines(location, StandardCharsets.ISO_8859_1);
+        Map<String, String> techlongs = new HashMap<>();
+        for (int ii = 0; ii < input.size(); ii++) {
+            if (input.get(ii).contains("##")) {
+                String entry="";
+                ii++;
+                String key = input.get(ii).trim();
+                ii++;
+                
+                for(;input.get(ii).trim().length()>0; ii++){
+                    entry = entry + input.get(ii);
+                }
+                log.debug(entry);
+                techlongs.put(key, entry);
+            }
+        }
+        return techlongs;
     }
 
     private Map<String, List<Quote>> load_blurbs_txt(Path location) throws IOException {
@@ -58,7 +74,7 @@ public class Ruleset {
                 String key = input.get(ii).trim();
                 ii++;
                 List<Quote> quotes = Quote.readblurb(ii, input);
-
+                
                 blurbs.put(key, quotes);
             }
         }
@@ -77,7 +93,7 @@ public class Ruleset {
         Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
         tran.opening_quote = blurbs.get("#OPENING").get(0);
         
-        load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
+        Map<String, String> techlongs = load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
 
         load_ideologies(input);
         load_technologies(input, blurbs);
@@ -195,7 +211,12 @@ public class Ruleset {
             String[] line = input.get(pos).split(",");
 
             if (!line[2].trim().equalsIgnoreCase("Disable")) {
-                UnitAbility abile = new UnitAbility(tran, line[0], line[3], line[5], Integer.parseInt(line[1].trim()), line[2], line[4]);
+                UnitAbility abile = new UnitAbility.Builder(line[0].trim(), tran, line[0].trim(), line[3], line[5]).
+                        smacAbilityFlags(line[4]).
+                        setCost_code(Integer.parseInt(line[1].trim())).
+                        addPreReq(line[2]).
+                        build();
+                       
                 unit_abilities.put(line[0].trim().toUpperCase(Locale.ENGLISH), abile);
             }
 

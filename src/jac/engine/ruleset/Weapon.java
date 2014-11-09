@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class Weapon {
        
-    int offence; // -1 if psi combat.
-    CombatMode com_mode;
-    int cost;
-    List<String> pre_req_keys = new ArrayList<>();
-    List<Tech> pre_req_tech = new ArrayList<>();
-    final int id;
+    private int offence; // -1 if psi combat.
+    private CombatMode com_mode;
+    private int cost;
+    private List<String> pre_req_keys = new ArrayList<>();
+    private List<Tech> pre_req_tech = new ArrayList<>();
+    private final int id;
 
     public Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
         String[] names = new String[2];
@@ -49,5 +49,19 @@ public class Weapon {
         }
         return false;
     }
+
+    public int getOffence() {
+        return offence;
+    }
+
+    public CombatMode getCom_mode() {
+        return com_mode;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+    
+    
     
 }

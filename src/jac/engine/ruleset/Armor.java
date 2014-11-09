@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class Armor {
     
-    Translation tran;
-    int id;
-    int armor;
-    DefenceMode mode;
-    int cost;
-    List<String> pre_reqs = new ArrayList<>();
+    private Translation tran;
+    private int id;
+    private int armor;
+    private DefenceMode mode;
+    private int cost;
+    private List<String> pre_reqs = new ArrayList<>();
     
     public Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
         this.tran = tran;
@@ -35,9 +35,6 @@ public class Armor {
         tran.armor.put(id, names);
     }
     
-    public int cost_get(){
-        return cost;
-    }
     
     public String name1(){
         return tran.armor.get(id)[0];
@@ -46,4 +43,18 @@ public class Armor {
     public String name2(){
         return tran.armor.get(id)[1];
     }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public DefenceMode getMode() {
+        return mode;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+    
+    
 }

@@ -15,15 +15,15 @@ import java.util.List;
  */
 public class Chasis {
 
-    int speed;
-    MovementType triad;
-    boolean missle;
-    int base_cargo;
-    int cost;
-    List<String> pre_req_str = new ArrayList<>();
-    List<Tech> pre_req_techs = new ArrayList<>();
+    private int speed;
+    private MovementType triad;
+    private boolean missle;
+    private int base_cargo;
+    private int cost;
+    private List<String> pre_req_str = new ArrayList<>();
+    private List<Tech> pre_req_techs = new ArrayList<>();
     private final int key;  // for looking up translations.
-    Translation tran;
+    private Translation tran;
 
     Chasis(Translation tran, int key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
         this.key = key;
@@ -48,12 +48,29 @@ public class Chasis {
     public List<Noun> names(){
         return tran.chasis.get(key);
     }
+
+    public List<String> getPre_req_str() {
+        return pre_req_str;
+    }
     
-    public int speed(){
+    public int getBase_cargo(){
+        return base_cargo;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public int getSpeed() {
         return speed;
     }
-    public int base_cargo(){
-        return base_cargo;
+
+    public MovementType getTriad() {
+        return triad;
+    }
+
+    public boolean isMissle() {
+        return missle;
     }
     
     public MovementType mode(){

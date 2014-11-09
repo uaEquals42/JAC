@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A representation of facilities - regular and secret.
  * @author grjordan
  */
 public class Facility {
@@ -90,6 +90,13 @@ public class Facility {
         secret_project = builder.secret_project;
     }
 
+    public String getName(){
+        return tran.facilities.get(key)[0];
+    }
+    
+    public String getShortDescription(){
+        return tran.facilities.get(key)[1];
+    }
     
     public boolean isSecret_project() {
         return secret_project;

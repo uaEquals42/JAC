@@ -7,68 +7,174 @@ package jac.engine.ruleset;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author grjordan
  */
 public class UnitAbility {
-
-    int cost; // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
-    int cost_code;
-    List<String> pre_reqs = new ArrayList<>();
-    boolean land_unit=true;  // allowed for land units.
-    boolean sea_unit=true;
-    boolean air_unit=true;
-    boolean combat_unit=true;
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
+    
+    //Required 
+    private final String key;
+    private Translation tran;  // can be changed.
+    
+    //Optional
+    // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
+    private final int cost_code;
+    
+    
+    private final List<String> pre_reqs;
+    private final boolean land_unit;  // allowed for land units.
+    private final boolean sea_unit;
+    private final boolean air_unit;
+    private final boolean combat_unit;
    
-    String key;
+    
 
     // Decided to remove the double negatives.
-    boolean psi_unit=true;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
+    private final boolean psi_unit;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
 
     // Broke it up into individual non-combat types.
-    boolean terraformer_units=true; // allowed for terraformers
-    boolean probe_units=true;
-    boolean transport_units=true;
-    boolean convoy_unit=true;
+    private final boolean terraformer_units; // allowed for terraformers
+    private final boolean probe_units;
+    private final boolean transport_units;
+    private final boolean convoy_unit;
 
-    int max_speed_allowed = -1;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
+    private final int max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
 
-    boolean cost_increased_land=false; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
+    private final boolean cost_increased_land; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
 
-   
-    /**
-     * This is the version for importing from SMAC files. Will have to create a
-     * different version for the editor.
-     *
-     * @param tran
-     * @param name
-     * @param abbreviation
-     * @param description
-     * @param cost_code
-     * @param pre_req
-     * @param smacFlags
-     */
-    public UnitAbility(Translation tran, String name, String abbreviation, String description, int cost_code, String pre_req, String smacFlags) {
-        String[] basic = new String[4];
-        basic[0] = name.trim();
-        basic[1] = abbreviation.trim();
-        basic[2] = description.trim();
-        this.key = name.trim().toUpperCase(Locale.ENGLISH);
-        tran.unit_abilities.put(key, basic);
-
+    
+     public UnitAbility(Builder build){
+        tran = build.tran;
+        key = build.key;
+        cost_code = build.cost_code;
+        pre_reqs = build.pre_reqs;
+        land_unit = build.land_unit;
+        sea_unit = build.sea_unit;
+        air_unit = build.air_unit;
+        combat_unit = build.combat_unit;
+        psi_unit = build.psi_unit;
+        terraformer_units = build.terraformer_units;
+        probe_units = build.probe_units;
+        transport_units = build.transport_units;
+        convoy_unit = build.convoy_unit;
+        max_speed_allowed = build.max_speed_allowed;
+        cost_increased_land = build.cost_increased_land;
         
-        this.cost_code = cost_code;
+    }
+    
+    
+    
+    public static class Builder {
+
+        // Required
+        private final String key;
+        private final String[] namedescrip;
+        private final Translation tran;
+                
+        // Optional
+        private int cost_code = 0;
+        private List<String> pre_reqs = new ArrayList<>();
+        private boolean land_unit = true;  // allowed for land units.
+        private boolean sea_unit = true;
+        private boolean air_unit = true;
+        private boolean combat_unit = true;
+
+        // Decided to remove the double negatives.
+        private boolean psi_unit = true;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
+
+        // Broke it up into individual non-combat types.
+        boolean terraformer_units = true; // allowed for terraformers
+        boolean probe_units = true;
+        boolean transport_units = true;
+        boolean convoy_unit = true;
+
+        int max_speed_allowed = -1;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
+
+        boolean cost_increased_land = false;
         
-        if(!pre_req.trim().equalsIgnoreCase("None")){
-            pre_reqs.add(pre_req);
+        public Builder(String key, Translation tran, String name, String code, String description){
+            this.key = key;
+            this.tran = tran;
+            namedescrip = new String[]{name.trim(), code.trim(), description.trim()};   
+        }
+
+        public Builder setCost_code(int cost_code) {
+            if(cost_code<-7){
+                 throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
+            }
+            this.cost_code = cost_code;
+            return this;
+        }
+
+        public Builder addPreReq(String pre_req){
+            if(!pre_req.trim().equalsIgnoreCase("None")){
+                pre_reqs.add(pre_req.trim());  
+            }        
+            return this;
+        }           
+
+        public Builder setLand_unit(boolean land_unit) {
+            this.land_unit = land_unit;
+            return this;
+        }
+
+        public Builder setSea_unit(boolean sea_unit) {
+            this.sea_unit = sea_unit;
+            return this;
+        }
+
+        public Builder setAir_unit(boolean air_unit) {
+            this.air_unit = air_unit;
+            return this;
+        }
+
+        public Builder setCombat_unit(boolean combat_unit) {
+            this.combat_unit = combat_unit;
+            return this;
+        }
+
+        public Builder setPsi_unit(boolean psi_unit) {
+            this.psi_unit = psi_unit;
+            return this;
+        }
+
+        public Builder setTerraformer_units(boolean terraformer_units) {
+            this.terraformer_units = terraformer_units;
+            return this;
+        }
+
+        public Builder setProbe_units(boolean probe_units) {
+            this.probe_units = probe_units;
+            return this;
+        }
+
+        public Builder setTransport_units(boolean transport_units) {
+            this.transport_units = transport_units;
+            return this;
+        }
+
+        public Builder setConvoy_unit(boolean convoy_unit) {
+            this.convoy_unit = convoy_unit;
+            return this;
+        }
+
+        public Builder setMax_speed_allowed(int max_speed_allowed) {
+            this.max_speed_allowed = max_speed_allowed;
+            return this;
+        }
+
+        public Builder setCost_increased_land(boolean cost_increased_land) {
+            this.cost_increased_land = cost_increased_land;
+            return this;
         }
         
-        
-        
-        smacFlags = smacFlags.trim();
+        public Builder smacAbilityFlags(String smacFlags){
+            smacFlags = smacFlags.trim();
         if (smacFlags.charAt(0) == '1') {
             cost_increased_land = true;
         }
@@ -113,12 +219,98 @@ public class UnitAbility {
         if (smacFlags.charAt(10) == '0') {
             land_unit=false;
         }
+            return this;
+        }
         
         
-        //TODO: Get the effects stored in here somehow.
-
+        public UnitAbility build() {
+            return new UnitAbility(this);
+        }
+        
+        
     }
 
+    public int calc_cost(int base_cost, Weapon wep, Chasis chas, Armor arm) {
+        
+        
+        /*
+         ; Special Unit Abilities
+
+         ; Cost   = Cost factor of ability
+         ;          1+ = Straight Cost; 25% increase per unit of cost
+         ;           0 = None
+         ;          -1 = Increases w/ ratio of weapon to armor: 0, 1, or 2.
+         ;               Rounded DOWN. Never higher than 2.
+         ;               Examples: For a W1,A2 unit, cost is 0
+         ;                         For a W3,A2 unit, cost is 1 (3/2 rounded down)
+         ;                         For a W6,A3 unit, cost is 2
+         ;          -2 = Increases w/ weapon value
+         ;          -3 = Increases w/ armor value
+         ;          -4 = Increases w/ speed value
+         ;          -5 = Increases w/ weapon+armor value
+         ;          -6 = Increases w/ weapon+speed value
+         ;          -7 = Increases w/ armor+speed value
+         */
+        // http://alphacentauri2.info/index.php?topic=12897.msg61597#msg61597
+        /*
+        Acording to Yitzi
+        Ok (weapon, armor, and chassis all refer to the weapon/armor/chassis cost):
+         -1 costs 0 if weapon<armor, 1 if 2*armor>weapon>=armor, and 2 if weapon>=2*armor.
+         -2 has cost equal to weapon-1.
+         -3 has cost equal to armor-1.
+         -4 has cost equal to chassis-1.
+         -5 has cost equal to weapon+armor-2.
+         -6 has cost equal to weapon+chassis-2.
+         -7 has cost equal to armor+chassis-2.
+        
+        It's used as if that were the positive ability cost, i.e. positive total_unit_cost = (unit_cost *(1+ability_cost / 4))
+         */
+
+        
+        
+        
+        int value=0;
+        if (cost_code > 0) {
+            value = cost_code;
+        }
+        switch (cost_code) {
+            case 0:
+                return 0;
+            case -1:
+                value = wep.getCost() / arm.getCost();
+                break;
+            case -2:
+                 value = wep.getCost() - 1;
+                break;
+            case -3:
+                value = arm.getCost() - 1;
+                break;
+            case -4:
+                value = chas.getCost() - 1;
+                break;
+            case -5:
+                value = wep.getCost() + arm.getCost() - 2;
+                break;
+            case -6:
+                value = wep.getCost() + chas.getCost() - 2;
+                break;
+            case -7:
+                value = arm.getCost() + chas.getCost() - 2;
+                break;
+            default:
+                log.error("Reached end of switch statement.  Invalid number supplied.");
+                throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
+                
+                
+
+        }
+        return base_cost * value / 4;     
+    }
+   
+
     // http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Special_Ability
+    public void setTran(Translation tran) {
+        this.tran = tran;
+    }
 
 }
