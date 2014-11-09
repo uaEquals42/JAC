@@ -7,7 +7,7 @@ package jac.engine.ruleset;
 
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -21,17 +21,17 @@ public class Translation {
     
     Quote opening_quote;
     
-    Map<String, String> technames = new HashMap<>();
-    Map<String, List<Quote>> tech_quotes = new HashMap<>();
+    Map<String, String> technames = new LinkedHashMap<>();
+    Map<String, List<Quote>> tech_quotes = new LinkedHashMap<>();
     
-    Map<Integer, List<Noun>> chasis = new HashMap<>();
-    Map<Integer, String[]> weapons = new HashMap<>();  
-    Map<Integer, String[]> armor = new HashMap<>();  
-    Map<Integer, String[]> reactors = new HashMap<>();  
-    Map<String, String[]> unit_abilities = new HashMap<>();
+    Map<Integer, List<Noun>> chasis = new LinkedHashMap<>();
+    Map<Integer, String[]> weapons = new LinkedHashMap<>();  
+    Map<Integer, String[]> armor = new LinkedHashMap<>();  
+    Map<Integer, String[]> reactors = new LinkedHashMap<>();  
+    Map<String, String[]> unit_abilities = new LinkedHashMap<>();
     
-    Map<String, String[]> facilities = new HashMap<>();
-    Map<String, List<Quote>> facilities_quotes = new HashMap<>();
+    Map<String, String[]> facilities = new LinkedHashMap<>();
+    Map<String, List<Quote>> facilities_quotes = new LinkedHashMap<>();
     
     
     
