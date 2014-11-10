@@ -28,14 +28,14 @@ import java.util.List;
 public class Reactor {
   
 
-    private Translation tran;
+
     private int power;
     private List<String> pre_reqs = new ArrayList<>();
     private final int key;
 
     public Reactor(Translation tran, Integer id, int power, String pre_req, String full_name, String short_name) {
         this.key = id;
-        this.tran = tran;
+       
         this.power = power;
         if (!pre_req.trim().equalsIgnoreCase("None")) {
             pre_reqs.add(pre_req.trim());
@@ -52,11 +52,11 @@ public class Reactor {
         return power;
     }
     
-    public String full_name(){
+    public String full_name(Translation tran){
         return tran.reactors.get(key)[0];
     }
     
-    public String short_name(){
+    public String short_name(Translation tran){
         return tran.reactors.get(key)[1];
     }
     

@@ -57,7 +57,7 @@ public class Tech {
     int fungus_mineral_bonus = 0;
     int fungus_nutrient_bonus = 0;
     
-    Translation tran;
+
     
     // Smac/x does reaserch costs via a formula.
     boolean cost_from_formula = true;  
@@ -84,27 +84,20 @@ public class Tech {
         this.infrastructure = infrastructure;
         this.colonize = colonize;
         
-        // Do not put in xml file.
-        this.tran = tran;
+   
         tran.tech_quotes.put(id, quotes);
         tran.technames.put(id, name);
         
         
     }
     
-    /**
-     * Used to set/change the translation being used.
-     * @param tran 
-     */
-    public void set_Translation(Translation tran){
-        this.tran = tran;
-    }
+
     
-    public String getName(){
+    public String getName(Translation tran){
         return tran.technames.get(id);
     }
     
-    public List<Quote> getQuotes(){
+    public List<Quote> getQuotes(Translation tran){
         return tran.tech_quotes.get(id);
     }
     

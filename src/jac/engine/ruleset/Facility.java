@@ -33,7 +33,7 @@ public class Facility {
     private final int cost;
     private final int maintence;
     private final List<String> pre_reqs;
-    private Translation tran;
+
 
     public static class Builder {
 
@@ -94,20 +94,20 @@ public class Facility {
 
     private Facility(Builder builder) {
         key = builder.key;
-        tran = builder.tran;
-        tran.facilities.put(key, builder.name_descript);
-        tran.facilities_quotes.put(key, builder.quote_list);
+   
+        builder.tran.facilities.put(key, builder.name_descript);
+        builder.tran.facilities_quotes.put(key, builder.quote_list);
         cost = builder.cost;
         maintence = builder.maintence;
         pre_reqs = builder.pre_reqs;
         secret_project = builder.secret_project;
     }
 
-    public String getName(){
+    public String getName(Translation tran){
         return tran.facilities.get(key)[0];
     }
     
-    public String getShortDescription(){
+    public String getShortDescription(Translation tran){
         return tran.facilities.get(key)[1];
     }
     
@@ -128,14 +128,7 @@ public class Facility {
     }
     
     
-    /**
-     * Used to set/change the translation being used.
-     *
-     * @param tran
-     */
-    public void set_Translation(Translation tran) {
-        this.tran = tran;
-    }
+
 
 
     

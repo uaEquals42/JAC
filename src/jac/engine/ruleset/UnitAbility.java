@@ -32,8 +32,7 @@ public class UnitAbility {
     
     //Required 
     private final String key;
-    private Translation tran;  // can be changed.
-    
+  
     //Optional
     // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
     private final int cost_code;
@@ -62,7 +61,7 @@ public class UnitAbility {
 
     
      public UnitAbility(Builder build){
-        tran = build.tran;
+        Translation tran = build.tran;
         key = build.key;
         cost_code = build.cost_code;
         pre_reqs = build.pre_reqs;
@@ -323,8 +322,6 @@ public class UnitAbility {
    
 
     // http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Special_Ability
-    public void setTran(Translation tran) {
-        this.tran = tran;
-    }
+
 
 }

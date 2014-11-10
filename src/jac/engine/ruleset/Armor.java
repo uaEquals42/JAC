@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class Armor {
     
-    private Translation tran;
+ 
     private int id;
     private int armor;
     private DefenceMode mode;
@@ -35,7 +35,7 @@ public class Armor {
     private List<String> pre_reqs = new ArrayList<>();
     
     public Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
-        this.tran = tran;
+       
         this.id = id;
         if (!pre_req.equalsIgnoreCase("None")) {
             pre_reqs.add(pre_req);
@@ -49,11 +49,11 @@ public class Armor {
     }
     
     
-    public String name1(){
+    public String name1(Translation tran){
         return tran.armor.get(id)[0];
     }
     
-    public String name2(){
+    public String name2(Translation tran){
         return tran.armor.get(id)[1];
     }
 

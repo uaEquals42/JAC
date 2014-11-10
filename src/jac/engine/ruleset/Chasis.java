@@ -36,11 +36,11 @@ public class Chasis {
     private List<String> pre_req_str = new ArrayList<>();
     private List<Tech> pre_req_techs = new ArrayList<>();
     private final int key;  // for looking up translations.
-    private Translation tran;
+ 
 
     Chasis(Translation tran, int key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
         this.key = key;
-        this.tran = tran;
+        
         tran.chasis.put(key, names);
         this.missle = missle;
         this.base_cargo = base_cargo;
@@ -58,7 +58,7 @@ public class Chasis {
     public int key(){
         return key;
     }
-    public List<Noun> names(){
+    public List<Noun> names(Translation tran){
         return tran.chasis.get(key);
     }
 

@@ -104,8 +104,8 @@ public class SMAC_Test {
     @Test
     public void test_Technologies() {
         assertEquals("Number of technologies", 77, rules.technologies.size());
-        assertEquals("Centari Ecology name", "Centauri Ecology", rules.technologies.get("#TECH6").getName());
-        assertEquals("Centari Ecology Quote", "Lady Deirdre Skye", rules.technologies.get("#TECH6").getQuotes().get(0).person);
+        assertEquals("Centari Ecology name", "Centauri Ecology", rules.technologies.get("#TECH6").getName(rules.tran));
+        assertEquals("Centari Ecology Quote", "Lady Deirdre Skye", rules.technologies.get("#TECH6").getQuotes(rules.tran).get(0).person);
         
         assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("#TECH6").pre_requisites_names.size());
         assertEquals("Centari Ecology flag", 1, rules.find_tech("#TECH6").fungus_nutrient_bonus);
