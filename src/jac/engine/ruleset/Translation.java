@@ -37,7 +37,7 @@ public class Translation {
     Map<String, String> technames = new LinkedHashMap<>();
     Map<String, List<Quote>> tech_quotes = new LinkedHashMap<>();
     
-    Map<Integer, List<Noun>> chasis = new LinkedHashMap<>();
+    Map<String, List<Noun>> chasis = new LinkedHashMap<>();
     Map<Integer, String[]> weapons = new LinkedHashMap<>();  
     Map<Integer, String[]> armor = new LinkedHashMap<>();  
     Map<Integer, String[]> reactors = new LinkedHashMap<>();  
@@ -45,6 +45,50 @@ public class Translation {
     
     Map<String, String[]> facilities = new LinkedHashMap<>();
     Map<String, List<Quote>> facilities_quotes = new LinkedHashMap<>();
+
+    public Locale getLanguage() {
+        return language;
+    }
+
+    public Quote getOpening_quote() {
+        return opening_quote;
+    }
+
+    public Map<String, String> getTechnames() {
+        return technames;
+    }
+
+    public Map<String, List<Quote>> getTech_quotes() {
+        return tech_quotes;
+    }
+
+    public Map<String, List<Noun>> getChasis() {
+        return chasis;
+    }
+
+    public Map<Integer, String[]> getWeapons() {
+        return weapons;
+    }
+
+    public Map<Integer, String[]> getArmor() {
+        return armor;
+    }
+
+    public Map<Integer, String[]> getReactors() {
+        return reactors;
+    }
+
+    public Map<String, String[]> getUnit_abilities() {
+        return unit_abilities;
+    }
+
+    public Map<String, String[]> getFacilities() {
+        return facilities;
+    }
+
+    public Map<String, List<Quote>> getFacilities_quotes() {
+        return facilities_quotes;
+    }
     
     
     

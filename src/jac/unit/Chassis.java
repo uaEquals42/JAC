@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
+import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Chasis {
+public class Chassis {
 
     private int speed;
     private MovementType triad;
@@ -35,13 +36,14 @@ public class Chasis {
     private int cost;
     private List<String> pre_req_str = new ArrayList<>();
     private List<Tech> pre_req_techs = new ArrayList<>();
-    private final int key;  // for looking up translations.
+    private final String key;  // for looking up translations.
  
 
-    Chasis(Translation tran, int key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
+    public Chassis(Translation tran, String key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
         this.key = key;
         
-        tran.chasis.put(key, names);
+        tran.getChasis().put(key, names);
+        
         this.missle = missle;
         this.base_cargo = base_cargo;
         this.cost = cost;
@@ -55,11 +57,11 @@ public class Chasis {
         }
     }
     
-    public int key(){
+    public String key(){
         return key;
     }
     public List<Noun> names(Translation tran){
-        return tran.chasis.get(key);
+        return tran.getChasis().get(key);
     }
 
     public List<String> getPre_req_str() {

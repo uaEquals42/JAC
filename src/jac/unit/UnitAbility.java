@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
+import jac.engine.ruleset.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ public class UnitAbility {
     
     //Required 
     private final String key;
+    private final List<Effect> effects;
   
     //Optional
     // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
@@ -45,7 +47,6 @@ public class UnitAbility {
     private final boolean combat_unit;
    
     
-
     // Decided to remove the double negatives.
     private final boolean psi_unit;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
 
@@ -76,7 +77,7 @@ public class UnitAbility {
         convoy_unit = build.convoy_unit;
         max_speed_allowed = build.max_speed_allowed;
         cost_increased_land = build.cost_increased_land;
-        
+        effects = build.effects;
     }
     
     
@@ -87,8 +88,11 @@ public class UnitAbility {
         private final String key;
         private final String[] namedescrip;
         private final Translation tran;
+        
                 
         // Optional
+        private  List<Effect> effects = new ArrayList<>();
+        
         private int cost_code = 0;
         private List<String> pre_reqs = new ArrayList<>();
         private boolean land_unit = true;  // allowed for land units.
@@ -242,7 +246,7 @@ public class UnitAbility {
         
     }
 
-    public int calc_cost(int base_cost, Weapon wep, Chasis chas, Armor arm) {
+    public int calc_cost(int base_cost, Weapon wep, Chassis chas, Armor arm) {
         
         
         /*

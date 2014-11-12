@@ -18,6 +18,7 @@
  */
 package jac.engine.ruleset;
 
+import jac.unit.Facility;
 import jac.engine.Faction.SocialAreas;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
@@ -34,6 +35,8 @@ import java.util.Locale;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jac.unit.Chassis;
+import jac.unit.UnitAbility;
 
 /**
  *
@@ -45,12 +48,16 @@ public class Ruleset {
     List<Ideology> ideologies = new ArrayList<>();
     Map<String, Tech> technologies = new HashMap<>();
     Translation tran;
-    List<Chasis> chasises = new ArrayList<>();
+    Map<String, Chassis> chasises = new LinkedHashMap<>();
     List<Reactor> reactors = new ArrayList<>();
     List<Armor> armors = new ArrayList<>();
     List<Weapon> weapons = new ArrayList<>();
     Map<String, UnitAbility> unit_abilities = new LinkedHashMap<>();
     Map<String, Facility> facilities = new LinkedHashMap<>();
+
+    public Translation getTran() {
+        return tran;
+    }
 
     
     
@@ -112,7 +119,7 @@ public class Ruleset {
         load_ideologies(input);
         load_technologies(input, blurbs);
         load_facilities(input, blurbs);
-        load_chasis(input);
+        load_chassis(input);
         load_reactor(input);
         load_armor(input);
         load_weapon(input);
@@ -273,7 +280,7 @@ public class Ruleset {
 
     }
 
-    private void load_chasis(List<String> input) throws SectionNotFoundException {
+    private void load_chassis(List<String> input) throws SectionNotFoundException {
         int pos = gotosection("#CHASSIS", input);
         pos++;
         
@@ -296,7 +303,7 @@ public class Ruleset {
             names.add(new Noun(line[15], line[16]));
             names.add(new Noun(line[17], line[18]));
 
-            chasises.add(new Chasis(tran, key, names, speed, mtype, missle, cargo, cost, pre_req));
+            chasises.put(Integer.toString(key), new Chassis(tran, Integer.toString(key), names, speed, mtype, missle, cargo, cost, pre_req));
 
         }
 
@@ -359,7 +366,7 @@ public class Ruleset {
                 }
 
                 //TODO: This and the ideology code is kindof shitty.  I need to refactor this into a more elegant format.
-                Ideology idol = new Ideology(cat.trim(), idol_name, pp);
+                Ideology idol = new Ideology(cat.trim(), idol_name,idol_name, pp);
                 Map<SocialAreas, Integer> tmpmod;
                 for (int zz = 1; zz < tmp.length; zz++) {
                     tmpmod = SocialAreas.social_mods(tmp[zz]);
@@ -371,5 +378,19 @@ public class Ruleset {
         }
 
     }
+
+    public Map<String, Tech> getTechnologies() {
+        return technologies;
+    }
+
+    public Map<String, UnitAbility> getUnit_abilities() {
+        return unit_abilities;
+    }
+
+    public Map<String, Facility> getFacilities() {
+        return facilities;
+    }
+    
+    
 
 }

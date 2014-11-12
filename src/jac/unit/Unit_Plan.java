@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine;
+package jac.unit;
 
 import jac.engine.ruleset.Armor;
-import jac.engine.ruleset.Chasis;
 import jac.engine.ruleset.MovementType;
 import jac.engine.ruleset.Reactor;
 import jac.engine.ruleset.Tech;
-import jac.engine.ruleset.UnitAbility;
 import jac.engine.ruleset.Weapon;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +32,19 @@ import java.util.Map;
  */
 public class Unit_Plan {
 
-    private Chasis chasis;
+    private Chassis chasis;
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
-    private List<UnitAbility> abilities;
+    private List<UnitAbility> unit_abilities;
+    private List<Facility> unit_facilities;
     private int max_health;
     private boolean prototyped = false;
     private int cost;
 
-    public Unit_Plan(Map<String, Tech> known_techs, Chasis chas, Reactor react, Armor def, Weapon weap, List<UnitAbility> abilities) {
+    public Unit_Plan(Map<String, Tech> known_techs, Chassis chas, Reactor react, Armor def, Weapon weap, List<UnitAbility> abilities) {
         // Check to make sure inputs are 
-        this.abilities = abilities;
+        this.unit_abilities = abilities;
         // Then set the variables
         chasis = chas;
         reactor = react;

@@ -32,11 +32,12 @@ public class Ideology {
     String category;
     String name;
     List<String> pre_req = new ArrayList<>();
+    String key;
        
     
     Map<SocialAreas, Integer> effects = new EnumMap<>(SocialAreas.class);
     
-    Ideology(String category, String name, List<String> pre_reqs){
+    Ideology(String category, String key, String name, List<String> pre_reqs){
         this.category = category;
         this.name = name;
         //System.out.println(pre_reqs.size());
@@ -56,6 +57,10 @@ public class Ideology {
         else{
             return 0;
         }
+    }
+    
+    public String getKey(){
+        return key;
     }
    
     

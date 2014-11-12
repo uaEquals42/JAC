@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
 import jac.engine.dialog.Quote;
+import jac.engine.ruleset.Translation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,8 +96,8 @@ public class Facility {
     private Facility(Builder builder) {
         key = builder.key;
    
-        builder.tran.facilities.put(key, builder.name_descript);
-        builder.tran.facilities_quotes.put(key, builder.quote_list);
+        builder.tran.getFacilities().put(key, builder.name_descript);
+        builder.tran.getFacilities_quotes().put(key, builder.quote_list);
         cost = builder.cost;
         maintence = builder.maintence;
         pre_reqs = builder.pre_reqs;
@@ -104,11 +105,11 @@ public class Facility {
     }
 
     public String getName(Translation tran){
-        return tran.facilities.get(key)[0];
+        return tran.getFacilities().get(key)[0];
     }
     
     public String getShortDescription(Translation tran){
-        return tran.facilities.get(key)[1];
+        return tran.getFacilities().get(key)[1];
     }
     
     public boolean isSecret_project() {
