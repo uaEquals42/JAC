@@ -18,10 +18,13 @@
  */
 package jac.unit;
 
+import jac.Enum.MovementType;
 import jac.engine.ruleset.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +32,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Gregory Jordan
  */
-public class UnitAbility {
+public class UnitAbility extends UnitPart{
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
     
     //Required 
     private final String key;
-    private final List<Effect> effects;
-    private  List<Restriction> restrictions = new ArrayList<>();
+    
      
   
     //Optional
@@ -46,22 +48,14 @@ public class UnitAbility {
 
     private final int max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
 
-    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
-        if (restrictions.isEmpty()) {
-            return true;
-        }
-        boolean tf = true;
-        for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(turn_created, current_turn, chassis, wep, ideologys, base_size, fac);
-        }
-        return tf;
-    }
+    
       
      public UnitAbility(Builder build){
         Translation tran = build.tran;
         key = build.key;
         cost_code = build.cost_code;
         pre_reqs = build.pre_reqs;
+             
         land_unit = build.land_unit;
         sea_unit = build.sea_unit;
         air_unit = build.air_unit;
@@ -88,16 +82,15 @@ public class UnitAbility {
         // Should be used
         private  List<Restriction> restrictions = new ArrayList<>();
         private  List<Effect> effects = new ArrayList<>();
-        
+        private Set<MovementType> allowed_movements= new HashSet<>();
                 
         // Optional
         
         
         private int cost_code = 0;
         private List<String> pre_reqs = new ArrayList<>();
-        private boolean land_unit = true;  // allowed for land units.
-        private boolean sea_unit = true;
-        private boolean air_unit = true;
+        
+        
         private boolean combat_unit = true;
 
         // Decided to remove the double negatives.
@@ -134,18 +127,10 @@ public class UnitAbility {
             return this;
         }           
 
-        public Builder setLand_unit(boolean land_unit) {
-            this.land_unit = land_unit;
-            return this;
-        }
-
-        public Builder setSea_unit(boolean sea_unit) {
-            this.sea_unit = sea_unit;
-            return this;
-        }
-
-        public Builder setAir_unit(boolean air_unit) {
-            this.air_unit = air_unit;
+        
+        
+        public Builder allowedMovementTypes(Set movements){
+            this.allowed_movements = movements;
             return this;
         }
 
@@ -224,22 +209,32 @@ public class UnitAbility {
             combat_unit = false;
 
         }
-        if (smacFlags.charAt(8) == '0') {
-            air_unit=false;
+        
+        
+        
+        if (smacFlags.charAt(8) == '1') {
+           allowed_movements.add(MovementType.AIR);
+        }
+        
+        if (smacFlags.charAt(9) == '1') {
+            allowed_movements.add(MovementType.SEA);
 
         }
-        if (smacFlags.charAt(9) == '0') {
-            sea_unit=false;
-
+        if (smacFlags.charAt(10) == '1') {
+           allowed_movements.add(MovementType.LAND);
         }
-        if (smacFlags.charAt(10) == '0') {
-            land_unit=false;
-        }
+        
+        
             return this;
         }
         
         
         public UnitAbility build() {
+            List<Restriction> restrictList = new ArrayList<>();
+            if(!sea_unit&&air_unit&&land_unit){
+                
+            }
+            
             return new UnitAbility(this);
         }
         

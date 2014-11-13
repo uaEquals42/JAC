@@ -31,33 +31,18 @@ import java.util.Map;
  * @author Gregory Jordan
  */
 public class Restriction {
-    /**
-     * A list of chassis keys that are allowed.
-     */
     List<String> allowed_chassis;
-    /**
-     * Allowed movement types.  Air/Land/Sea.  If null, then all are allowed.  
-     */
     List<MovementType> allowedTypes;
-    
-    /**
-     * A list of allowable roletypes for the effect.  EX: Combat, Terraformer, Probe.
-     * If null, then all are allowed.
-     */
     List<CombatMode> allowedRoles;
     
-    /**
-     * How many turns after the unit/facility has been built that this effect is effective for. 
-     * Requires the current turn and the built date being passed in to calculate if it is effect.
-     */
-    Integer x_turns;  
+    Integer length_of_effect;  
             
     String required_ideology;
     
     Integer base_bigger_than;
     Integer base_smaller_than;
     String required_facility;
-    Integer max_speed_allowed;
+   
     
     public static class Builder {
         // Required
@@ -68,14 +53,37 @@ public class Restriction {
         List<CombatMode> allowedRoles=new ArrayList<>();
         
         Integer x_turns=null;
-        Integer max_speed_allowed=null;
+      
         Integer base_bigger_than=null;
         Integer base_smaller_than=null;
         
         String required_ideology="";
         String required_facility="";
         
+        public Builder SetAllowedRoles(List<CombatMode> commode){
+            this.allowedRoles = commode;
+            return this;
+        }
         
+        public Builder SetAllowedTypes(List<MovementType> allowedTypes){
+            this.allowedTypes = allowedTypes;
+            return this;
+        }
+        
+        public Builder addAllowedType(MovementType allowedType){
+            this.allowedTypes.add(allowedType);
+            return this;
+        }
+        
+        public Builder SetAllowedChassis(List<String> chassis_keys){
+            this.allowed_chassis = chassis_keys;
+            return this;
+        }
+        
+        public Builder ForLimitedTime(Integer time){
+            x_turns = time;
+            return this;
+        }
         
         
         public Restriction build() {
@@ -88,8 +96,8 @@ public class Restriction {
         this.allowedTypes = build.allowedTypes;
         this.allowedRoles = build.allowedRoles;
         
-        this.x_turns = build.x_turns;
-        this.max_speed_allowed = build.max_speed_allowed;
+        this.length_of_effect = build.x_turns;
+     
         this.base_bigger_than = build.base_bigger_than;
         this.base_smaller_than = build.base_smaller_than;
         
@@ -97,25 +105,15 @@ public class Restriction {
         this.required_facility = build.required_facility;
     }
       
-    /**
-     * 
-     * @param turn_created
-     * @param current_turn
-     * @param chassis
-     * @param wep
-     * @param ideologys
-     * @param base_size
-     * @param fac
-     * @return 
-     */
-    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
+
+    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> current_ideologys, int base_size, Map<String, Facility> facilities){
         boolean result = true;
         
-        result = result && x_turns <= current_turn - turn_created;
+        result = result && length_of_effect <= current_turn - turn_created;
         result = result && allowed_chassis.contains(chassis.key());
         
  
-        result = result && ideologys.containsKey(required_ideology);
+        result = result && current_ideologys.containsKey(required_ideology);
       
         
         if(base_bigger_than!=null){
@@ -127,7 +125,7 @@ public class Restriction {
         }
    
         if (!required_facility.isEmpty()) {
-            result = result && fac.containsKey(required_facility);
+            result = result && facilities.containsKey(required_facility);
         }
 
         if (!allowedTypes.isEmpty()) {
@@ -138,9 +136,7 @@ public class Restriction {
             result = result && allowedRoles.contains(wep.getCom_mode());
         }
         
-        if (max_speed_allowed != null){
-            result = result && chassis.getSpeed() <= max_speed_allowed;
-        }
+   
         
         return result;
     }
