@@ -18,6 +18,8 @@
  */
 package jac.engine.Faction;
 
+import jac.Enum.FreeUnitType;
+import jac.Enum.SocialAreas;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;

@@ -16,14 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit;
+package jac.Enum;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum EffectScope {
-    SQUAREGATHERED,
-    THISUNIT,
-    ALLUNITS
+public enum DefenceMode {
+    PROJECTILE, 
+    ENERGY,
+    BINARY,
+    PSI;
+    
+    /**
+     * For converting the old SMAC/X ints into an enum.
+     * @param mode accepts 0,1,2.
+     * @return The correct DefenceMode.
+     */
+    public static DefenceMode convert(int mode){
+        switch (mode){
+            case 0:
+                return PROJECTILE;
+            case 1:
+                return ENERGY;
+            case 2: 
+                return BINARY;
+        }
+        
+        throw new IllegalArgumentException("Values can only be between 0 and 2");
+    }
+    
 }

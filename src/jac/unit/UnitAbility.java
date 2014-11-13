@@ -21,6 +21,7 @@ package jac.unit;
 import jac.engine.ruleset.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,33 +35,28 @@ public class UnitAbility {
     //Required 
     private final String key;
     private final List<Effect> effects;
+    private  List<Restriction> restrictions = new ArrayList<>();
+     
   
     //Optional
     // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
     private final int cost_code;
-    
-    
     private final List<String> pre_reqs;
-    private final boolean land_unit;  // allowed for land units.
-    private final boolean sea_unit;
-    private final boolean air_unit;
-    private final boolean combat_unit;
-   
     
-    // Decided to remove the double negatives.
-    private final boolean psi_unit;  // TODO: allowed for psi based units (is this for both offence and defence?) will need to check in game.
-
-    // Broke it up into individual non-combat types.
-    private final boolean terraformer_units; // allowed for terraformers
-    private final boolean probe_units;
-    private final boolean transport_units;
-    private final boolean convoy_unit;
 
     private final int max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
 
-    private final boolean cost_increased_land; // increased cost for land units.  TODO: figure out the formula for this to use in teh unit_plan section.
-
-    
+    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
+        if (restrictions.isEmpty()) {
+            return true;
+        }
+        boolean tf = true;
+        for (Restriction restrict : restrictions) {
+            tf = tf && restrict.available(turn_created, current_turn, chassis, wep, ideologys, base_size, fac);
+        }
+        return tf;
+    }
+      
      public UnitAbility(Builder build){
         Translation tran = build.tran;
         key = build.key;
@@ -88,10 +84,14 @@ public class UnitAbility {
         private final String key;
         private final String[] namedescrip;
         private final Translation tran;
+
+        // Should be used
+        private  List<Restriction> restrictions = new ArrayList<>();
+        private  List<Effect> effects = new ArrayList<>();
         
                 
         // Optional
-        private  List<Effect> effects = new ArrayList<>();
+        
         
         private int cost_code = 0;
         private List<String> pre_reqs = new ArrayList<>();

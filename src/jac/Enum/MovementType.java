@@ -16,47 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.Enum;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum CombatMode {
-    PROJECTILE, 
-    ENERGY, 
-    MISSLE,
-    PSI,
-    TRANSPORT,
-    COLONIST,
-    TERRAFORMER,
-    CONVOY,
-    INFOWAR,
-    ARTIFACT;  
+public enum MovementType {
+    LAND,
+    SEA,
+    AIR;
     
-    public static CombatMode convert(int mode){
-     
-        switch(mode){
-            case 0:
-                return PROJECTILE;
-            case 1:
-                return ENERGY;
-            case 2:
-                return MISSLE;
-            case 7:
-                return TRANSPORT;
-            case 8:
-                return COLONIST;
-            case 9:
-                return TERRAFORMER;
-            case 10:
-                return CONVOY;
-            case 11:
-                return INFOWAR;
-            case 12:
-                return ARTIFACT;    
+    public static MovementType convert(int type){
+        if(type == 0){
+            return LAND;
         }
-        
+        if(type == 1){
+            return SEA;
+        }
+        if(type == 2){
+            return AIR;
+        }
         throw new IllegalArgumentException();
     }
 }

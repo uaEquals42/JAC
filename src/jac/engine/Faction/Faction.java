@@ -18,7 +18,9 @@
  */
 package jac.engine.Faction;
 
-import jac.engine.dialog.NounSex;
+import jac.Enum.FreeUnitType;
+import jac.Enum.SocialAreas;
+import jac.Enum.NounSex;
 import jac.engine.dialog.Quote;
 import java.io.File;
 import java.io.IOException;

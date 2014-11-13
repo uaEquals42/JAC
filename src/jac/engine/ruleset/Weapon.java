@@ -18,6 +18,7 @@
  */
 package jac.engine.ruleset;
 
+import jac.Enum.CombatMode;
 import java.util.ArrayList;
 import java.util.List;
 

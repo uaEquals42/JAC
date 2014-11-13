@@ -18,6 +18,7 @@
  */
 package jac.unit;
 
+import jac.Enum.MovementType;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
 import java.util.ArrayList;

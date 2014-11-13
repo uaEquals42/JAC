@@ -18,6 +18,8 @@
  */
 package jac.engine.dialog;
 
+import jac.Enum.NounSex;
+
 /**
  *
  * @author Gregory Jordan

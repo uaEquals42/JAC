@@ -18,8 +18,11 @@
  */
 package jac.engine.ruleset;
 
+import jac.Enum.DefenceMode;
+import jac.Enum.CombatMode;
+import jac.Enum.MovementType;
 import jac.unit.Facility;
-import jac.engine.Faction.SocialAreas;
+import jac.Enum.SocialAreas;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import java.io.IOException;

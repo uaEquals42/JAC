@@ -19,7 +19,7 @@
 package jac.unit;
 
 import jac.engine.ruleset.Armor;
-import jac.engine.ruleset.MovementType;
+import jac.Enum.MovementType;
 import jac.engine.ruleset.Reactor;
 import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Weapon;

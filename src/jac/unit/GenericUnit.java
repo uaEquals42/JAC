@@ -16,27 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum MovementType {
-    LAND,
-    SEA,
-    AIR;
+public class GenericUnit {
     
-    public static MovementType convert(int type){
-        if(type == 0){
-            return LAND;
-        }
-        if(type == 1){
-            return SEA;
-        }
-        if(type == 2){
-            return AIR;
-        }
-        throw new IllegalArgumentException();
-    }
 }

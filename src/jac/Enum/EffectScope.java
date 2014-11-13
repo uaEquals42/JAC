@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package jac.engine.Faction;
+package jac.Enum;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum FreeUnitType {
-    NONE,
-    COLONIST,
-    TERRAFORMER,
-    SCOUT;
-
-    
+public enum EffectScope {
+    SQUAREGATHERED,
+    THISUNIT,
+    ALLUNITS
 }
-

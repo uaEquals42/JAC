@@ -18,7 +18,10 @@
  */
 package jac.unit;
 
+import jac.Enum.CombatMode;
 import jac.engine.ruleset.Ideology;
+import jac.Enum.MovementType;
+import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +35,16 @@ public class Restriction {
      * A list of chassis keys that are allowed.
      */
     List<String> allowed_chassis;
+    /**
+     * Allowed movement types.  Air/Land/Sea.  If null, then all are allowed.  
+     */
+    List<MovementType> allowedTypes;
     
+    /**
+     * A list of allowable roletypes for the effect.  EX: Combat, Terraformer, Probe.
+     * If null, then all are allowed.
+     */
+    List<CombatMode> allowedRoles;
     
     /**
      * How many turns after the unit/facility has been built that this effect is effective for. 
@@ -45,9 +57,58 @@ public class Restriction {
     Integer base_bigger_than;
     Integer base_smaller_than;
     String required_facility;
-      
+    Integer max_speed_allowed;
     
-    public boolean unrestricted(int turn_created, int current_turn, Chassis chassis, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
+    public static class Builder {
+        // Required
+
+        // Optional
+        List<String> allowed_chassis=new ArrayList<>();
+        List<MovementType> allowedTypes=new ArrayList<>();
+        List<CombatMode> allowedRoles=new ArrayList<>();
+        
+        Integer x_turns=null;
+        Integer max_speed_allowed=null;
+        Integer base_bigger_than=null;
+        Integer base_smaller_than=null;
+        
+        String required_ideology="";
+        String required_facility="";
+        
+        
+        
+        
+        public Restriction build() {
+            return new Restriction(this);
+        }
+    }
+    
+    private Restriction(Builder build){
+        this.allowed_chassis = build.allowed_chassis;
+        this.allowedTypes = build.allowedTypes;
+        this.allowedRoles = build.allowedRoles;
+        
+        this.x_turns = build.x_turns;
+        this.max_speed_allowed = build.max_speed_allowed;
+        this.base_bigger_than = build.base_bigger_than;
+        this.base_smaller_than = build.base_smaller_than;
+        
+        this.required_ideology = build.required_ideology;
+        this.required_facility = build.required_facility;
+    }
+      
+    /**
+     * 
+     * @param turn_created
+     * @param current_turn
+     * @param chassis
+     * @param wep
+     * @param ideologys
+     * @param base_size
+     * @param fac
+     * @return 
+     */
+    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
         boolean result = true;
         
         result = result && x_turns <= current_turn - turn_created;
@@ -64,11 +125,24 @@ public class Restriction {
         if(base_smaller_than!=null){
             result = result && base_smaller_than<base_size;
         }
+   
+        if (!required_facility.isEmpty()) {
+            result = result && fac.containsKey(required_facility);
+        }
+
+        if (!allowedTypes.isEmpty()) {
+            result = result && allowedTypes.contains(chassis.getTriad());
+        }
+
+        if (!allowedRoles.isEmpty()) {
+            result = result && allowedRoles.contains(wep.getCom_mode());
+        }
         
-        result = result && fac.containsKey(required_facility);
-        
+        if (max_speed_allowed != null){
+            result = result && chassis.getSpeed() <= max_speed_allowed;
+        }
         
         return result;
     }
-    
+
 }

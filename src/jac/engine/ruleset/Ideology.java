@@ -18,7 +18,7 @@
  */
 package jac.engine.ruleset;
 
-import jac.engine.Faction.SocialAreas;
+import jac.Enum.SocialAreas;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;

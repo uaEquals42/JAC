@@ -18,7 +18,9 @@
  */
 package jac.unit;
 
+import jac.Enum.EffectScope;
 import jac.engine.ruleset.Ideology;
+import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,9 @@ import java.util.Map;
  * @author Gregory Jordan
  */
 public class Effect {
-    List<Restriction> restrictions = new ArrayList<>();
+    
+    
+    
     
 
     /**
@@ -36,7 +40,12 @@ public class Effect {
      * Per square of resource gathering or just per unit?
      * Or is it one that effects all units/bases?
      */
-    EffectScope scope;
+    final EffectScope scope;
+    
+    
+    // Optional settings.
+    final List<Restriction> restrictions;
+    
     
     /**
      * is it a base?  aka.  Does it have a population that can gather resources.
@@ -52,6 +61,11 @@ public class Effect {
     
     
     public static class Builder {
+        // Required
+        final EffectScope scope;
+        
+        // Optional
+        List<Restriction> restrictions = new ArrayList<>();
         private boolean isitabase=false; 
         private boolean can_make_facilities=false;
         private boolean can_make_units=false;
@@ -60,39 +74,46 @@ public class Effect {
         private boolean capture_when_defeated=false;
         private Unit_Plan converts_to=null;
         
+        public Builder(EffectScope scope){
+            this.scope = scope;
+        }
+        
+        public Builder setRestrictions(List<Restriction> restrictions){
+            this.restrictions = restrictions;
+            return this;
+        }
+        
         public Builder has_population(){
             isitabase = true;
             return this;
         }
-        
-        
-        public Effect build(){
+      
+        public Effect build() {
             return new Effect(this);
         }
     }
-    
-    private Effect(Builder build){
-         isitabase = build.isitabase;
-         can_make_facilities = build.can_make_facilities;
-         can_make_units = build.can_make_units;
-         cant_attack = build.cant_attack;
-         cant_defend = build.cant_defend;
-         capture_when_defeated = build.capture_when_defeated;
-         converts_to = build.converts_to;
+
+    private Effect(Builder build) {
+        scope = build.scope;
+        restrictions = build.restrictions;
+        isitabase = build.isitabase;
+        can_make_facilities = build.can_make_facilities;
+        can_make_units = build.can_make_units;
+        cant_attack = build.cant_attack;
+        cant_defend = build.cant_defend;
+        capture_when_defeated = build.capture_when_defeated;
+        converts_to = build.converts_to;
     }
-    
-    
-    public boolean unrestricted(int turn_created, int current_turn, Chassis chassis, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
-        if(restrictions.isEmpty()){
+
+    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
+        if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
-        for(Restriction restrict : restrictions){
-           tf = tf && restrict.unrestricted(turn_created, current_turn, chassis, ideologys, base_size, fac);
+        for (Restriction restrict : restrictions) {
+            tf = tf && restrict.available(turn_created, current_turn, chassis, wep, ideologys, base_size, fac);
         }
         return tf;
     }
-    
-    
-    
+
 }
