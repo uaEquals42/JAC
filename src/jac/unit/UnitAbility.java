@@ -47,7 +47,7 @@ public class UnitAbility extends UnitPart {
     
     private final List<String> pre_requisite_technology;
 
-    private final int max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
+  
 
     public UnitAbility(Builder build) {
         super(build.effects, build.restrictions);
@@ -57,7 +57,7 @@ public class UnitAbility extends UnitPart {
         cost_code = build.cost_code;
         pre_requisite_technology = build.pre_reqs;
 
-        max_speed_allowed = build.max_speed_allowed;
+       
      
     }
 
@@ -154,7 +154,7 @@ public class UnitAbility extends UnitPart {
         private int cost_code = 0;
         private List<String> pre_reqs = new ArrayList<>();
 
-        int max_speed_allowed = -1;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
+        Integer max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
 
         boolean cost_increased_land = false;
 
@@ -209,9 +209,12 @@ public class UnitAbility extends UnitPart {
         public Builder smacAbilityFlags(String smacFlags) {
             smacFlags = smacFlags.trim();
             if (smacFlags.charAt(0) == '1') {
-                cost_increased_land = true;
+                cost_increased_land = true;  
             }
             if (smacFlags.charAt(1) == '1') {
+                HashSet<String> infantryonly = new HashSet<>();
+                infantryonly.add("0");
+                restrictions.add(new Restriction.Builder().SetAllowedChassis(infantryonly).build());
                 max_speed_allowed = 1;
             }
 
@@ -268,16 +271,22 @@ public class UnitAbility extends UnitPart {
                 allowed_combatModes.remove(CombatMode.PROBE);
             }
 
+            // Now use this data to create the restrictions.
+            if (allowed_movements.size() == MovementType.COUNT) {
+                allowed_movements.clear();  // Optimization.  The code for checking assumes all are true if the list is empty.
+            }
+            if (allowed_combatModes.size() == CombatMode.COUNT){
+                allowed_combatModes.clear();
+            }
+            
+            restrictions.add(new Restriction.Builder().SetAllowedRoles(allowed_combatModes).SetAllowedTypes(allowed_movements).build());
+            
+            
+            
             return this;
         }
 
         public UnitAbility build() {
-            List<Restriction> restrictList = new ArrayList<>();
-
-            if (allowed_movements.size() == MovementType.COUNT) {
-                allowed_movements = new HashSet<>();  // Optimization.  The code for checking assumes all are true if the list is empty.
-            }
-
             return new UnitAbility(this);
         }
 

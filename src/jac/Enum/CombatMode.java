@@ -33,7 +33,7 @@ public enum CombatMode {
     CONVOY,
     PROBE,
     ARTIFACT;  
-    
+    public static int COUNT = 10;
     public static CombatMode convert(int mode){
      
         switch(mode){

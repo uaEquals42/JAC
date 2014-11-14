@@ -23,17 +23,19 @@ import jac.engine.ruleset.Ideology;
 import jac.Enum.MovementType;
 import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Gregory Jordan
  */
 public class Restriction {
-    List<String> allowed_chassis;
-    List<MovementType> allowedTypes;
-    List<CombatMode> allowedRoles;
+    Set<String> allowed_chassis;
+    Set<MovementType> allowedTypes;
+    Set<CombatMode> allowedRoles;
     
     Integer length_of_effect;  
             
@@ -48,24 +50,24 @@ public class Restriction {
         // Required
 
         // Optional
-        List<String> allowed_chassis=new ArrayList<>();
-        List<MovementType> allowedTypes=new ArrayList<>();
-        List<CombatMode> allowedRoles=new ArrayList<>();
+        private Set<String> allowed_chassis=new LinkedHashSet<>();
+        private Set<MovementType> allowedTypes=new LinkedHashSet<>();
+        private Set<CombatMode> allowedRoles=new LinkedHashSet<>();
         
-        Integer x_turns=null;
+        private Integer x_turns=null;
       
-        Integer base_bigger_than=null;
-        Integer base_smaller_than=null;
+        private Integer base_bigger_than=null;
+        private Integer base_smaller_than=null;
         
-        String required_ideology="";
-        String required_facility="";
+        private String required_ideology="";
+        private String required_facility="";
         
-        public Builder SetAllowedRoles(List<CombatMode> commode){
+        public Builder SetAllowedRoles(Set<CombatMode> commode){
             this.allowedRoles = commode;
             return this;
         }
         
-        public Builder SetAllowedTypes(List<MovementType> allowedTypes){
+        public Builder SetAllowedTypes(Set<MovementType> allowedTypes){
             this.allowedTypes = allowedTypes;
             return this;
         }
@@ -75,7 +77,7 @@ public class Restriction {
             return this;
         }
         
-        public Builder SetAllowedChassis(List<String> chassis_keys){
+        public Builder SetAllowedChassis(Set<String> chassis_keys){
             this.allowed_chassis = chassis_keys;
             return this;
         }
