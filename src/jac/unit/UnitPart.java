@@ -43,8 +43,7 @@ public class UnitPart {
     
     /**
      * Is this part usable for the current configuration?  Is there a reason you can't use this part?
-     * @param turn_created
-     * @param current_turn
+     * @param lifespan - How long this unit has been alive.
      * @param chassis
      * @param wep
      * @param ideologys
@@ -52,26 +51,26 @@ public class UnitPart {
      * @param fac
      * @return 
      */
-    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
+    public boolean available(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
         if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
         for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(turn_created, current_turn, chassis, wep, ideologys, base_size, fac);
+            tf = tf && restrict.available(lifespan, chassis, wep, ideologys, base_size, fac);
         }
         return tf;
     }
     
     
-    public List<Effect> active_effects(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
-        List<Effect> output = new ArrayList<>();
+    public List<Effect> active_effects(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
+        List<Effect> result = new ArrayList<>();
         for(Effect effect : effectsList){
-            if(effect.available(turn_created, current_turn, null, null, null, base_size, null)){
-                output.add(effect);
+            if(effect.available(lifespan, chassis, wep, ideologys, base_size, fac)){
+                result.add(effect);
             }
         }
-        return output;
+        return result;
     }
     
 }

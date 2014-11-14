@@ -108,10 +108,10 @@ public class Restriction {
     }
       
 
-    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> current_ideologys, int base_size, Map<String, Facility> facilities){
+    public boolean available(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> current_ideologys, int base_size, Map<String, Facility> facilities){
         boolean result = true;
         
-        result = result && length_of_effect <= current_turn - turn_created;
+        result = result && length_of_effect <= lifespan;
         result = result && allowed_chassis.contains(chassis.key());
         
  

@@ -105,13 +105,13 @@ public class Effect {
         converts_to = build.converts_to;
     }
 
-    public boolean available(int turn_created, int current_turn, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
+    public boolean available(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac) {
         if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
         for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(turn_created, current_turn, chassis, wep, ideologys, base_size, fac);
+            tf = tf && restrict.available(lifespan, chassis, wep, ideologys, base_size, fac);
         }
         return tf;
     }

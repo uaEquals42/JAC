@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class Unit_Plan {
 
-    private Chassis chasis;
+    private Chassis chassis;
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
@@ -46,18 +46,28 @@ public class Unit_Plan {
         // Check to make sure inputs are 
         this.unit_abilities = abilities;
         // Then set the variables
-        chasis = chas;
+        chassis = chas;
         reactor = react;
         armor = def;
         weapon = weap;
 
         max_health = reactor.reactor_power() * 10;  //TODO: This is correct.  I wonder if I should have the health multiplier stored in the rules file.
 
+        cost = calculate_cost();
+
+    }
+
+    public int cost_get() {
+        return cost;
+    }
+
+    // Private methods
+    private int calculate_cost() {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
         int def_cost = armor.getCost();
-        if (chasis.mode() == MovementType.SEA) {
+        if (chassis.mode() == MovementType.SEA) {
             def_cost = def_cost / 2;
-        } else if (chasis.mode() == MovementType.AIR) {
+        } else if (chassis.mode() == MovementType.AIR) {
             def_cost = def_cost * 2;
         }
 
@@ -65,24 +75,24 @@ public class Unit_Plan {
         if (wep_cost * 2 < def_cost) {
             wep_cost = def_cost / 2;
         }
-        int r = react.reactor_power();
-        int speed = chas.getSpeed();
+        int r = reactor.reactor_power();
+        int speed = chassis.getSpeed();
 
         int c = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
 
-        if (chasis.mode() == MovementType.SEA) {
+        if (chassis.mode() == MovementType.SEA) {
             c = c / 2;
-        } else if (chasis.mode() == MovementType.AIR) {
+        } else if (chassis.mode() == MovementType.AIR) {
             c = c / 4;
         }
 
-       // 
-        int ability_cost = 0;  
-        for (UnitAbility able : abilities) {
-            ability_cost = ability_cost + able.calc_cost(c, weapon, chasis, armor);
+        // 
+        int ability_cost = 0;
+        for (UnitAbility able : unit_abilities) {
+            ability_cost = ability_cost + able.calc_cost(c, weapon, chassis, armor);
         }
 
-        c = c + ability_cost; 
+        c = c + ability_cost;
 
         if (wep_cost > 1 && def_cost > 1) {
             c = c + 10;
@@ -95,14 +105,10 @@ public class Unit_Plan {
         int cmin = (r * 2 - r / 2) * 10;
 
         if (cmin > c) {
-            cost = cmin;
+            return cmin;
         } else {
-            cost = c;
+            return c;
         }
-
     }
 
-    public int cost_get() {
-        return cost;
-    }
 }
