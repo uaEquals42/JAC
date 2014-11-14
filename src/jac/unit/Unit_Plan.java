@@ -36,13 +36,13 @@ public class Unit_Plan {
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
-    private List<UnitAbility> unit_abilities;
-    private List<Facility> unit_facilities;
+    private Map<String, UnitAbility> unit_abilities;
+    private Map<String, Facility> unit_facilities;
     private int max_health;
     private boolean prototyped = false;
     private int cost;
 
-    public Unit_Plan(Map<String, Tech> known_techs, Chassis chas, Reactor react, Armor def, Weapon weap, List<UnitAbility> abilities) {
+    public Unit_Plan(Map<String, Tech> known_techs, Chassis chas, Reactor react, Armor def, Weapon weap, Map<String, UnitAbility> abilities) {
         // Check to make sure inputs are 
         this.unit_abilities = abilities;
         // Then set the variables
@@ -61,6 +61,38 @@ public class Unit_Plan {
         return cost;
     }
 
+    public int max_health(){
+        
+        return max_health;
+    }
+
+    public Chassis getChassis() {
+        return chassis;
+    }
+
+    public Reactor getReactor() {
+        return reactor;
+    }
+
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public Map<String, UnitAbility> getUnit_abilities() {
+        return unit_abilities;
+    }
+
+    public Map<String, Facility> getUnit_facilities() {
+        return unit_facilities;
+    }
+    
+    
+    
+    
     // Private methods
     private int calculate_cost() {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
@@ -78,36 +110,37 @@ public class Unit_Plan {
         int r = reactor.reactor_power();
         int speed = chassis.getSpeed();
 
-        int c = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
+        int runningTotal = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
 
         if (chassis.mode() == MovementType.SEA) {
-            c = c / 2;
+            runningTotal = runningTotal / 2;
         } else if (chassis.mode() == MovementType.AIR) {
-            c = c / 4;
+            runningTotal = runningTotal / 4;
         }
 
         // 
         int ability_cost = 0;
-        for (UnitAbility able : unit_abilities) {
-            ability_cost = ability_cost + able.calc_cost(c, weapon, chassis, armor);
+        for (String key : unit_abilities.keySet()){   
+            ability_cost = ability_cost + unit_abilities.get(key).calc_cost(runningTotal, weapon, chassis, armor);
         }
+        
 
-        c = c + ability_cost;
+        runningTotal = runningTotal + ability_cost;
 
         if (wep_cost > 1 && def_cost > 1) {
-            c = c + 10;
+            runningTotal = runningTotal + 10;
         }
         if (wep_cost > 1 && def_cost > 1 && speed > 1) {
-            c = c + 10;
+            runningTotal = runningTotal + 10;
         }
 
         //Cmin = (R × 2 − R ÷ 2) × 10
         int cmin = (r * 2 - r / 2) * 10;
 
-        if (cmin > c) {
+        if (cmin > runningTotal) {
             return cmin;
         } else {
-            return c;
+            return runningTotal;
         }
     }
 
