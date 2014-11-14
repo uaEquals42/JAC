@@ -27,6 +27,11 @@ public enum MovementType {
     SEA,
     AIR;
     
+    /**
+     * The number of movement styles available.  Use this variable in case we add stuff like SPACE or underwater, underground, etc. 
+     */
+    public static int COUNT = 3;
+    
     public static MovementType convert(int type){
         if(type == 0){
             return LAND;

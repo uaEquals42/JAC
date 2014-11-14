@@ -25,13 +25,13 @@ package jac.Enum;
 public enum CombatMode {
     PROJECTILE, 
     ENERGY, 
-    MISSLE,
+    MISSILE,
     PSI,
     TRANSPORT,
     COLONIST,
     TERRAFORMER,
     CONVOY,
-    INFOWAR,
+    PROBE,
     ARTIFACT;  
     
     public static CombatMode convert(int mode){
@@ -42,7 +42,7 @@ public enum CombatMode {
             case 1:
                 return ENERGY;
             case 2:
-                return MISSLE;
+                return MISSILE;
             case 7:
                 return TRANSPORT;
             case 8:
@@ -52,7 +52,7 @@ public enum CombatMode {
             case 10:
                 return CONVOY;
             case 11:
-                return INFOWAR;
+                return PROBE;
             case 12:
                 return ARTIFACT;    
         }
