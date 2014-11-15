@@ -108,6 +108,48 @@ public class Restriction {
     }
       
 
+    public boolean available(int turn, GenericUnit unit, Map<String, Ideology> current_ideologies){
+        boolean result = true;
+        int lifespan = turn - unit.getConstruction_date();
+        result = result && length_of_effect <= lifespan;
+        result = result && allowed_chassis.contains(unit.getChassis().key());
+
+        result = result && current_ideologies.containsKey(required_ideology);
+
+        if (base_bigger_than != null) {
+            if (unit.getPopulation() == null) {
+                return false;
+            } else {
+                result = result && base_bigger_than > unit.getPopulation();
+            }
+
+        }
+
+        if (base_smaller_than != null) {
+            if (unit.getPopulation() == null) {
+                return false;
+            } else {
+                result = result && base_smaller_than < unit.getPopulation();
+            }
+        }
+   
+        if (!required_facility.isEmpty()) {
+            result = result && unit.getUnit_facilities().containsKey(required_facility);
+        }
+
+        if (!allowedTypes.isEmpty()) {
+            result = result && allowedTypes.contains(unit.getChassis().getTriad());
+        }
+
+        if (!allowedRoles.isEmpty()) {
+            result = result && allowedRoles.contains(unit.getWeapon().getCom_mode());
+        }
+        
+   
+        
+        return result;
+    }
+    
     public boolean available(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> current_ideologys, int base_size, Map<String, Facility> facilities){
         boolean result = true;
         

@@ -63,10 +63,10 @@ public class UnitPart {
     }
     
     
-    public List<Effect> active_effects(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> ideologys, int base_size, Map<String, Facility> fac){
+    public List<Effect> active_effects(int turn, GenericUnit unit, Map<String, Ideology> current_ideologies){
         List<Effect> result = new ArrayList<>();
         for(Effect effect : effectsList){
-            if(effect.available(lifespan, chassis, wep, ideologys, base_size, fac)){
+            if(effect.available(turn, unit, current_ideologies)){
                 result.add(effect);
             }
         }

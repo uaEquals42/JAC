@@ -19,6 +19,7 @@
 package jac.unit;
 
 import jac.engine.ruleset.Armor;
+import jac.engine.ruleset.Ideology;
 import jac.engine.ruleset.Reactor;
 import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
@@ -40,9 +41,11 @@ public class GenericUnit {
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
+    
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
     
+    private Integer population;
     
     public GenericUnit(Unit_Plan design, int turn){
         construction_date = turn;
@@ -55,10 +58,23 @@ public class GenericUnit {
         weapon = design.getWeapon();
         unit_abilities = design.getUnit_abilities();
         unit_facilities = new HashMap(design.getUnit_facilities());
+        
+      Integer population;
+        
     }
 
+    public List<Effect> activeEffects(int turn, Map<String, Ideology> current_ideologies){
+        ArrayList<Effect> effects = new ArrayList<>();
+        for(UnitAbility ability: unit_abilities.values()){
+            effects.addAll(ability.active_effects(turn, this, current_ideologies));
+        }
+        
+        //TODO: repeat for all the other parts.
+        
+        return effects;
+    }
     
-    
+   
     
     
     public int getConstruction_date() {
@@ -95,6 +111,10 @@ public class GenericUnit {
 
     public Map<String, Facility> getUnit_facilities() {
         return unit_facilities;
+    }
+
+    public Integer getPopulation() {
+        return population;
     }
     
     
