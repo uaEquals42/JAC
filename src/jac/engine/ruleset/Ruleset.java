@@ -301,7 +301,7 @@ public class Ruleset {
         pos++;
         
         for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
-
+            
             String[] line = input.get(pos + key).split(",");
             List<Noun> names = new ArrayList<>();
             names.add(new Noun(line[0], line[1]));
@@ -318,8 +318,27 @@ public class Ruleset {
             String pre_req = line[14].trim();
             names.add(new Noun(line[15], line[16]));
             names.add(new Noun(line[17], line[18]));
+            
+            int damage=0;
+            if(key==5){
+                damage = 100;
+            }
+            if(key==6){
+                damage = 25; // TODO: Verify that it is 25% for helicoptors.
+            }
+            if(key==8){
+                damage = 100;
+            }
 
-            chasises.put(Integer.toString(key), new Chassis(tran, Integer.toString(key), names, speed, mtype, missle, cargo, cost, pre_req));
+            chasises.put(Integer.toString(key), 
+                    new Chassis.Builder(tran, Integer.toString(key), mtype, cost, speed, names).
+                    addPreReqTech(pre_req).
+                    ismissle(missle)
+                    .setCargo(cargo)
+                    .setRange(range)
+                    .damageDonewhenOutofrange(damage)
+                    .build()
+            );
 
         }
 

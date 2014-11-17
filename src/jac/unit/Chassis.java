@@ -34,7 +34,11 @@ public class Chassis extends UnitPart{
     private final  MovementType triad;
     private final  boolean missle;
     private final  int base_cargo;
-    private final  int cost;
+   
+    private final int cost;
+    private final int range;  // how many turns from base can it go before becoming damaged/destroyed.
+    private final int percentDamageWhenOutOfRange;
+    
     private final  List<String> pre_req_str;
     private List<Tech> pre_req_techs;
     private final  String key;  // for looking up translations.
@@ -51,6 +55,8 @@ public class Chassis extends UnitPart{
         this.speed = build.speed;
         this.triad = build.triad;
         this.pre_req_str = build.pre_req_str;
+        this.range = build.range;
+        this.percentDamageWhenOutOfRange = build.percentDamageWhenOutOfRange;
     }
     
     
@@ -99,6 +105,9 @@ public class Chassis extends UnitPart{
         private final int speed; 
         private final Translation tran;
         
+       private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
+       private int percentDamageWhenOutOfRange=0;  
+        
         private boolean missle = false;
         private int base_cargo = 1;
         private List<String> pre_req_str = new ArrayList<>();
@@ -118,6 +127,16 @@ public class Chassis extends UnitPart{
         
         public Builder addRestriction(Restriction binding){
             restrictions.add(binding);
+            return this;
+        }
+        
+        public Builder setRange(int range){
+            this.range = range;
+            return this;
+        }
+        
+        public Builder damageDonewhenOutofrange(int percent){
+            this.percentDamageWhenOutOfRange = percent;
             return this;
         }
         

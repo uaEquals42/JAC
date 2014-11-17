@@ -18,6 +18,7 @@
  */
 package jac.unit;
 
+import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class GenericUnit {
     
     private Integer population;
     
-    public GenericUnit(Unit_Plan design, int turn){
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player){
         construction_date = turn;
         max_health = design.max_health();
         current_health = max_health;
@@ -56,15 +57,22 @@ public class GenericUnit {
         unit_abilities = design.getUnit_abilities();
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
+        
       Integer population;
         
     }
 
-    public List<Effect> activeEffects(int turn, Map<String, Ideology> current_ideologies){
+    /**
+     * List of effects that are active upon this unit.  Where all the pre requisites for the effects are met.
+     * @param turn
+     * @param player
+     * @return 
+     */
+    public List<Effect> activeEffects(int turn, PlayerDetails player){
         int lifespan = turn - construction_date;
         ArrayList<Effect> effects = new ArrayList<>();
         for(UnitAbility ability: unit_abilities.values()){
-            effects.addAll(ability.active_effects(lifespan, this, current_ideologies));
+            effects.addAll(ability.active_effects(lifespan, this, player));
         }
         
         
@@ -73,7 +81,16 @@ public class GenericUnit {
     }
     
    
-    
+    public boolean isitabase(int turn, PlayerDetails player){
+               
+        for(Effect effect : activeEffects(turn, player)){
+            if(effect.isIsitabase()){
+                return true;
+            }
+        }
+        return false;
+        
+    }
     
     public int getConstruction_date() {
         return construction_date;

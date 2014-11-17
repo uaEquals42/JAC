@@ -19,6 +19,7 @@
 package jac.unit;
 
 import jac.Enum.EffectScope;
+import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,42 @@ public class Effect {
     private final boolean cant_defend;
     private final boolean capture_when_defeated;
     private final Unit_Plan converts_to;
+
+    public EffectScope getScope() {
+        return scope;
+    }
+
+    public boolean isIsitabase() {
+        return isitabase;
+    }
+
+    public boolean isCan_make_facilities() {
+        return can_make_facilities;
+    }
+
+    public boolean isCan_make_units() {
+        return can_make_units;
+    }
+
+    public boolean isCant_attack() {
+        return cant_attack;
+    }
+
+    public boolean isCant_defend() {
+        return cant_defend;
+    }
+
+    public boolean isCapture_when_defeated() {
+        return capture_when_defeated;
+    }
+
+    public Unit_Plan getConverts_to() {
+        return converts_to;
+    }
+    
+    
+    
+    
     
     
     public static class Builder {
@@ -106,13 +143,13 @@ public class Effect {
 
     
     
-    public boolean available(int lifespan, GenericUnit unit, Map<String, Ideology> current_ideologies) {
+    public boolean available(int lifespan, GenericUnit unit, PlayerDetails player) {
         if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
         for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(lifespan, unit, current_ideologies);
+            tf = tf && restrict.available(lifespan, unit, player);
         }
         return tf;
     }

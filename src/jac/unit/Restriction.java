@@ -21,6 +21,7 @@ package jac.unit;
 import jac.Enum.CombatMode;
 import jac.engine.ruleset.Ideology;
 import jac.Enum.MovementType;
+import jac.engine.PlayerDetails;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -107,13 +108,13 @@ public class Restriction {
     }
       
 
-    public boolean available(int lifespan, GenericUnit unit, Map<String, Ideology> current_ideologies){
+    public boolean available(int lifespan, GenericUnit unit, PlayerDetails player){
         boolean result = true;
         
         result = result && length_of_effect <= lifespan;
         result = result && allowed_chassis.contains(unit.getChassis().key());
 
-        result = result && current_ideologies.containsKey(required_ideology);
+        result = result && player.getCurrent_ideologies().containsKey(required_ideology);
 
         if (base_bigger_than != null) {
             if (unit.getPopulation() == null) {

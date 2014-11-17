@@ -19,12 +19,12 @@
 package jac.engine;
 
 import jac.engine.Faction.Faction;
-import jac.engine.Faction.FactionSettings;
-import jac.engine.Faction.Faction_Dialog;
 import jac.engine.ruleset.Ideology;
 import jac.engine.ruleset.Ruleset;
 import jac.unit.GenericUnit;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -33,16 +33,49 @@ import java.util.List;
 public class PlayerDetails {
     private final String player_name;
     private final Faction faction;
-    private long energy_resrves;
     private final Ruleset rules;
-    List<Ideology> ideologies;
-    List<GenericUnit> genericunits;
-    List<GenericUnit> units;  // Not sure how I will sync this over the network...
-    List<GenericUnit> bases; 
+    
+    
+    private long energy_resrves;
+    private Map<String, Ideology> current_ideologies;
+    private Map<String, Ideology> known_ideologies;
+    private List<GenericUnit> genericunits;
+    private List<String> knownTechnologies;
+
     
     PlayerDetails(String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
         this.rules = rules;
         this.player_name = player_name;
         this.faction = faction;
+    }
+
+    public String getPlayer_name() {
+        return player_name;
+    }
+
+    public Faction getFaction() {
+        return faction;
+    }
+
+    public long getEnergy_resrves() {
+        return energy_resrves;
+    }
+
+    public Map<String, Ideology> getCurrent_ideologies() {
+        return current_ideologies;
+    }
+
+    public List<String> getKnownTechnologies() {
+        return knownTechnologies;
+    }
+    
+    public List<GenericUnit> getBases(int turn){
+        List<GenericUnit> bases = new LinkedList<>();
+        for(GenericUnit unit : genericunits){
+            if(unit.isitabase(turn, this)){
+                bases.add(unit);
+            }
+        }
+        return bases;
     }
 }

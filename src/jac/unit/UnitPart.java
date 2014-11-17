@@ -18,6 +18,7 @@
  */
 package jac.unit;
 
+import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class UnitPart {
     
     
     private final List<Effect> effectsList;
-    private final List<Restriction> restrictions;
+    private final List<Restriction> restrictions; 
     
     
     public UnitPart(List<Effect> effectsList, List<Restriction> restrictions){
@@ -46,24 +47,24 @@ public class UnitPart {
      * @param unit the unit this is a part of.
      * @return 
      */
-    public boolean available(int lifespan, GenericUnit unit, Map<String, Ideology> ideologys) {
+    public boolean available(int lifespan, GenericUnit unit, PlayerDetails player) {
         if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
         for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(lifespan, unit, ideologys);
+            tf = tf && restrict.available(lifespan, unit, player);
         }
         return tf;
     }
     
     
-    public List<Effect> active_effects(int lifespan, GenericUnit unit, Map<String, Ideology> current_ideologies){
+    public List<Effect> active_effects(int lifespan, GenericUnit unit, PlayerDetails player){
         List<Effect> result = new ArrayList<>();
 
-        if (this.available(lifespan, unit, current_ideologies)) {
+        if (this.available(lifespan, unit, player)) {
             for (Effect effect : effectsList) {
-                if (effect.available(lifespan, unit, current_ideologies)) {
+                if (effect.available(lifespan, unit, player)) {
                     result.add(effect);
                 }
             }
