@@ -40,26 +40,20 @@ public class Chassis extends UnitPart{
     private final  String key;  // for looking up translations.
  
 
-    public Chassis(Translation tran, String key, List<Effect> effectsList, List<Restriction> restrictions, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
-        super(effectsList, restrictions);
+    private Chassis(Builder build){
+        super(build.effectsList, build.restrictions);
+        this.key = build.key;
+        build.tran.getChasis().put(key, build.names);
         
-        this.key = key;
-        
-        tran.getChasis().put(key, names);
-        
-        this.missle = missle;
-        this.base_cargo = base_cargo;
-        this.cost = cost;
-        this.speed = speed;
-        this.triad = triad;
-        this.pre_req_str = new ArrayList<>();
-        if(pre_req.trim().length() > 0){
-            if(!pre_req.equalsIgnoreCase("None")){
-                pre_req_str.add(pre_req.trim());
-            }
-            
-        }
+        this.missle = build.missle;
+        this.base_cargo = build.base_cargo;
+        this.cost = build.cost;
+        this.speed = build.speed;
+        this.triad = build.triad;
+        this.pre_req_str = build.pre_req_str;
     }
+    
+    
     
     public String key(){
         return key;
@@ -97,5 +91,64 @@ public class Chassis extends UnitPart{
     }
     
 
+    public static class Builder {
+        private final MovementType triad;
+        private final int cost;
+        private final String key;  // for looking up translations.
+        private final List<Noun> names;
+        private final int speed; 
+        private final Translation tran;
+        
+        private boolean missle = false;
+        private int base_cargo = 1;
+        private List<String> pre_req_str = new ArrayList<>();
+        private List<Tech> pre_req_techs = new ArrayList<>();
+        private List<Effect> effectsList = new ArrayList<>();
+        private List<Restriction> restrictions = new ArrayList<>();
+        
+
+        public Builder(Translation tran, String key, MovementType triad, int cost, int speed, List<Noun> names){
+            this.tran = tran;
+            this.key = key;
+            this.triad = triad;
+            this.cost = cost;
+            this.speed = speed;
+            this.names = names;
+        }
+        
+        public Builder addRestriction(Restriction binding){
+            restrictions.add(binding);
+            return this;
+        }
+        
+        public Builder addEffect(Effect effect){
+            effectsList.add(effect);
+            return this;
+        }
+        
+        public Builder addPreReqTech(String techkey){
+            if(!techkey.trim().equalsIgnoreCase("None")){
+                pre_req_str.add(techkey.trim());
+            }
+            
+            return this;
+        }
+        
+        public Builder ismissle(boolean missle){
+            this.missle = missle;
+            return this;
+        }
+        
+        public Builder setCargo(int cargo){
+            base_cargo = cargo;
+            return this;
+        }
+        
+        public Chassis build(){
+            return new Chassis(this);
+        }
+    
+    }
+    
 
 }
