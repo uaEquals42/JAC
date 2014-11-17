@@ -33,13 +33,26 @@ public class UnitPart {
     
     private final List<Effect> effectsList;
     private final List<Restriction> restrictions; 
+    private final List<String> pre_requisite_technology;
     
     
-    public UnitPart(List<Effect> effectsList, List<Restriction> restrictions){
+    public UnitPart(List<Effect> effectsList, List<Restriction> restrictions, List<String> pre_requisite_technology){
         this.effectsList = effectsList;
         this.restrictions = restrictions;
+        this.pre_requisite_technology = pre_requisite_technology;
+    }
+
+    public List<String> getPre_requisite_technology() {
+        return pre_requisite_technology;
     }
     
+    public static List<String> createlist(String onePreRequisite){
+        List<String> pre_reqs = new ArrayList<>();
+        if (!onePreRequisite.trim().equalsIgnoreCase("None")) {
+            pre_reqs.add(onePreRequisite.trim());
+        }
+        return pre_reqs;
+    }
     
     /**
      * Is this part usable for the current configuration?  Is there a reason you can't use this part?

@@ -33,14 +33,11 @@ public class Weapon extends UnitPart{
     private final int offence; // -1 if psi combat.
     private final CombatMode com_mode;
     private final int cost;
-    private final List<String> pre_req_keys = new ArrayList<>();
-    
+  
     private final String key;
-    
-    private List<Tech> pre_req_tech = new ArrayList<>();
 
     public Weapon(Translation tran, String key, String name, String name2, int offence, int cost, String pre_req_key, CombatMode com_mode){
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>(), createlist(pre_req_key));
         String[] names = new String[2];
         names[0] = name.trim();
         names[1] = name2.trim();
@@ -49,26 +46,10 @@ public class Weapon extends UnitPart{
         tran.getWeapons().put(key, names);
         this.offence = offence;
         this.cost = cost;
-        if(!pre_req_key.trim().equalsIgnoreCase("None")){
-            pre_req_keys.add(pre_req_key.trim());
-        }
-        
+               
     }
     
-    public void config_Techs(List<Tech> techlist) throws ExceptionTechKeyMismatch{
-        for(String key : pre_req_keys){
-            for(Tech tech : techlist){
-                if(key.equalsIgnoreCase(tech.getKey())){
-                    pre_req_tech.add(tech);
-                }
-            }
-        }
-        
-        if(pre_req_keys.size()!=pre_req_tech.size()){
-           throw new ExceptionTechKeyMismatch();
-        }
-       
-    }
+    
 
     public int getOffence() {
         return offence;

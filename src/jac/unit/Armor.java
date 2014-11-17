@@ -34,14 +34,12 @@ public class Armor extends UnitPart{
     private int armor;
     private DefenceMode mode;
     private int cost;
-    private List<String> pre_reqs = new ArrayList<>();
+   
     
     public Armor(Translation tran, String key, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>(),createlist(pre_req));
         this.key = key;
-        if (!pre_req.equalsIgnoreCase("None")) {
-            pre_reqs.add(pre_req);
-        }
+        
         this.armor = armor;
         this.mode = mode;
         String[] names = new String[2];

@@ -45,20 +45,17 @@ public class UnitAbility extends UnitPart {
     private final int cost_code;
 
     
-    private final List<String> pre_requisite_technology;
+    
 
   
 
     public UnitAbility(Builder build) {
-        super(build.effects, build.restrictions);
+        super(build.effects, build.restrictions, build.pre_reqs);
         
         Translation tran = build.tran;
         key = build.key;
         cost_code = build.cost_code;
-        pre_requisite_technology = build.pre_reqs;
-
-       
-     
+            
     }
 
     

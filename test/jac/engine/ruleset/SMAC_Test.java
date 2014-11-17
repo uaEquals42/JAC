@@ -18,6 +18,7 @@
  */
 package jac.engine.ruleset;
 
+import jac.Enum.MovementType;
 import java.io.IOException;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -125,14 +126,14 @@ public class SMAC_Test {
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", 1, rules.chasises.get(0).getSpeed());
-        assertEquals("Infantry cost", 1, rules.chasises.get(0).getCost());
-        assertEquals("Infantry Prereqs", 0, rules.chasises.get(0).getPre_req_str().size());
-        assertEquals("Infantry", MovementType.LAND, rules.chasises.get(0).getTriad());
+        assertEquals("Infantry movment", 1, rules.chasises.get("0").getSpeed());
+        assertEquals("Infantry cost", 1, rules.chasises.get("0").getCost());
+        assertEquals("Infantry Prereqs", 0, rules.chasises.get("0").getPre_requisite_technology().size());
+        assertEquals("Infantry", MovementType.LAND, rules.chasises.get("0").getTriad());
         
-        assertEquals("Missile prereqs", "Orbital", rules.chasises.get(8).getPre_req_str().get(0));
-        assertEquals("Missile is a missle?", true, rules.chasises.get(8).isMissle());
-        assertEquals("Missle is an air unit?", MovementType.AIR, rules.chasises.get(8).getTriad());
+        assertEquals("Missile prereqs", "Orbital", rules.chasises.get("8").getPre_requisite_technology().get(0));
+        assertEquals("Missile is a missle?", true, rules.chasises.get("8").isMissle());
+        assertEquals("Missle is an air unit?", MovementType.AIR, rules.chasises.get("8").getTriad());
     }
     
     

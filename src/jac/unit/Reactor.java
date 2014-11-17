@@ -34,17 +34,15 @@ public class Reactor extends UnitPart{
 
 
     private final int power;
-    private List<String> pre_reqs = new ArrayList<>();
+ 
     private final String key;
 
     public Reactor(Translation tran, String key, int power, String pre_req, String full_name, String short_name) {
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>(), createlist(pre_req) );
         this.key = key;
        
         this.power = power;
-        if (!pre_req.trim().equalsIgnoreCase("None")) {
-            pre_reqs.add(pre_req.trim());
-        }
+        
 
         String[] names = new String[2];
         names[0] = full_name.trim();
@@ -65,7 +63,4 @@ public class Reactor extends UnitPart{
         return tran.getReactors().get(key)[1];
     }
     
-    public List<String> list_pre_reqS(){
-        return pre_reqs;
-    }
 }

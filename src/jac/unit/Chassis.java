@@ -38,14 +38,12 @@ public class Chassis extends UnitPart{
     private final int cost;
     private final int range;  // how many turns from base can it go before becoming damaged/destroyed.
     private final int percentDamageWhenOutOfRange;
-    
-    private final  List<String> pre_req_str;
-    private List<Tech> pre_req_techs;
+  
     private final  String key;  // for looking up translations.
  
 
     private Chassis(Builder build){
-        super(build.effectsList, build.restrictions);
+        super(build.effectsList, build.restrictions, build.pre_req_str);
         this.key = build.key;
         build.tran.getChasis().put(key, build.names);
         
@@ -54,7 +52,7 @@ public class Chassis extends UnitPart{
         this.cost = build.cost;
         this.speed = build.speed;
         this.triad = build.triad;
-        this.pre_req_str = build.pre_req_str;
+       
         this.range = build.range;
         this.percentDamageWhenOutOfRange = build.percentDamageWhenOutOfRange;
     }
@@ -68,9 +66,6 @@ public class Chassis extends UnitPart{
         return tran.getChasis().get(key);
     }
 
-    public List<String> getPre_req_str() {
-        return pre_req_str;
-    }
     
     public int getBase_cargo(){
         return base_cargo;
