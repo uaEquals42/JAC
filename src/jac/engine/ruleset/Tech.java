@@ -29,7 +29,7 @@ import java.util.List;
 public class Tech {
    
     
-    String id;
+    String key;
     
     // these 4 values are hints to the ai to indicate how good the particular tech is in each category.
     // Determines how much a particular ai wants each tech.
@@ -68,7 +68,7 @@ public class Tech {
             int fungus_energy_bonus, int fungus_mineral_bonus,int fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
         
        
-        this.id = id;
+        this.key = id;
         this.pre_requisites_names.addAll(pre_reqs);
         this.freetech = freetech;
         this.probe_bonus = probe_bonus;
@@ -90,15 +90,22 @@ public class Tech {
         
         
     }
+
+    
+    
+    
+    public String getKey() {
+        return key;
+    }
     
 
     
     public String getName(Translation tran){
-        return tran.technames.get(id);
+        return tran.technames.get(key);
     }
     
     public List<Quote> getQuotes(Translation tran){
-        return tran.tech_quotes.get(id);
+        return tran.tech_quotes.get(key);
     }
     
     

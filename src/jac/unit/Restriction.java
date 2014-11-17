@@ -21,7 +21,6 @@ package jac.unit;
 import jac.Enum.CombatMode;
 import jac.engine.ruleset.Ideology;
 import jac.Enum.MovementType;
-import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -108,9 +107,9 @@ public class Restriction {
     }
       
 
-    public boolean available(int turn, GenericUnit unit, Map<String, Ideology> current_ideologies){
+    public boolean available(int lifespan, GenericUnit unit, Map<String, Ideology> current_ideologies){
         boolean result = true;
-        int lifespan = turn - unit.getConstruction_date();
+        
         result = result && length_of_effect <= lifespan;
         result = result && allowed_chassis.contains(unit.getChassis().key());
 
@@ -150,39 +149,6 @@ public class Restriction {
         return result;
     }
     
-    public boolean available(int lifespan, Chassis chassis, Weapon wep, Map<String, Ideology> current_ideologys, int base_size, Map<String, Facility> facilities){
-        boolean result = true;
-        
-        result = result && length_of_effect <= lifespan;
-        result = result && allowed_chassis.contains(chassis.key());
-        
- 
-        result = result && current_ideologys.containsKey(required_ideology);
-      
-        
-        if(base_bigger_than!=null){
-            result = result && base_bigger_than>base_size;
-        }
-        
-        if(base_smaller_than!=null){
-            result = result && base_smaller_than<base_size;
-        }
-   
-        if (!required_facility.isEmpty()) {
-            result = result && facilities.containsKey(required_facility);
-        }
-
-        if (!allowedTypes.isEmpty()) {
-            result = result && allowedTypes.contains(chassis.getTriad());
-        }
-
-        if (!allowedRoles.isEmpty()) {
-            result = result && allowedRoles.contains(wep.getCom_mode());
-        }
-        
-   
-        
-        return result;
-    }
+    
 
 }

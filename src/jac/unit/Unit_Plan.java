@@ -18,11 +18,8 @@
  */
 package jac.unit;
 
-import jac.engine.ruleset.Armor;
 import jac.Enum.MovementType;
-import jac.engine.ruleset.Reactor;
 import jac.engine.ruleset.Tech;
-import jac.engine.ruleset.Weapon;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +29,7 @@ import java.util.Map;
  */
 public class Unit_Plan {
 
-    private Chassis chassis;
+    private final Chassis chassis;
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
@@ -42,7 +39,7 @@ public class Unit_Plan {
     private boolean prototyped = false;
     private int cost;
 
-    public Unit_Plan(Map<String, Tech> known_techs, Chassis chas, Reactor react, Armor def, Weapon weap, Map<String, UnitAbility> abilities) {
+    public Unit_Plan(Chassis chas, Reactor react, Armor def, Weapon weap, Map<String, UnitAbility> abilities) {
         // Check to make sure inputs are 
         this.unit_abilities = abilities;
         // Then set the variables

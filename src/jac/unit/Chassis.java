@@ -28,19 +28,21 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Chassis {
+public class Chassis extends UnitPart{
 
-    private int speed;
-    private MovementType triad;
-    private boolean missle;
-    private int base_cargo;
-    private int cost;
-    private List<String> pre_req_str = new ArrayList<>();
-    private List<Tech> pre_req_techs = new ArrayList<>();
-    private final String key;  // for looking up translations.
+    private final int speed;
+    private final  MovementType triad;
+    private final  boolean missle;
+    private final  int base_cargo;
+    private final  int cost;
+    private final  List<String> pre_req_str;
+    private List<Tech> pre_req_techs;
+    private final  String key;  // for looking up translations.
  
 
-    public Chassis(Translation tran, String key, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
+    public Chassis(Translation tran, String key, List<Effect> effectsList, List<Restriction> restrictions, List<Noun> names, int speed, MovementType triad, boolean missle, int base_cargo, int cost, String pre_req) {
+        super(effectsList, restrictions);
+        
         this.key = key;
         
         tran.getChasis().put(key, names);
@@ -50,6 +52,7 @@ public class Chassis {
         this.cost = cost;
         this.speed = speed;
         this.triad = triad;
+        this.pre_req_str = new ArrayList<>();
         if(pre_req.trim().length() > 0){
             if(!pre_req.equalsIgnoreCase("None")){
                 pre_req_str.add(pre_req.trim());

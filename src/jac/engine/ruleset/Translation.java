@@ -38,9 +38,9 @@ public class Translation {
     Map<String, List<Quote>> tech_quotes = new LinkedHashMap<>();
     
     Map<String, List<Noun>> chasis = new LinkedHashMap<>();
-    Map<Integer, String[]> weapons = new LinkedHashMap<>();  
-    Map<Integer, String[]> armor = new LinkedHashMap<>();  
-    Map<Integer, String[]> reactors = new LinkedHashMap<>();  
+    Map<String, String[]> weapons = new LinkedHashMap<>();  
+    Map<String, String[]> armor = new LinkedHashMap<>();  
+    Map<String, String[]> reactors = new LinkedHashMap<>();  
     Map<String, String[]> unit_abilities = new LinkedHashMap<>();
     
     Map<String, String[]> facilities = new LinkedHashMap<>();
@@ -66,15 +66,15 @@ public class Translation {
         return chasis;
     }
 
-    public Map<Integer, String[]> getWeapons() {
+    public Map<String, String[]> getWeapons() {
         return weapons;
     }
 
-    public Map<Integer, String[]> getArmor() {
+    public Map<String, String[]> getArmor() {
         return armor;
     }
 
-    public Map<Integer, String[]> getReactors() {
+    public Map<String, String[]> getReactors() {
         return reactors;
     }
 

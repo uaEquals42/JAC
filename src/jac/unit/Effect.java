@@ -20,7 +20,6 @@ package jac.unit;
 
 import jac.Enum.EffectScope;
 import jac.engine.ruleset.Ideology;
-import jac.engine.ruleset.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -107,13 +106,13 @@ public class Effect {
 
     
     
-    public boolean available(int turn, GenericUnit unit, Map<String, Ideology> current_ideologies) {
+    public boolean available(int lifespan, GenericUnit unit, Map<String, Ideology> current_ideologies) {
         if (restrictions.isEmpty()) {
             return true;
         }
         boolean tf = true;
         for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(turn, unit, current_ideologies);
+            tf = tf && restrict.available(lifespan, unit, current_ideologies);
         }
         return tf;
     }

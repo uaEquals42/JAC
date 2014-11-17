@@ -16,9 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
 import jac.Enum.CombatMode;
+import jac.engine.ruleset.Tech;
+import jac.engine.ruleset.Translation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,21 +28,25 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Weapon {
+public class Weapon extends UnitPart{
        
-    private int offence; // -1 if psi combat.
-    private CombatMode com_mode;
-    private int cost;
-    private List<String> pre_req_keys = new ArrayList<>();
+    private final int offence; // -1 if psi combat.
+    private final CombatMode com_mode;
+    private final int cost;
+    private final List<String> pre_req_keys = new ArrayList<>();
+    
+    private final String key;
+    
     private List<Tech> pre_req_tech = new ArrayList<>();
-    private final int id;
 
-    public Weapon(Translation tran, int id, String name, String name2, int offence, int cost, String pre_req_key){
+    public Weapon(Translation tran, String key, String name, String name2, int offence, int cost, String pre_req_key, CombatMode com_mode){
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
         String[] names = new String[2];
         names[0] = name.trim();
         names[1] = name2.trim();
-        this.id = id;
-        tran.weapons.put(id, names);
+        this.com_mode = com_mode;
+        this.key = key;
+        tran.getWeapons().put(key, names);
         this.offence = offence;
         this.cost = cost;
         if(!pre_req_key.trim().equalsIgnoreCase("None")){
@@ -49,19 +55,19 @@ public class Weapon {
         
     }
     
-    public boolean config_Techs(List<Tech> techlist){
+    public void config_Techs(List<Tech> techlist) throws ExceptionTechKeyMismatch{
         for(String key : pre_req_keys){
             for(Tech tech : techlist){
-                if(key.equalsIgnoreCase(tech.id)){
+                if(key.equalsIgnoreCase(tech.getKey())){
                     pre_req_tech.add(tech);
                 }
             }
         }
         
-        if(pre_req_keys.size()==pre_req_tech.size()){
-            return true;
+        if(pre_req_keys.size()!=pre_req_tech.size()){
+           throw new ExceptionTechKeyMismatch();
         }
-        return false;
+       
     }
 
     public int getOffence() {

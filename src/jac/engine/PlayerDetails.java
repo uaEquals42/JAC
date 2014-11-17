@@ -16,20 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package jac.engine;
 
+import jac.engine.Faction.Faction;
 import jac.engine.Faction.FactionSettings;
 import jac.engine.Faction.Faction_Dialog;
+import jac.engine.ruleset.Ideology;
+import jac.engine.ruleset.Ruleset;
+import jac.unit.GenericUnit;
+import java.util.List;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class Player {
-    String player_name;
-    FactionSettings faction_settings;
-    Faction_Dialog faction_dialog;
+public class PlayerDetails {
+    private final String player_name;
+    private final Faction faction;
+    private long energy_resrves;
+    private final Ruleset rules;
+    List<Ideology> ideologies;
+    List<GenericUnit> genericunits;
+    List<GenericUnit> units;  // Not sure how I will sync this over the network...
+    List<GenericUnit> bases; 
     
-        
+    PlayerDetails(String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
+        this.rules = rules;
+        this.player_name = player_name;
+        this.faction = faction;
+    }
 }

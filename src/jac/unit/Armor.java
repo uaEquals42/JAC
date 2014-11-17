@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
 import jac.Enum.DefenceMode;
+import jac.engine.ruleset.Translation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,18 +27,18 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Armor {
+public class Armor extends UnitPart{
     
  
-    private int id;
+    private final String key;
     private int armor;
     private DefenceMode mode;
     private int cost;
     private List<String> pre_reqs = new ArrayList<>();
     
-    public Armor(Translation tran, int id, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
-       
-        this.id = id;
+    public Armor(Translation tran, String key, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
+        this.key = key;
         if (!pre_req.equalsIgnoreCase("None")) {
             pre_reqs.add(pre_req);
         }
@@ -46,16 +47,16 @@ public class Armor {
         String[] names = new String[2];
         names[0] = name1.trim();
         names[1] = name2.trim();
-        tran.armor.put(id, names);
+        tran.getArmor().put(key, names);
     }
     
     
     public String name1(Translation tran){
-        return tran.armor.get(id)[0];
+        return tran.getArmor().get(key)[0];
     }
     
     public String name2(Translation tran){
-        return tran.armor.get(id)[1];
+        return tran.getArmor().get(key)[1];
     }
 
     public int getArmor() {

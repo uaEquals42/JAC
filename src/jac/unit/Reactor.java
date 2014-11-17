@@ -16,8 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.ruleset;
+package jac.unit;
 
+import jac.engine.ruleset.Translation;
+import jac.unit.Effect;
+import jac.unit.Restriction;
+import jac.unit.UnitPart;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +29,17 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Reactor {
+public class Reactor extends UnitPart{
   
 
 
-    private int power;
+    private final int power;
     private List<String> pre_reqs = new ArrayList<>();
-    private final int key;
+    private final String key;
 
-    public Reactor(Translation tran, Integer id, int power, String pre_req, String full_name, String short_name) {
-        this.key = id;
+    public Reactor(Translation tran, String key, int power, String pre_req, String full_name, String short_name) {
+        super(new ArrayList<Effect>(), new ArrayList<Restriction>());
+        this.key = key;
        
         this.power = power;
         if (!pre_req.trim().equalsIgnoreCase("None")) {
@@ -44,7 +49,7 @@ public class Reactor {
         String[] names = new String[2];
         names[0] = full_name.trim();
         names[1] = short_name.trim();
-        tran.reactors.put(key, names);
+        tran.getReactors().put(key, names);
 
     }
     
@@ -53,11 +58,11 @@ public class Reactor {
     }
     
     public String full_name(Translation tran){
-        return tran.reactors.get(key)[0];
+        return tran.getReactors().get(key)[0];
     }
     
     public String short_name(Translation tran){
-        return tran.reactors.get(key)[1];
+        return tran.getReactors().get(key)[1];
     }
     
     public List<String> list_pre_reqS(){

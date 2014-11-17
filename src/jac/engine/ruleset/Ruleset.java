@@ -18,6 +18,9 @@
  */
 package jac.engine.ruleset;
 
+import jac.unit.Reactor;
+import jac.unit.Weapon;
+import jac.unit.Armor;
 import jac.Enum.DefenceMode;
 import jac.Enum.CombatMode;
 import jac.Enum.MovementType;
@@ -62,15 +65,25 @@ public class Ruleset {
         return tran;
     }
 
-    
-    
-    private Map<String, String> load_techlongs(Path location) throws IOException{
+    public Map<String, Tech> getTechnologies() {
+        return technologies;
+    }
+
+    public Map<String, UnitAbility> getUnit_abilities() {
+        return unit_abilities;
+    }
+
+    public Map<String, Facility> getFacilities() {
+        return facilities;
+    }
+
+    private Map<String, String> load_techlongs(Path location) throws IOException {
         log.debug("Load techlongs: {}", location);
         List<String> input = Files.readAllLines(location, StandardCharsets.ISO_8859_1);
         Map<String, String> techlongs = new HashMap<>();
         for (int ii = 0; ii < input.size(); ii++) {
             if (input.get(ii).contains("##")) {
-                String entry="";
+                String entry = "";
                 ii++;
                 String key = input.get(ii).trim();
                 ii++;
@@ -209,8 +222,8 @@ public class Ruleset {
     private void load_weapon(List<String> input) throws SectionNotFoundException {
         int pos = gotosection("#WEAPONS", input);
         pos++;
-        for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
-            String[] line = input.get(pos + key).split(",");
+        for (; !input.get(pos).trim().isEmpty(); pos++) {
+            String[] line = input.get(pos).split(",");
             CombatMode mode;
             int damage = Integer.parseInt(line[2].trim());
 
@@ -220,7 +233,7 @@ public class Ruleset {
                 mode = CombatMode.convert(Integer.parseInt(line[3].trim()));
             }
 
-            weapons.add(new Weapon(tran, key, line[0], line[1], damage, Integer.parseInt(line[4].trim()), line[6]));
+            weapons.add(new Weapon(tran, line[1].trim(), line[0], line[1], damage, Integer.parseInt(line[4].trim()), line[6], mode));
         }
         log.trace("Loaded {} weapons", weapons.size());
         
@@ -264,7 +277,7 @@ public class Ruleset {
                 mode = DefenceMode.convert(Integer.parseInt(line[3].trim()));
             }
 
-            armors.add(new Armor(tran, key, rating, mode,
+            armors.add(new Armor(tran, line[1].trim(), rating, mode,
                     Integer.parseInt(line[4].trim()), line[5], line[0], line[1]));
         }
         log.trace("Loaded {} armors.", armors.size());
@@ -275,9 +288,9 @@ public class Ruleset {
         int pos = gotosection("#REACTORS", input);
         pos++;
         
-        for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
-            String[] line = input.get(pos + key).split(",");
-            Reactor tmp = new Reactor(tran, key, Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
+        for (; !input.get(pos ).trim().isEmpty(); pos++) {
+            String[] line = input.get(pos).split(",");
+            Reactor tmp = new Reactor(tran, line[1].trim(), Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
             reactors.add(tmp);
         }
 
@@ -382,17 +395,7 @@ public class Ruleset {
 
     }
 
-    public Map<String, Tech> getTechnologies() {
-        return technologies;
-    }
 
-    public Map<String, UnitAbility> getUnit_abilities() {
-        return unit_abilities;
-    }
-
-    public Map<String, Facility> getFacilities() {
-        return facilities;
-    }
     
     
 
