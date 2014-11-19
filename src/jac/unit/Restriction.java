@@ -44,6 +44,8 @@ public class Restriction {
     Integer base_bigger_than;
     Integer base_smaller_than;
     String required_facility;
+    
+    
    
     
     public static class Builder {

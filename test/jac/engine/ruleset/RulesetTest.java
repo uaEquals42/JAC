@@ -42,10 +42,10 @@ public class RulesetTest {
     @Test
     public void testLoadalpha_txt() {
         //System.out.println("loadalpha_txt");
-        Ruleset instance = new Ruleset();
+        
         
         try {
-            instance.loadalpha_txt("./testfiles/SMACX/alpha.txt");
+            Ruleset instance = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt").build();
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");
@@ -63,10 +63,10 @@ public class RulesetTest {
     @Test
     public void testLoadalphax_txt() {
         //System.out.println("loadalphax_txt");
-        Ruleset instance = new Ruleset();
+        Ruleset instance; 
 
         try {
-            instance.loadalphax_txt();
+            instance = new Ruleset.Builder().loadalphax_txt().build();
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");
