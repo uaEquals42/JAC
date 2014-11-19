@@ -127,7 +127,7 @@ public class SMAC_Test {
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
         assertEquals("Infantry movment", 1, rules.getChasises().get("0").getSpeed());
-        assertEquals("Infantry cost", 1, rules.getChasises().get("0").getCost());
+        assertEquals("Infantry cost", 1, rules.getChasises().get("0").getFlatcost());
         assertEquals("Infantry Prereqs", 0, rules.getChasises().get("0").getPre_requisite_technology().size());
         assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("0").getTriad());
         

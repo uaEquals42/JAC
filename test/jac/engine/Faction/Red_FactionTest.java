@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package jac.engine.Faction;
-import jac.engine.Faction.SocialAreas;
+import jac.Enum.SocialAreas;
 import jac.engine.Faction.Faction;
 import java.lang.Integer;
 import org.junit.Before;
@@ -61,7 +61,7 @@ public class Red_FactionTest {
 
     @Test
     public void test_tech() {
-        assertEquals("Tech", 1, (int) instance.setting.Free_Techs.size());
+        assertEquals("Tech", 1, instance.setting.Free_Techs.size());
         assertEquals("InfNet", true, instance.setting.Free_Techs.get(0).equals("InfNet"));
     }
     

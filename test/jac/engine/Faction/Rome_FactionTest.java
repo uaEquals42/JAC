@@ -18,7 +18,7 @@
  */
 package jac.engine.Faction;
 
-import jac.engine.Faction.SocialAreas;
+import jac.Enum.SocialAreas;
 import jac.engine.Faction.Faction;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class Rome_FactionTest {
 
     @Test
     public void test_tech() {
-        assertEquals("Tech", 1, (int) instance.setting.Free_Techs.size());
+        assertEquals("Tech", 1, instance.setting.Free_Techs.size());
         assertEquals("Mobile", true, instance.setting.Free_Techs.get(0).equals("Mobile"));
     }
 
