@@ -29,32 +29,25 @@ import java.util.List;
  */
 public class Armor extends UnitPart{
     
+    private final int armor;
+    private final DefenceMode mode;
  
-    private final String key;
-    private int armor;
-    private DefenceMode mode;
-    private int cost;
-   
     
-    public Armor(Translation tran, String key, int armor, DefenceMode mode, int cost, String pre_req, String name1, String name2){
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>(),createlist(pre_req));
-        this.key = key;
-        
-        this.armor = armor;
-        this.mode = mode;
-        String[] names = new String[2];
-        names[0] = name1.trim();
-        names[1] = name2.trim();
-        tran.getArmor().put(key, names);
+    private Armor(Builder build){
+        super(build);
+        this.armor = build.armor;
+        this.mode = build.mode;
+        build.getTran().getArmor().put(build.getKey(), build.names);
     }
     
+       
     
     public String name1(Translation tran){
-        return tran.getArmor().get(key)[0];
+        return tran.getArmor().get(getKey())[0];
     }
     
     public String name2(Translation tran){
-        return tran.getArmor().get(key)[1];
+        return tran.getArmor().get(getKey())[1];
     }
 
     public int getArmor() {
@@ -65,8 +58,29 @@ public class Armor extends UnitPart{
         return mode;
     }
 
-    public int getCost() {
-        return cost;
+    
+    public static class Builder extends UnitPart.Builder<Builder>{
+        
+        private final int armor;
+    private final DefenceMode mode;
+    
+    private final String[] names;
+ 
+    
+        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2){
+            super(tran, key, flatcost);
+            this.armor = armor;
+            this.mode = mode;
+            names = new String[2];
+            names[0]= name1.trim();
+            names[1]= name2.trim();
+            
+        }
+
+        public Armor build() {
+           return new Armor(this);
+        }
+        
     }
     
     

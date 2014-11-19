@@ -93,7 +93,8 @@ public class Unit_Plan {
     // Private methods
     private int calculate_cost() {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
-        int def_cost = armor.getCost();
+        int def_cost = armor.getFlatcost();
+        
         if (chassis.mode() == MovementType.SEA) {
             def_cost = def_cost / 2;
         } else if (chassis.mode() == MovementType.AIR) {
@@ -118,7 +119,7 @@ public class Unit_Plan {
         // 
         int ability_cost = 0;
         for (String key : unit_abilities.keySet()){   
-            ability_cost = ability_cost + unit_abilities.get(key).calc_cost(runningTotal, weapon, chassis, armor);
+            ability_cost = ability_cost + unit_abilities.get(key).calculate_cost(runningTotal, weapon, armor,chassis);
         }
         
 

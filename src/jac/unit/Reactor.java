@@ -30,37 +30,46 @@ import java.util.List;
  * @author Gregory Jordan
  */
 public class Reactor extends UnitPart{
-  
-
-
     private final int power;
  
-    private final String key;
 
-    public Reactor(Translation tran, String key, int power, String pre_req, String full_name, String short_name) {
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>(), createlist(pre_req) );
-        this.key = key;
-       
-        this.power = power;
-        
 
-        String[] names = new String[2];
-        names[0] = full_name.trim();
-        names[1] = short_name.trim();
-        tran.getReactors().put(key, names);
-
+    public Reactor(Builder build){
+        super(build);
+        this.power = build.power;
+        build.getTran().getReactors().put(getKey(), build.names);
     }
+    
     
     public int reactor_power(){
         return power;
     }
     
     public String full_name(Translation tran){
-        return tran.getReactors().get(key)[0];
+        return tran.getReactors().get(getKey())[0];
     }
     
     public String short_name(Translation tran){
-        return tran.getReactors().get(key)[1];
+        return tran.getReactors().get(getKey())[1];
+    }
+    
+    public static class Builder extends UnitPart.Builder<Builder>{
+        private final int power;
+        private final String[] names;
+        public Builder(Translation tran, String key, int flatcost, int power, String full_name, String short_name){
+            super(tran, key, flatcost);
+            this.power = power;
+            this.names = new String[2];
+            names[0] = full_name;
+            names[1] = short_name;
+        }
+
+        public Reactor build() {
+            return new Reactor(this);
+        }
+        
+       
+    
     }
     
 }

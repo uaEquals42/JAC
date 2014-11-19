@@ -35,18 +35,22 @@ public class PlayerDetails {
     private final Faction faction;
     private final Ruleset rules;
     
+   
     
     private long energy_resrves;
     private Map<String, Ideology> current_ideologies;
     private Map<String, Ideology> known_ideologies;
     private List<GenericUnit> genericunits;
     private List<String> knownTechnologies;
+    
+    private List<GenericUnit> bases = new LinkedList<>();
 
     
     PlayerDetails(String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
         this.rules = rules;
         this.player_name = player_name;
         this.faction = faction;
+       
     }
 
     public String getPlayer_name() {
@@ -69,7 +73,13 @@ public class PlayerDetails {
         return knownTechnologies;
     }
     
-    public List<GenericUnit> getBases(int turn){
+    
+    public List<GenericUnit> getBases(){
+        return bases;
+    }
+    
+    // Use this to test getBases().  Make sure the code works correctly.  This is the slow method.
+    public List<GenericUnit> findBases(int turn){
         List<GenericUnit> bases = new LinkedList<>();
         for(GenericUnit unit : genericunits){
             if(unit.isitabase(turn, this)){

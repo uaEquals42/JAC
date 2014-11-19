@@ -33,7 +33,7 @@ public class Restriction {
     private final Set<String> allowed_chassis;
     private final Set<MovementType> allowedTypes;
     private final Set<CombatMode> allowedRoles;
-    private final Set<String> race;
+
 
     private final Integer length_of_effect;
 
@@ -48,7 +48,7 @@ public class Restriction {
         boolean result = true;
 
         result = result && length_of_effect <= lifespan;
-        result = result && allowed_chassis.contains(unit.getChassis().key());
+        result = result && allowed_chassis.contains(unit.getChassis().getKey());
 
         result = result && player.getCurrent_ideologies().containsKey(required_ideology);
 
@@ -81,9 +81,6 @@ public class Restriction {
             result = result && allowedRoles.contains(unit.getWeapon().getCom_mode());
         }
         
-        if (!race.isEmpty()){
-            result = result && race.contains(player.getFaction().getRace());
-        }
 
         return result;
     }
@@ -153,7 +150,7 @@ public class Restriction {
 
         this.required_ideology = build.required_ideology;
         this.required_facility = build.required_facility;
-        this.race = build.races;
+     
     }
 
 }

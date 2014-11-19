@@ -288,8 +288,10 @@ public class Ruleset {
                     mode = CombatMode.convert(Integer.parseInt(line[3].trim()));
                 }
                 String key = line[1].trim();
-
-                weapons.put(key, new Weapon(tran, key, line[0], line[1], damage, Integer.parseInt(line[4].trim()), line[6], mode));
+                int cost = Integer.parseInt(line[4].trim());
+                weapons.put(key, new Weapon.Builder(tran, key, cost, damage , mode , line[0], line[1]).
+                        addPreRequisiteTech(line[6])
+                        .build());  
             }
             log.trace("Loaded {} weapons", weapons.size());
 
@@ -303,10 +305,11 @@ public class Ruleset {
                 String[] line = input.get(pos).split(",");
 
                 if (!line[2].trim().equalsIgnoreCase("Disable")) {
-                    UnitAbility abile = new UnitAbility.Builder(line[0].trim(), tran, line[0].trim(), line[3], line[5]).
+                    UnitAbility abile = new UnitAbility.Builder(tran, line[0].trim(), line[0].trim(), line[3], line[5]).
                             smacAbilityFlags(line[4]).
+                            addPreRequisiteTech(line[2]).
                             setCost_code(Integer.parseInt(line[1].trim())).
-                            addPreReq(line[2]).
+                            
                             build();
 
                     unit_abilities.put(line[0].trim().toUpperCase(Locale.ENGLISH), abile);
@@ -332,8 +335,12 @@ public class Ruleset {
                     mode = DefenceMode.convert(Integer.parseInt(line[3].trim()));
                 }
                 String key = line[1].trim();
-                armors.put(key, new Armor(tran, key, rating, mode,
-                        Integer.parseInt(line[4].trim()), line[5], line[0], line[1]));
+                int cost = Integer.parseInt(line[4].trim());
+                armors.put(key, 
+                        new Armor.Builder(tran, key, cost, rating, mode, line[0], line[1])
+                        .addPreRequisiteTech(line[5])
+                        .build());
+        
             }
             log.trace("Loaded {} armors.", armors.size());
 
@@ -346,7 +353,9 @@ public class Ruleset {
             for (; !input.get(pos).trim().isEmpty(); pos++) {
                 String[] line = input.get(pos).split(",");
                 String key = line[1].trim();
-                Reactor tmp = new Reactor(tran, key, Integer.parseInt(line[2].trim()), line[3], line[0], line[1]);
+                int cost_power = Integer.parseInt(line[2].trim());
+                Reactor tmp = new Reactor.Builder(tran, key, cost_power,cost_power, line[0], line[1]).addPreRequisiteTech(line[3]).build();
+               
                 reactors.put(key, tmp);
             }
 
@@ -386,10 +395,10 @@ public class Ruleset {
                     damage = 100;
                 }
 
-                chasises.put(Integer.toString(key),
-                        new Chassis.Builder(tran, Integer.toString(key), mtype, cost, speed, names).
-                        addPreReqTech(pre_req).
-                        ismissle(missle)
+                chasises.put(Integer.toString(key),                      
+                        new Chassis.Builder(tran, Integer.toString(key), cost, mtype, speed, names).
+                        addPreRequisiteTech(pre_req)
+                        .ismissle(missle)
                         .setCargo(cargo)
                         .setRange(range)
                         .damageDonewhenOutofrange(damage)

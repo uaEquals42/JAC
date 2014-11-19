@@ -82,7 +82,7 @@ public class Faction {
 
 
         try {
-            race = "default";
+            race = "human";  // TODO: Set to alien if it is the alien people.
             
             setting = new FactionSettings();
 

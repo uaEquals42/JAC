@@ -22,7 +22,10 @@ import jac.Enum.CombatMode;
 import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Translation;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -32,25 +35,7 @@ public class Weapon extends UnitPart{
        
     private final int offence; // -1 if psi combat.
     private final CombatMode com_mode;
-    private final int cost;
-  
-    private final String key;
-
-    public Weapon(Translation tran, String key, String name, String name2, int offence, int cost, String pre_req_key, CombatMode com_mode){
-        super(new ArrayList<Effect>(), new ArrayList<Restriction>(), createlist(pre_req_key));
-        String[] names = new String[2];
-        names[0] = name.trim();
-        names[1] = name2.trim();
-        this.com_mode = com_mode;
-        this.key = key;
-        tran.getWeapons().put(key, names);
-        this.offence = offence;
-        this.cost = cost;
-               
-    }
-    
-    
-
+   
     public int getOffence() {
         return offence;
     }
@@ -59,8 +44,43 @@ public class Weapon extends UnitPart{
         return com_mode;
     }
 
-    public int getCost() {
-        return cost;
+ 
+    
+    private Weapon(Builder build){
+        super(build);
+        
+        build.getTran().getWeapons().put(build.getKey(), build.names);
+        this.offence = build.offence;
+        this.com_mode = build.com_mode;
+        
+        
+    }
+    
+    public static class Builder extends UnitPart.Builder<Builder>{
+        
+        private final int offence; // -1 if psi combat.
+     
+        private final CombatMode com_mode;
+        
+        private final String[] names;
+        
+         
+        public Builder(Translation tran, String key, int cost, int offence, CombatMode com_mode, String name, String name2){
+            super(tran, key, cost);
+            
+            this.names = new String[2];
+            this.names[0] = name.trim();
+            this.names[1] = name2.trim();
+            this.offence = offence;
+         
+            this.com_mode = com_mode;
+        }
+        
+
+        
+        public Weapon build(){
+            return new Weapon(this);
+        }
     }
     
     

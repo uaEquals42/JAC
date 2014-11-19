@@ -21,7 +21,6 @@ package jac.unit;
 import jac.Enum.MovementType;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,21 +34,20 @@ public class Chassis extends UnitPart{
     private final  boolean missle;
     private final  int base_cargo;
    
-    private final int cost;
+
     private final int range;  // how many turns from base can it go before becoming damaged/destroyed.
     private final int percentDamageWhenOutOfRange;
   
-    private final  String key;  // for looking up translations.
- 
+   
 
     private Chassis(Builder build){
-        super(build.effectsList, build.restrictions, build.pre_req_str);
-        this.key = build.key;
-        build.tran.getChasis().put(key, build.names);
+        super(build);
+        
+        build.getTran().getChasis().put(build.getKey(), build.names);
         
         this.missle = build.missle;
         this.base_cargo = build.base_cargo;
-        this.cost = build.cost;
+  
         this.speed = build.speed;
         this.triad = build.triad;
        
@@ -58,12 +56,9 @@ public class Chassis extends UnitPart{
     }
     
     
-    
-    public String key(){
-        return key;
-    }
+  
     public List<Noun> names(Translation tran){
-        return tran.getChasis().get(key);
+        return tran.getChasis().get(getKey());
     }
 
     
@@ -71,9 +66,6 @@ public class Chassis extends UnitPart{
         return base_cargo;
     }
 
-    public int getCost() {
-        return cost;
-    }
 
     public int getSpeed() {
         return speed;
@@ -92,39 +84,26 @@ public class Chassis extends UnitPart{
     }
     
 
-    public static class Builder {
+    public static class Builder  extends UnitPart.Builder<Builder>{
         private final MovementType triad;
-        private final int cost;
-        private final String key;  // for looking up translations.
         private final List<Noun> names;
         private final int speed; 
-        private final Translation tran;
         
        private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
        private int percentDamageWhenOutOfRange=0;  
         
         private boolean missle = false;
         private int base_cargo = 1;
-        private List<String> pre_req_str = new ArrayList<>();
-        private List<Tech> pre_req_techs = new ArrayList<>();
-        private List<Effect> effectsList = new ArrayList<>();
-        private List<Restriction> restrictions = new ArrayList<>();
-        
+   
 
-        public Builder(Translation tran, String key, MovementType triad, int cost, int speed, List<Noun> names){
-            this.tran = tran;
-            this.key = key;
+        public Builder(Translation tran, String key, int flatcost, MovementType triad, int speed, List<Noun> names){
+            super(tran, key, flatcost);
+            
             this.triad = triad;
-            this.cost = cost;
             this.speed = speed;
             this.names = names;
         }
-        
-        public Builder addRestriction(Restriction binding){
-            restrictions.add(binding);
-            return this;
-        }
-        
+             
         public Builder setRange(int range){
             this.range = range;
             return this;
@@ -134,19 +113,7 @@ public class Chassis extends UnitPart{
             this.percentDamageWhenOutOfRange = percent;
             return this;
         }
-        
-        public Builder addEffect(Effect effect){
-            effectsList.add(effect);
-            return this;
-        }
-        
-        public Builder addPreReqTech(String techkey){
-            if(!techkey.trim().equalsIgnoreCase("None")){
-                pre_req_str.add(techkey.trim());
-            }
-            
-            return this;
-        }
+       
         
         public Builder ismissle(boolean missle){
             this.missle = missle;

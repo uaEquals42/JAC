@@ -37,11 +37,9 @@ public class UnitAbility extends UnitPart {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-    //Required 
-    private final String key;
 
     //Optional
-    // Doing this differently.  // TODO: Figure out a better way to store the cost, make it more flexible (or clear) as to what effect we want.
+    // IF 0 then use flatcost when calculating cost!.
     private final int cost_code;
 
     
@@ -50,16 +48,55 @@ public class UnitAbility extends UnitPart {
   
 
     public UnitAbility(Builder build) {
-        super(build.effects, build.restrictions, build.pre_reqs);
-        
-        Translation tran = build.tran;
-        key = build.key;
+        super(build);
+
         cost_code = build.cost_code;
             
     }
 
     
-    public int calc_cost(int base_cost, Weapon wep, Chassis chas, Armor arm) {
+    private int convert_cost_code(Weapon weapon, Armor armor, Chassis chassis){
+        int value = 0;
+        if (cost_code > 0) {
+            value = cost_code;
+        }
+        int weaponcost = weapon.getFlatcost();
+        int armor_cost = armor.getFlatcost();
+        int chassis_cost = chassis.getFlatcost();
+        switch (cost_code) {
+            case 0:
+                return super.getFlatcost();
+            case -1:
+                value = weaponcost / armor_cost;
+                break;
+            case -2:
+                value = weaponcost - 1;
+                break;
+            case -3:
+                value = armor_cost - 1;
+                break;
+            case -4:
+                value = chassis_cost - 1;
+                break;
+            case -5:
+                value = weaponcost + armor_cost - 2;
+                break;
+            case -6:
+                value = weaponcost + chassis_cost - 2;
+                break;
+            case -7:
+                value = armor_cost + chassis_cost - 2;
+                break;
+            default:
+                log.error("Reached end of switch statement.  Invalid number supplied.");
+                // This could should never be reached.  Its mostly here in cose someone accidently removes a check someplace.
+                throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
+                
+        }
+        return value;
+    }
+    
+    public int calculate_cost(int base_cost, Weapon weapon, Armor armor, Chassis chassis) {
 
         /*
          ; Special Unit Abilities
@@ -93,63 +130,26 @@ public class UnitAbility extends UnitPart {
         
          It's used as if that were the positive ability cost, i.e. positive total_unit_cost = (unit_cost *(1+ability_cost / 4))
          */
-        int value = 0;
-        if (cost_code > 0) {
-            value = cost_code;
-        }
-        switch (cost_code) {
-            case 0:
-                return 0;
-            case -1:
-                value = wep.getCost() / arm.getCost();
-                break;
-            case -2:
-                value = wep.getCost() - 1;
-                break;
-            case -3:
-                value = arm.getCost() - 1;
-                break;
-            case -4:
-                value = chas.getCost() - 1;
-                break;
-            case -5:
-                value = wep.getCost() + arm.getCost() - 2;
-                break;
-            case -6:
-                value = wep.getCost() + chas.getCost() - 2;
-                break;
-            case -7:
-                value = arm.getCost() + chas.getCost() - 2;
-                break;
-            default:
-                log.error("Reached end of switch statement.  Invalid number supplied.");
-                // This could should never be reached.  Its mostly here in cose someone accidently removes a check someplace.
-                throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
-
-        }
+        
+        int value = convert_cost_code(weapon, armor, chassis);
+        
         return base_cost * value / 4;
     }
     
+   
     
     
-    
-    public static class Builder {
+    public static class Builder extends UnitPart.Builder<Builder>{
 
         // Required
-        private final String key;
         private final String[] namedescrip;
-        private final Translation tran;
 
-        // Should be used
-        private List<Restriction> restrictions = new ArrayList<>();
-        private List<Effect> effects = new ArrayList<>();
 
         // Optional
         private Set<MovementType> allowed_movements = new HashSet<>();
         private Set<CombatMode> allowed_combatModes = new HashSet<>();
 
         private int cost_code = 0;
-        private List<String> pre_reqs = new ArrayList<>();
 
         Integer max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
 
@@ -162,9 +162,13 @@ public class UnitAbility extends UnitPart {
         
         
         
-        public Builder(String key, Translation tran, String name, String code, String description) {
-            this.key = key;
-            this.tran = tran;
+        public Builder(Translation tran, String key, String name, String code, String description) {
+           super(tran, key, 0);
+           namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
+        }
+        
+        public Builder(Translation tran, String key, int flatcost, String name, String code, String description){
+            super(tran, key, flatcost);
             namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
         }
 
@@ -176,12 +180,6 @@ public class UnitAbility extends UnitPart {
             return this;
         }
 
-        public Builder addPreReq(String pre_req) {
-            if (!pre_req.trim().equalsIgnoreCase("None")) {
-                pre_reqs.add(pre_req.trim());
-            }
-            return this;
-        }
 
         public Builder allowedMovementTypes(Set<MovementType> movements) {
             this.allowed_movements = movements;
@@ -202,6 +200,8 @@ public class UnitAbility extends UnitPart {
             this.cost_increased_land = cost_increased_land;
             return this;
         }
+        
+        
 
         public Builder smacAbilityFlags(String smacFlags) {
             smacFlags = smacFlags.trim();
