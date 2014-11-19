@@ -44,12 +44,33 @@ import javax.xml.bind.Unmarshaller;
  * @author Gregory Jordan
  */
 public class Faction {
+    
+    private static String PREFIX = "./Factions/"; 
 
     FactionSettings setting;
     Faction_Dialog dialog;
-    String code_name;
-    private final String PREFIX = "./Factions/"; 
+    private String code_name;
+    private String race;
+    
+    public FactionSettings getSetting() {
+        return setting;
+    }
 
+    public Faction_Dialog getDialog() {
+        return dialog;
+    }
+
+    public String getCode_name() {
+        return code_name;
+    }
+
+    public String getRace() {
+        return race;
+    }
+    
+
+    
+    
     
     /**
      * Load in the old SMAC/X config files for the factions.
@@ -61,6 +82,8 @@ public class Faction {
 
 
         try {
+            race = "default";
+            
             setting = new FactionSettings();
 
             dialog = new Faction_Dialog(Locale.ENGLISH);
@@ -165,6 +188,90 @@ public class Faction {
 
             return false; // FAILAURE
 
+        }
+    }
+    
+    /**
+     * Will read in the given XML.  This function is likely to be edited in the future.
+     * TODO: Update this when the factions data layout is figured out better. (for translations)
+     * @param name
+     * @return
+     */
+    public boolean readXML(String name){
+        if(name.length()==0){
+            return false;
+        }
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            //StringReader sr = new StringReader(xml);
+            String filename = name + "_settings.xml";
+            Path file = Paths.get(PREFIX, filename);     
+            this.setting = (FactionSettings) jaxbUnmarshaller.unmarshal(file.toFile());
+            
+            
+            jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
+            jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            filename = name + "_English.xml"; // TODO: make this work for multiple languages.
+            file = Paths.get(PREFIX, filename);
+            this.dialog = (Faction_Dialog) jaxbUnmarshaller.unmarshal(file.toFile());
+            
+            this.code_name = name;
+            return true;
+        
+        } catch (JAXBException e) {
+            // some exception occured  
+            e.printStackTrace();
+            return false;
+        } 
+        
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public boolean saveXML() {
+        if(setting==null){
+            return false;
+        }
+        
+        try {
+            
+            // create JAXB context and initializing Marshaller  
+            JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // for getting nice formatted output  
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            //specify the location and name of xml file to be created  
+            String savename = code_name + "_settings.xml";
+            File XMLfile = new File(PREFIX,savename);
+
+            // Writing to XML file  
+            jaxbMarshaller.marshal(setting, XMLfile);
+            // Writing to console  
+            //jaxbMarshaller.marshal(setting, System.out); // TODO: move this to the logging system.
+
+            jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
+            jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // for getting nice formatted output  
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            savename =  code_name + "_English.xml";
+            XMLfile = new File(PREFIX, savename);
+
+            // Writing to XML file  
+            jaxbMarshaller.marshal(dialog, XMLfile);
+            // Writing to console  
+            //jaxbMarshaller.marshal(dialog, System.out);
+            return true;
+        } catch (JAXBException e) {
+            // some exception occured  
+            e.printStackTrace();
+            return false;
         }
     }
     
@@ -384,89 +491,7 @@ public class Faction {
         return tmp;
     }
 
-    /**
-     * Will read in the given XML.  This function is likely to be edited in the future.
-     * TODO: Update this when the factions data layout is figured out better. (for translations)
-     * @param name
-     * @return
-     */
-    public boolean readXML(String name){
-        if(name.length()==0){
-            return false;
-        }
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            //StringReader sr = new StringReader(xml);
-            String filename = name + "_settings.xml";
-            Path file = Paths.get(PREFIX, filename);     
-            this.setting = (FactionSettings) jaxbUnmarshaller.unmarshal(file.toFile());
-            
-            
-            jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-            jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            filename = name + "_English.xml"; // TODO: make this work for multiple languages.
-            file = Paths.get(PREFIX, filename);
-            this.dialog = (Faction_Dialog) jaxbUnmarshaller.unmarshal(file.toFile());
-            
-            this.code_name = name;
-            return true;
-        
-        } catch (JAXBException e) {
-            // some exception occured  
-            e.printStackTrace();
-            return false;
-        } 
-        
-    }
     
-    /**
-     *
-     * @return
-     */
-    public boolean saveXML() {
-        if(setting==null){
-            return false;
-        }
-        
-        try {
-            
-            // create JAXB context and initializing Marshaller  
-            JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // for getting nice formatted output  
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-            //specify the location and name of xml file to be created  
-            String savename = code_name + "_settings.xml";
-            File XMLfile = new File(PREFIX,savename);
-
-            // Writing to XML file  
-            jaxbMarshaller.marshal(setting, XMLfile);
-            // Writing to console  
-            //jaxbMarshaller.marshal(setting, System.out); // TODO: move this to the logging system.
-
-            jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-            jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // for getting nice formatted output  
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-            savename =  code_name + "_English.xml";
-            XMLfile = new File(PREFIX, savename);
-
-            // Writing to XML file  
-            jaxbMarshaller.marshal(dialog, XMLfile);
-            // Writing to console  
-            //jaxbMarshaller.marshal(dialog, System.out);
-            return true;
-        } catch (JAXBException e) {
-            // some exception occured  
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     private int findkey(List<String> strlist, String key) {
         int line = 0;
