@@ -255,15 +255,20 @@ public class Ruleset {
                     // then it is a secret project.
                     key = "#PROJECT" + secret_count;
 
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5]).project().pre_req(row[3]).
-                            quotes(blurbs.get(key)).build();
+                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
+                            .project()
+                            .addPreRequisiteTech(row[3])
+                            .quotes(blurbs.get(key))
+                            .build();
 
                     secret_count++;
                 } else {
                     key = "#FAC" + facility_count;
 
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5]).pre_req(row[3]).
-                            quotes(blurbs.get(key)).build();
+                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
+                            .addPreRequisiteTech(row[3])
+                            .quotes(blurbs.get(key))
+                            .build();
 
                     facility_count++;
                 }
