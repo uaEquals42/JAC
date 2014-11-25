@@ -16,34 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine;
+package jac.engine.mapstuff;
+
+import jac.engine.mapstuff.Square;
 
 /**
  *
  * @author Gregory Jordan
  */
 public class Gameboard {
-    int width;
-    int height;
-    Square[][] map;
-    int waterheight = 10000; // meters, everything is in meters for height.
+
+    private int width;
+    private int height;
+    private Square[][] map;
+    private int waterheight = 10000; // meters, everything is in meters for height.
     //  Terrain generated above this level will be above water, terrain below will be underwater.
-    
-    public Gameboard(int width, int height, int percent_land){
+
+    public Gameboard(int width, int height, int percent_land) {
         this.width = width;
         this.height = height;
         map = new Square[width][height];
         generate_flat_map();
-        
+
     }
-	public void generate_flat_map(){
-            for(int ww=0; ww < width; ww++){
-                for(int hh=0; ww < height; hh++){
-                    map[ww][hh]=new Square(100);
-                }
+
+    public void generate_flat_map() {
+        for (int ww = 0; ww < width; ww++) {
+            for (int hh = 0; ww < height; hh++) {
+                map[ww][hh] = new Square(100);
             }
         }
-	public void generateradom_map(){
-		
-	}
+    }
+
+    public void generateradom_map() {
+
+    }
+
 }

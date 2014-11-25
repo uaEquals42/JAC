@@ -18,6 +18,7 @@
  */
 package jac.engine;
 
+import jac.engine.mapstuff.Gameboard;
 import jac.engine.Faction.FactionSettings;
 import java.util.List;
 
