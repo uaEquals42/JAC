@@ -126,19 +126,21 @@ public class SMAC_Test {
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", 1, rules.getChasises().get("0").getSpeed());
-        assertEquals("Infantry cost", 1, rules.getChasises().get("0").getFlatcost());
-        assertEquals("Infantry Prereqs", 0, rules.getChasises().get("0").getPre_requisite_technology().size());
-        assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("0").getTriad());
+        assertEquals("Infantry movment", 1, rules.getChasises().get("Infantry").getSpeed());
+        assertEquals("Infantry cost", 1, rules.getChasises().get("Infantry").getFlatcost());
+        assertEquals("Infantry Prereqs", 0, rules.getChasises().get("Infantry").getPre_requisite_technology().size());
+        assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("Infantry").getTriad());
         
-        assertEquals("Missile prereqs", "Orbital", rules.getChasises().get("8").getPre_requisite_technology().get(0));
-        assertEquals("Missile is a missle?", true, rules.getChasises().get("8").isMissle());
-        assertEquals("Missle is an air unit?", MovementType.AIR, rules.getChasises().get("8").getTriad());
+        assertEquals("Missile prereqs", "Orbital", rules.getChasises().get("Missile").getPre_requisite_technology().get(0));
+        assertEquals("Missile is a missle?", true, rules.getChasises().get("Missile").isMissle());
+        assertEquals("Missle is an air unit?", MovementType.AIR, rules.getChasises().get("Missile").getTriad());
     }
     
     
     @Test
     public void test_Facility(){
+        assertEquals("Number of facilities/secrectprojects", 71, rules.getFacilities().size());
+        
         
     }
 }

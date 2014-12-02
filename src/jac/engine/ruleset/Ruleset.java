@@ -227,6 +227,16 @@ public class Ruleset {
             return blurbs;
         }
 
+        private void load_unitDesigns(List<String> input) throws SectionNotFoundException {
+            int pos = gotosection("#UNITS", input);
+            pos++;
+            
+            pos++;
+            for (; !input.get(pos).trim().isEmpty(); pos++) {
+                 
+             }
+        }
+        
         /**
          * This is for loading in the facilities and secret projects.
          *
@@ -369,10 +379,11 @@ public class Ruleset {
         private void load_chassis(List<String> input) throws SectionNotFoundException {
             int pos = gotosection("#CHASSIS", input);
             pos++;
-
-            for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
-
-                String[] line = input.get(pos + key).split(",");
+            
+            for (; !input.get(pos).trim().isEmpty(); pos++) {
+                
+                String[] line = input.get(pos).split(",");
+                String key = line[0].trim();
                 List<Noun> names = new ArrayList<>();
                 names.add(new Noun(line[0], line[1]));
                 names.add(new Noun(line[2], line[3]));
@@ -390,18 +401,18 @@ public class Ruleset {
                 names.add(new Noun(line[17], line[18]));
 
                 int damage = 0;
-                if (key == 5) {
+                if (key.equalsIgnoreCase("Needlejet")) {
                     damage = 100;
                 }
-                if (key == 6) {
+                if (key.equalsIgnoreCase("'Copter")) {
                     damage = 25; // TODO: Verify that it is 25% for helicoptors.
                 }
-                if (key == 8) {
+                if (key.equalsIgnoreCase("Missile")) {
                     damage = 100;
                 }
 
-                chasises.put(Integer.toString(key),                      
-                        new Chassis.Builder(tran, Integer.toString(key), cost, mtype, speed, names).
+                chasises.put(key,                      
+                        new Chassis.Builder(tran, key, cost, mtype, speed, names).
                         addPreRequisiteTech(pre_req)
                         .ismissle(missle)
                         .setCargo(cargo)

@@ -22,6 +22,6 @@ package jac.engine;
  *
  * @author Gregory Jordan
  */
-public class Singleplayer {
+public class PlayerServer {
     
 }
