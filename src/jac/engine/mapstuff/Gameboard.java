@@ -36,14 +36,14 @@ public class Gameboard {
         this.width = width;
         this.height = height;
         map = new Square[width][height];
-        generate_flat_map();
+        generate_test_map();
 
     }
 
-    public void generate_flat_map() {
+    public void generate_test_map() {
         for (int ww = 0; ww < width; ww++) {
             for (int hh = 0; ww < height; hh++) {
-                map[ww][hh] = new Square(100);
+                map[ww][hh] = new TestSquare();
             }
         }
     }

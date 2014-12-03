@@ -22,26 +22,8 @@ package jac.engine.mapstuff;
  *
  * @author Gregory Jordan
  */
-public interface Square {
-    
-    boolean visible();
-       
-    int nutirents(int sea_level);
-    int minerals(int sea_level);
-    /**
-     * Gives the altitude of the square.
-     * @return 
-     */
-    int elevation(int sea_level);
-    int solar();
-    
-    /**
-     * Is a base or convoy using the nutrients of this square?
-     * @return 
-     */
-    boolean nutrients_not_used();
+public interface Map {
+    Square viewSquare(int x, int y);
     
     
-    boolean minerals_not_used();
-    boolean solar_not_used();
 }
