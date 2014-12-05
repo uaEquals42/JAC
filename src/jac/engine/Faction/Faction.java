@@ -38,13 +38,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import javax.xml.bind.Unmarshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Gregory Jordan
  */
 public class Faction {
-    
+    private static final Logger log = LoggerFactory.getLogger(Faction.class);
     private static String PREFIX = "./Factions/"; 
 
     FactionSettings setting;
@@ -237,6 +239,9 @@ public class Faction {
         }
         
         try {
+            File folder = new File(PREFIX);
+            boolean result = folder.mkdirs();
+            log.debug("Had to create Factions folder: {}", result);
             
             // create JAXB context and initializing Marshaller  
             JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
@@ -248,7 +253,8 @@ public class Faction {
             //specify the location and name of xml file to be created  
             String savename = code_name + "_settings.xml";
             File XMLfile = new File(PREFIX,savename);
-
+           
+            
             // Writing to XML file  
             jaxbMarshaller.marshal(setting, XMLfile);
             // Writing to console  
