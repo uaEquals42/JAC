@@ -18,8 +18,6 @@
  */
 package jac.engine.mapstuff;
 
-import jac.engine.mapstuff.Square;
-
 /**
  *
  * @author Gregory Jordan
