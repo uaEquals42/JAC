@@ -18,12 +18,16 @@
  */
 package jac.engine.mapstuff;
 
+import java.awt.geom.Point2D;
+import java.util.Queue;
+
 /**
  *
  * @author Gregory Jordan
  */
 public interface Map {
     Square viewSquare(int x, int y);
-    
+    Queue<Point2D> pathfind(Point2D start, Point2D goal);
+    Map generate_player_map(int PlayerID);
     
 }

@@ -41,7 +41,7 @@ public class Gameboard {
     public void generate_test_map() {
         for (int ww = 0; ww < width; ww++) {
             for (int hh = 0; ww < height; hh++) {
-                map[ww][hh] = new TestSquare();
+                map[ww][hh] = new SquareTest222();
             }
         }
     }

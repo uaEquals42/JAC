@@ -22,7 +22,7 @@ package jac.engine.mapstuff;
  *
  * @author Gregory Jordan
  */
-public class TestSquare implements Square{
+public class SquareTest222 implements Square{
 
     @Override
     public boolean visible() {

@@ -22,7 +22,7 @@ package jac.engine.mapstuff;
  *
  * @author Gregory Jordan
  */
-public interface Square {
+ interface Square {
     
     boolean visible();
        
@@ -30,7 +30,8 @@ public interface Square {
     int minerals(int sea_level);
     /**
      * Gives the altitude of the square.
-     * @return 
+     * @param sea_level - The current level of the sea.
+     * @return Elevation above sea level.
      */
     int elevation(int sea_level);
     int solar();
