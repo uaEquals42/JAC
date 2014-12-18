@@ -18,7 +18,9 @@
  */
 package jac.engine.mapstuff;
 
+import jac.unit.GenericUnit;
 import java.awt.geom.Point2D;
+import java.util.Map;
 
 
 public class SquareVisible implements Square {
@@ -68,6 +70,16 @@ public class SquareVisible implements Square {
 
     @Override
     public boolean solar_not_used() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Map<Integer, GenericUnit> getUnits(int playerID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeUnit(int playerID, int unitID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

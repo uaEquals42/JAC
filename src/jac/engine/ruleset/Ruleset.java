@@ -233,6 +233,8 @@ public class Ruleset {
             
             pos++;
             for (; !input.get(pos).trim().isEmpty(); pos++) {
+                String[] row = input.get(pos).split(",");
+                 String name = row[0].trim();
                  
              }
         }

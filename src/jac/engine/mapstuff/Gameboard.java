@@ -18,11 +18,15 @@
  */
 package jac.engine.mapstuff;
 
+import java.awt.geom.Point2D;
+import java.util.Collection;
+import java.util.Queue;
+
 /**
  *
  * @author Gregory Jordan
  */
-public class Gameboard {
+public class Gameboard implements GameMap{
 
     private int width;
     private int height;
@@ -48,6 +52,21 @@ public class Gameboard {
 
     public void generateradom_map() {
 
+    }
+
+    @Override
+    public Square viewSquare(int x, int y) {
+        return map[x][y];
+    }
+
+    @Override
+    public Queue<Point2D> pathfind(Point2D start, Point2D goal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Square> generate_player_map(int PlayerID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

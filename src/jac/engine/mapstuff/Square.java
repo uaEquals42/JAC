@@ -18,6 +18,9 @@
  */
 package jac.engine.mapstuff;
 
+import jac.unit.GenericUnit;
+import java.util.Map;
+
 /**
  *
  * @author Gregory Jordan
@@ -45,4 +48,13 @@ package jac.engine.mapstuff;
     
     boolean minerals_not_used();
     boolean solar_not_used();
+    
+    /**
+     * Return units.
+     * @param playerID - a filter on which units you want to receive.
+     * @return Return empty if there are no units by that player in this square.
+     */
+    Map<Integer, GenericUnit> getUnits(int playerID);
+    
+    void removeUnit(int playerID, int unitID);
 }

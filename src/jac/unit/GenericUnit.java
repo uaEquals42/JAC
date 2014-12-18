@@ -32,8 +32,10 @@ import java.util.Map;
 public class GenericUnit {
     private final int construction_date;
     private final int max_health;
+    private final int id;
     
     private int current_health;
+    private Integer population;
     
     private Chassis chassis;
     private Reactor reactor;
@@ -43,9 +45,9 @@ public class GenericUnit {
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
     
-    private Integer population;
     
-    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player){
+    
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id){
         construction_date = turn;
         max_health = design.max_health();
         current_health = max_health;
@@ -57,6 +59,7 @@ public class GenericUnit {
         unit_abilities = design.getUnit_abilities();
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
+        this.id = id;
         
       Integer population;
         
@@ -90,6 +93,9 @@ public class GenericUnit {
         }
         return false;
         
+    }
+    public int getSensorRange(){
+        return 1;  // TODO: Have this be calculated based on rules and config options.
     }
     
     public int getConstruction_date() {
@@ -130,6 +136,10 @@ public class GenericUnit {
 
     public Integer getPopulation() {
         return population;
+    }
+
+    public int getId() {
+        return id;
     }
     
     

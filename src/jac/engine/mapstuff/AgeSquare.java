@@ -25,56 +25,68 @@ import java.util.Map;
  *
  * @author Gregory Jordan
  */
-public class SquareTest222 implements Square{
+public class AgeSquare implements Square{
 
+    private final int created_on_turn;
+    private final Square square;
+    
+    AgeSquare(int turn, Square square){
+        created_on_turn = turn;
+        this.square = square;
+    }
+    
+    public int age(int turn){
+        return turn - created_on_turn;
+    }
+    
     @Override
     public boolean visible() {
-        return true;
+        return square.visible();
     }
 
     @Override
     public int nutirents(int sea_level) {
-        return 2;
+        return square.nutirents(sea_level);
     }
 
     @Override
     public int minerals(int sea_level) {
-        return 2;
+        return square.minerals(sea_level);
     }
 
     @Override
     public int elevation(int sea_level) {
-        return 1000;
+        return square.elevation(sea_level);
     }
 
     @Override
     public int solar() {
-       return 2;
+        return square.solar();
     }
 
     @Override
     public boolean nutrients_not_used() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return square.nutrients_not_used();
     }
 
     @Override
     public boolean minerals_not_used() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return square.minerals_not_used();
     }
 
     @Override
     public boolean solar_not_used() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return square.solar_not_used();
     }
 
     @Override
     public Map<Integer, GenericUnit> getUnits(int playerID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return square.getUnits(playerID);
     }
 
     @Override
     public void removeUnit(int playerID, int unitID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        square.removeUnit(playerID, unitID);
     }
     
 }

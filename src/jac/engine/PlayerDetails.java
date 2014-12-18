@@ -34,6 +34,7 @@ public class PlayerDetails {
     private final String player_name;
     private final Faction faction;
     private final Ruleset rules;
+    private final int id;  // unique id to keep track of who is who multiplayer.
     
    
     
@@ -46,10 +47,12 @@ public class PlayerDetails {
     private List<GenericUnit> bases = new LinkedList<>();
 
     
-    PlayerDetails(String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
+    PlayerDetails(int id, String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
+        this.id = id;
         this.rules = rules;
         this.player_name = player_name;
         this.faction = faction;
+        
        
     }
 
