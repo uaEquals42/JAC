@@ -18,8 +18,11 @@
  */
 package jac.engine.mapstuff;
 
+import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.awt.geom.Point2D;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,9 +31,17 @@ public class SquareVisible implements Square {
     private final Point2D location;
     private final int altitude;
     
-    SquareVisible(Point2D location, int altitude){
+    private Map<Integer, Map<Integer, GenericUnit>> units;
+    
+    SquareVisible(Point2D location, int altitude, Collection<PlayerDetails> player_ids){
         this.location = location;
         this.altitude = altitude;
+        
+        // Initialize the unit lists for each player.
+        this.units = new HashMap();
+        for(PlayerDetails player : player_ids){
+            units.put(player.getId(), new <Integer, GenericUnit>HashMap());
+        }
     }
     
     @Override
@@ -75,12 +86,32 @@ public class SquareVisible implements Square {
 
     @Override
     public Map<Integer, GenericUnit> getUnits(int playerID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return units.get(playerID);
     }
 
     @Override
-    public void removeUnit(int playerID, int unitID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void removeUnit(int playerID, int unitID) throws MapDesync {
+        Map<Integer, GenericUnit> playerunits = units.get(playerID);
+
+        GenericUnit test = playerunits.remove(unitID);
+        if (test == null) {
+            throw new MapDesync("No unit to remove: That unit wasn't here");
+        }
+
+    }
+
+    @Override
+    public void addUnit(GenericUnit unit) throws MapDesync{
+        int playerId = unit.getId_player();
+        int unit_id = unit.getId_unit();
+
+        Map<Integer, GenericUnit> playerunits = units.get(playerId);
+
+        GenericUnit test = playerunits.put(unit_id, unit);
+        if (test != null) {
+            throw new MapDesync("Unit was already in spot");
+        }
+        
     }
     
 }

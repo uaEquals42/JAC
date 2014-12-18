@@ -85,8 +85,13 @@ public class AgeSquare implements Square{
     }
 
     @Override
-    public void removeUnit(int playerID, int unitID) {
+    public void removeUnit(int playerID, int unitID) throws MapDesync{
         square.removeUnit(playerID, unitID);
+    }
+
+    @Override
+    public void addUnit(GenericUnit unit) throws MapDesync{
+        square.addUnit(unit);
     }
     
 }

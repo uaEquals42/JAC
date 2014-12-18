@@ -32,7 +32,8 @@ import java.util.Map;
 public class GenericUnit {
     private final int construction_date;
     private final int max_health;
-    private final int id;
+    private final int id_unit;
+    private final int id_player;
     
     private int current_health;
     private Integer population;
@@ -59,7 +60,8 @@ public class GenericUnit {
         unit_abilities = design.getUnit_abilities();
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
-        this.id = id;
+        this.id_unit = id;
+        this.id_player = player.getId();
         
       Integer population;
         
@@ -126,6 +128,10 @@ public class GenericUnit {
         return weapon;
     }
 
+    public int getId_player() {
+        return id_player;
+    }
+    
     public Map<String, UnitAbility> getUnit_abilities() {
         return unit_abilities;
     }
@@ -138,8 +144,8 @@ public class GenericUnit {
         return population;
     }
 
-    public int getId() {
-        return id;
+    public int getId_unit() {
+        return id_unit;
     }
     
     

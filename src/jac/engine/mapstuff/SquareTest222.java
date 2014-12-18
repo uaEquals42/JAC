@@ -76,5 +76,10 @@ public class SquareTest222 implements Square{
     public void removeUnit(int playerID, int unitID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void addUnit(GenericUnit unit) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

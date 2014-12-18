@@ -64,6 +64,10 @@ public class PlayerDetails {
         return faction;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public long getEnergy_resrves() {
         return energy_resrves;
     }

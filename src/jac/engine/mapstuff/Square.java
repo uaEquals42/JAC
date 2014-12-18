@@ -56,5 +56,7 @@ import java.util.Map;
      */
     Map<Integer, GenericUnit> getUnits(int playerID);
     
-    void removeUnit(int playerID, int unitID);
+    void removeUnit(int playerID, int unitID) throws MapDesync;
+    
+    void addUnit(GenericUnit unit) throws MapDesync;
 }
