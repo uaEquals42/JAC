@@ -18,8 +18,10 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.MovementType;
 import jac.unit.GenericUnit;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -84,14 +86,30 @@ public class AgeSquare implements Square{
        return square.getUnits(playerID);
     }
 
-    @Override
-    public void removeUnit(int playerID, int unitID) throws MapDesync{
-        square.removeUnit(playerID, unitID);
-    }
 
     @Override
     public void addUnit(GenericUnit unit) throws MapDesync{
         square.addUnit(unit);
+    }
+
+    @Override
+    public GenericUnit removeUnit(int playerID, int unitID) throws MapDesync {
+        return square.removeUnit(playerID, unitID);
+    }
+
+    @Override
+    public boolean unit_exists(int playerID, int unitID) {
+       return square.unit_exists(playerID, unitID);
+    }
+
+    @Override
+    public GenericUnit view_unit(int playerID, int unitID) throws MapDesync {
+        return square.view_unit(playerID, unitID);
+    }
+
+    @Override
+    public Set<MovementType> allowedMovementTypes(int sealevel) {
+        return square.allowedMovementTypes(sealevel);
     }
     
 }

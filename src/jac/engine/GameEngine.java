@@ -36,7 +36,20 @@ public class GameEngine {
     }
 
     public void createnewmap() {
-        gameboard = new Gameboard(200, 200, 50);
+        gameboard = new Gameboard(200, 200, 50, this);
+    }
+    
+    void load_ruleset(){
+        
+    }
+    
+    public boolean canbeinsamesquare(int player1id, int player2id){
+        // TODO: Actually keep track of alliances.
+        return false;
+    }
+    
+    void addplayer(){
+        
     }
 
 }

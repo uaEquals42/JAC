@@ -18,8 +18,11 @@
  */
 package jac.engine.mapstuff;
 
-import java.awt.geom.Point2D;
+import jac.engine.GameEngine;
+import jac.unit.GenericUnit;
+import java.awt.Point;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -33,13 +36,15 @@ public class Gameboard implements GameMap{
     private Square[][] map;
     private int waterheight = 10000; // meters, everything is in meters for height.
     //  Terrain generated above this level will be above water, terrain below will be underwater.
+    
+    private final GameEngine gameengine;
 
-    public Gameboard(int width, int height, int percent_land) {
+    public Gameboard(int width, int height, int percent_land, GameEngine game) {
         this.width = width;
         this.height = height;
         map = new Square[width][height];
         generate_test_map();
-
+        this.gameengine = game;
     }
 
     public void generate_test_map() {
@@ -58,9 +63,15 @@ public class Gameboard implements GameMap{
     public Square viewSquare(int x, int y) {
         return map[x][y];
     }
+    
+      @Override
+    public Square viewSquare(Point location) {
+        return map[location.x][location.y];
+    }
+    
 
     @Override
-    public Queue<Point2D> pathfind(Point2D start, Point2D goal) {
+    public Queue<Point> pathfind(Point start, Point goal) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -68,5 +79,55 @@ public class Gameboard implements GameMap{
     public Collection<Square> generate_player_map(int PlayerID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void addunit(int x, int y, GenericUnit unit) throws MapDesync{
+        map[x][y].addUnit(unit);
+    }
+
+    @Override
+    public Point moveunit_1square(int playerkey, int unitkey, Point start, Point end) throws MapDesync {
+       
+        // TODO:  Figure out what this should return/throw if an enemy unit is in that square.
+        
+
+        // See if the unit exits in the given square.
+        Square beginning = viewSquare(start);
+        if(!beginning.unit_exists(playerkey, unitkey)){
+            throw new MapDesync("Unit not at location, Can't move");
+        }
+        
+         // Various sanity checks here.
+        if(start.distance(end)>=1.1){
+            return start;
+        }
+        
+        GenericUnit unit = beginning.view_unit(playerkey, unitkey);
+        Square ending = viewSquare(end);
+        
+        if(! ending.allowedMovementTypes(waterheight).contains(unit.getChassis().getTriad())){
+            // Can't move to square.  Land / Sea incompatability.
+            
+            //Exception
+            //TODO:  Write the rule to use the isAmphibious() exception case here.
+            // If it is amphibious, a land unit can move from land into a waterbase.
+            
+            return start;
+        }
+        
+        
+        
+        
+        unit = beginning.removeUnit(playerkey, unitkey);
+        
+        viewSquare(end).addUnit(unit);
+        return end;
+        
+        
+    }
+
+  
+
+    
 
 }

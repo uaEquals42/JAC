@@ -18,7 +18,9 @@
  */
 package jac.engine.mapstuff;
 
-import java.awt.geom.Point2D;
+import jac.unit.GenericUnit;
+import java.awt.Point;
+
 import java.util.Collection;
 import java.util.Queue;
 
@@ -28,7 +30,30 @@ import java.util.Queue;
  */
 public interface GameMap {
     Square viewSquare(int x, int y);
-    Queue<Point2D> pathfind(Point2D start, Point2D goal);
+    Square viewSquare(Point location);
+    
+    Queue<Point> pathfind(Point start, Point goal);
     Collection<Square> generate_player_map(int PlayerID);
+    
+    /**
+     * used strictly for new units.
+     * @param x
+     * @param y
+     * @param unit
+     * @throws MapDesync 
+     */
+    void addunit(int x, int y, GenericUnit unit) throws MapDesync;
+        
+    
+    /**
+     * 
+     * @param playerkey - the unique key for each player.
+     * @param start - starting location of the unit.   Where the unit should currently be.
+     * @param unitkey - The key for the unit that should be moved.
+     * @param end - the endpoint, where the unit should end up.  (if a valid location).
+     * @return - the ending location of the unit for this turn.  
+     * @throws MapDesync 
+     */
+    Point moveunit_1square(int playerkey, int unitkey, Point start, Point end) throws MapDesync;
     
 }

@@ -18,8 +18,10 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.MovementType;
 import jac.unit.GenericUnit;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -56,7 +58,13 @@ import java.util.Map;
      */
     Map<Integer, GenericUnit> getUnits(int playerID);
     
-    void removeUnit(int playerID, int unitID) throws MapDesync;
+    GenericUnit removeUnit(int playerID, int unitID) throws MapDesync;
     
     void addUnit(GenericUnit unit) throws MapDesync;
+    
+    boolean unit_exists(int playerID, int unitID);
+    
+    GenericUnit view_unit(int playerID, int unitID) throws MapDesync;
+    
+    Set<MovementType> allowedMovementTypes(int sealevel);
 }

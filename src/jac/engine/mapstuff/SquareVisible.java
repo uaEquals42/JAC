@@ -18,12 +18,15 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.MovementType;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class SquareVisible implements Square {
@@ -90,13 +93,15 @@ public class SquareVisible implements Square {
     }
 
     @Override
-    public void removeUnit(int playerID, int unitID) throws MapDesync {
+    public GenericUnit removeUnit(int playerID, int unitID) throws MapDesync {
         Map<Integer, GenericUnit> playerunits = units.get(playerID);
 
         GenericUnit test = playerunits.remove(unitID);
         if (test == null) {
             throw new MapDesync("No unit to remove: That unit wasn't here");
         }
+        
+        return test;
 
     }
 
@@ -112,6 +117,33 @@ public class SquareVisible implements Square {
             throw new MapDesync("Unit was already in spot");
         }
         
+    }
+
+    @Override
+    public boolean unit_exists(int playerID, int unitID) {
+        return units.get(playerID).containsKey(unitID);
+    }
+
+    @Override
+    public GenericUnit view_unit(int playerID, int unitID) throws MapDesync {
+        GenericUnit unit = units.get(playerID).get(unitID);
+        if(unit==null){
+            throw new MapDesync("Unit wasn't there to view");
+        }
+        return unit;
+    }
+
+    @Override
+    public Set<MovementType> allowedMovementTypes(int sealevel) {
+        Set<MovementType> allowedtypes = new HashSet();
+        allowedtypes.add(MovementType.AIR);
+        if(elevation(sealevel)>0){
+            allowedtypes.add(MovementType.LAND);
+        }
+        else{
+            allowedtypes.add(MovementType.LAND);
+        }
+        return allowedtypes;
     }
     
 }

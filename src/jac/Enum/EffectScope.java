@@ -25,5 +25,4 @@ package jac.Enum;
 public enum EffectScope {
     SQUAREGATHERED,
     THISUNIT,
-    ALLUNITS
 }

@@ -58,6 +58,8 @@ public class Effect {
     private final boolean cant_defend;
     private final boolean capture_when_defeated;
     private final Unit_Plan converts_to;
+    
+    private final boolean amphibious;
 
     public EffectScope getScope() {
         return scope;
@@ -67,6 +69,11 @@ public class Effect {
         return isitabase;
     }
 
+    public boolean isAmphibious() {
+        return amphibious;
+    }
+
+    
     public boolean isCan_make_facilities() {
         return can_make_facilities;
     }
@@ -109,6 +116,7 @@ public class Effect {
         private boolean cant_defend=false;
         private boolean capture_when_defeated=false;
         private Unit_Plan converts_to=null;
+        private boolean amphibious = false;
         
         public Builder(EffectScope scope){
             this.scope = scope;
@@ -121,6 +129,11 @@ public class Effect {
         
         public Builder has_population(){
             isitabase = true;
+            return this;
+        }
+        
+        public Builder amphibious(boolean choice){
+            amphibious = choice;
             return this;
         }
       
@@ -139,6 +152,7 @@ public class Effect {
         cant_defend = build.cant_defend;
         capture_when_defeated = build.capture_when_defeated;
         converts_to = build.converts_to;
+        amphibious = build.amphibious;
     }
 
     

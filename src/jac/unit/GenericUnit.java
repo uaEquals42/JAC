@@ -18,12 +18,14 @@
  */
 package jac.unit;
 
+import jac.Enum.MovementType;
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -84,6 +86,7 @@ public class GenericUnit {
         
         return effects;
     }
+    
     
    
     public boolean isitabase(int turn, PlayerDetails player){
