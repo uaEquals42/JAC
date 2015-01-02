@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class Chassis extends UnitPart{
 
-    private final int speed;
+    private final int movementPoints;
     private final  MovementType triad;
     private final  boolean missle;
     private final  int base_cargo;
@@ -48,7 +48,7 @@ public class Chassis extends UnitPart{
         this.missle = build.missle;
         this.base_cargo = build.base_cargo;
   
-        this.speed = build.speed;
+        this.movementPoints = build.movementPoints;
         this.triad = build.triad;
        
         this.range = build.range;
@@ -67,8 +67,8 @@ public class Chassis extends UnitPart{
     }
 
 
-    public int getSpeed() {
-        return speed;
+    public int getMovementPoints() {
+        return movementPoints;
     }
 
     public MovementType getTriad() {
@@ -87,7 +87,7 @@ public class Chassis extends UnitPart{
     public static class Builder  extends UnitPart.Builder<Builder>{
         private final MovementType triad;
         private final List<Noun> names;
-        private final int speed; 
+        private final int movementPoints; 
         
        private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
        private int percentDamageWhenOutOfRange=0;  
@@ -96,11 +96,11 @@ public class Chassis extends UnitPart{
         private int base_cargo = 1;
    
 
-        public Builder(Translation tran, String key, int flatcost, MovementType triad, int speed, List<Noun> names){
+        public Builder(Translation tran, String key, int flatcost, MovementType triad, int movementPoints, List<Noun> names){
             super(tran, key, flatcost);
             
             this.triad = triad;
-            this.speed = speed;
+            this.movementPoints = movementPoints;
             this.names = names;
         }
              

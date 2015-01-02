@@ -34,20 +34,20 @@ public class Gameboard implements GameMap{
     private int width;
     private int height;
     private Square[][] map;
-    private int waterheight = 10000; // meters, everything is in meters for height.
+    private int waterHeight = 10000; // meters, everything is in meters for height.
     //  Terrain generated above this level will be above water, terrain below will be underwater.
     
-    private final GameEngine gameengine;
+    private final GameEngine gameEngine;
 
     public Gameboard(int width, int height, int percent_land, GameEngine game) {
         this.width = width;
         this.height = height;
         map = new Square[width][height];
-        generate_test_map();
-        this.gameengine = game;
+        generateTestMap();
+        this.gameEngine = game;
     }
 
-    public void generate_test_map() {
+    public void generateTestMap() {
         for (int ww = 0; ww < width; ww++) {
             for (int hh = 0; ww < height; hh++) {
                 map[ww][hh] = new SquareTest222();
@@ -55,7 +55,7 @@ public class Gameboard implements GameMap{
         }
     }
 
-    public void generateradom_map() {
+    public void generateRadomMap() {
 
     }
 
@@ -71,22 +71,22 @@ public class Gameboard implements GameMap{
     
 
     @Override
-    public Queue<Point> pathfind(Point start, Point goal) {
+    public Queue<Point> pathFind(Point start, Point goal) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Collection<Square> generate_player_map(int PlayerID) {
+    public Collection<Square> generatePlayerMap(int PlayerID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addunit(int x, int y, GenericUnit unit) throws MapDesync{
+    public void addUnit(int x, int y, GenericUnit unit) throws MapDesync{
         map[x][y].addUnit(unit);
     }
 
-    @Override
-    public Point moveunit_1square(int playerkey, int unitkey, Point start, Point end) throws MapDesync {
+    
+    public UnitMoveUpdate moveunit_1Square(int playerkey, int unitkey, Point start, Point end) throws MapDesync, CantMoveUnitException {
        
         // TODO:  Figure out what this should return/throw if an enemy unit is in that square.
         
@@ -99,22 +99,25 @@ public class Gameboard implements GameMap{
         
          // Various sanity checks here.
         if(start.distance(end)>=1.1){
-            return start;
+           throw new IllegalArgumentException("Distance greater than 1");
         }
         
-        GenericUnit unit = beginning.view_unit(playerkey, unitkey);
+        GenericUnit unit = beginning.viewUnit(playerkey, unitkey);
         Square ending = viewSquare(end);
         
-        if(! ending.allowedMovementTypes(waterheight).contains(unit.getChassis().getTriad())){
+        if(! ending.allowedMovementTypes(waterHeight).contains(unit.getChassis().getTriad())){
             // Can't move to square.  Land / Sea incompatability.
             
             //Exception
             //TODO:  Write the rule to use the isAmphibious() exception case here.
             // If it is amphibious, a land unit can move from land into a waterbase.
             
-            return start;
+           throw new CantMoveUnitException();
         }
         
+        // If none of the above casses apply lets tell the unit to move 1 square.
+        
+        MoveTask moveit = new MoveTask()
         
         
         

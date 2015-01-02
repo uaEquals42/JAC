@@ -59,6 +59,8 @@ public class Effect {
     private final boolean capture_when_defeated;
     private final Unit_Plan converts_to;
     
+    private final int speed_boost;
+    
     private final boolean amphibious;
 
     public EffectScope getScope() {
@@ -81,7 +83,7 @@ public class Effect {
     public boolean isCan_make_units() {
         return can_make_units;
     }
-
+    
     public boolean isCant_attack() {
         return cant_attack;
     }
@@ -96,6 +98,10 @@ public class Effect {
 
     public Unit_Plan getConverts_to() {
         return converts_to;
+    }
+
+    public int getSpeed_boost() {
+        return speed_boost;
     }
     
     
@@ -117,6 +123,7 @@ public class Effect {
         private boolean capture_when_defeated=false;
         private Unit_Plan converts_to=null;
         private boolean amphibious = false;
+        private int speed_boost = 0;
         
         public Builder(EffectScope scope){
             this.scope = scope;
@@ -136,6 +143,11 @@ public class Effect {
             amphibious = choice;
             return this;
         }
+        
+        public Builder set_speed_boost(int ammount){
+            speed_boost = ammount;
+            return this;
+        }
       
         public Effect build() {
             return new Effect(this);
@@ -153,6 +165,7 @@ public class Effect {
         capture_when_defeated = build.capture_when_defeated;
         converts_to = build.converts_to;
         amphibious = build.amphibious;
+        this.speed_boost = build.speed_boost;
     }
 
     

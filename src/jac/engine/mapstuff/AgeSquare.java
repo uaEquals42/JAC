@@ -20,6 +20,7 @@ package jac.engine.mapstuff;
 
 import jac.Enum.MovementType;
 import jac.unit.GenericUnit;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -103,13 +104,23 @@ public class AgeSquare implements Square{
     }
 
     @Override
-    public GenericUnit view_unit(int playerID, int unitID) throws MapDesync {
-        return square.view_unit(playerID, unitID);
+    public GenericUnit viewUnit(int playerID, int unitID) throws MapDesync {
+        return square.viewUnit(playerID, unitID);
     }
 
     @Override
     public Set<MovementType> allowedMovementTypes(int sealevel) {
         return square.allowedMovementTypes(sealevel);
+    }
+
+    @Override
+    public Terrainstat getBasicTerrain() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Terrainstat> getTerrainModifiers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

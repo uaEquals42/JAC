@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class Reactor extends UnitPart{
     private final int power;
+   
  
 
 
@@ -38,6 +39,7 @@ public class Reactor extends UnitPart{
         super(build);
         this.power = build.power;
         build.getTran().getReactors().put(getKey(), build.names);
+        
     }
     
     

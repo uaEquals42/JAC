@@ -106,7 +106,7 @@ public class Unit_Plan {
             wep_cost = def_cost / 2;
         }
         int r = reactor.reactor_power();
-        int speed = chassis.getSpeed();
+        int speed = chassis.getMovementPoints();
 
         int runningTotal = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
 

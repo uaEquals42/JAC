@@ -18,33 +18,25 @@
  */
 package jac.engine.mapstuff;
 
-import jac.unit.GenericUnit;
 import java.awt.Point;
-
 import java.util.Collection;
-import java.util.Queue;
 
 /**
  *
  * @author Gregory Jordan
  */
-public interface GameMap {
-    Square viewSquare(int x, int y);
-    Square viewSquare(Point location);
+public class UnitMoveUpdate {
+    private final int playerid;
+    private final int unitid;
+    private final Point location;
+    private final Collection<Square> updatedsquares;
     
-    Queue<Point> pathFind(Point start, Point goal);
-    Collection<Square> generatePlayerMap(int PlayerID);
     
-    /**
-     * used strictly for new units.
-     * @param x
-     * @param y
-     * @param unit
-     * @throws MapDesync 
-     */
-    void addUnit(int x, int y, GenericUnit unit) throws MapDesync;
-        
-    
-
+    UnitMoveUpdate(int playerid, int unitid, int x, int y, Collection<Square> updatedsquares){
+        this.playerid = playerid;
+        this.unitid = unitid;
+        location = new Point(x,y);
+        this.updatedsquares = updatedsquares;
+    }
     
 }

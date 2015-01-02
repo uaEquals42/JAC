@@ -20,6 +20,7 @@ package jac.unit;
 
 import jac.Enum.MovementType;
 import jac.engine.PlayerDetails;
+import jac.engine.mapstuff.MoveTask;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +36,12 @@ public class GenericUnit {
     private final int construction_date;
     private final int max_health;
     private final int id_unit;
-    private final int id_player;
+    private final PlayerDetails player;
     
     private int current_health;
     private Integer population;
     
-    private Chassis chassis;
+     private Chassis chassis;
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
@@ -48,9 +49,12 @@ public class GenericUnit {
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
     
+    private int movement_points;
+    private boolean on_hold;
+    private MoveTask nextmove;
     
     
-    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id){
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, PlayerDetails PlayerDetails){
         construction_date = turn;
         max_health = design.max_health();
         current_health = max_health;
@@ -63,35 +67,71 @@ public class GenericUnit {
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
         this.id_unit = id;
-        this.id_player = player.getId();
+        this.player = PlayerDetails;
         
       Integer population;
         
     }
 
+    void set_movement_goal(MoveTask moveit){
+        
+    }
+    
+    /**
+     * Check to see if the unit has the required amount of movement points to complete the action
+     * And reduce stuff accordingly.
+     * @param ammount
+     * @return remainder.
+     */
+    int useMovementPoints(int ammount){
+        if(movement_points >= ammount){
+            movement_points = movement_points - ammount;
+            ammount = 0;
+        }
+        else{
+            ammount = ammount - movement_points;
+            movement_points = 0;
+        }
+        return ammount;
+    }
+    
+    public void resetMovementPoints(int turn){
+        movement_points = calculateMaxMovementPoints(turn);
+    }
+    
+    int calculateMaxMovementPoints(int turn){
+        int speed = 0;
+        speed = chassis.getMovementPoints();
+        
+        for(Effect effect : activeEffects(turn)){
+            speed = speed + effect.getSpeed_boost();
+        }
+        return speed;
+    }
+    
     /**
      * List of effects that are active upon this unit.  Where all the pre requisites for the effects are met.
      * @param turn
      * @param player
      * @return 
      */
-    public List<Effect> activeEffects(int turn, PlayerDetails player){
+    public List<Effect> activeEffects(int turn){
         int lifespan = turn - construction_date;
         ArrayList<Effect> effects = new ArrayList<>();
         for(UnitAbility ability: unit_abilities.values()){
             effects.addAll(ability.active_effects(lifespan, this, player));
         }
         
-        
+        // TODO: Check and add in effects that apply for all units in the faction.
         
         return effects;
     }
     
     
    
-    public boolean isitabase(int turn, PlayerDetails player){
+    public boolean isitabase(int turn){
                
-        for(Effect effect : activeEffects(turn, player)){
+        for(Effect effect : activeEffects(turn)){
             if(effect.isIsitabase()){
                 return true;
             }
@@ -132,7 +172,7 @@ public class GenericUnit {
     }
 
     public int getId_player() {
-        return id_player;
+        return player.getId();
     }
     
     public Map<String, UnitAbility> getUnit_abilities() {

@@ -18,8 +18,11 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.MovementType;
 import jac.unit.GenericUnit;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -72,13 +75,42 @@ public class SquareTest222 implements Square{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+ 
+
     @Override
-    public void removeUnit(int playerID, int unitID) {
+    public void addUnit(GenericUnit unit) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addUnit(GenericUnit unit) {
+    public Terrainstat getBasicTerrain() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Terrainstat> getTerrainModifiers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+
+    @Override
+    public boolean unit_exists(int playerID, int unitID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public GenericUnit viewUnit(int playerID, int unitID) throws MapDesync {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<MovementType> allowedMovementTypes(int sealevel) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public GenericUnit removeUnit(int playerID, int unitID) throws MapDesync {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

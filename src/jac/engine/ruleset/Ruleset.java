@@ -22,12 +22,16 @@ import jac.unit.*;
 import jac.Enum.*;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
+import jac.engine.mapstuff.TerrainBaseState;
+import jac.engine.mapstuff.TerrainModifier;
+import jac.engine.mapstuff.Terrainstat;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,6 +57,8 @@ public class Ruleset {
     private final Map<String, UnitAbility> unit_abilities;
     private final Map<String, Facility> facilities;
 
+    private final Map<String, Terrainstat> basicTerrainStates;
+    private final Map<String, Terrainstat> terrainModifiers;
     
     
     private Translation tran;  // Currently selected translation.
@@ -75,7 +81,8 @@ public class Ruleset {
         weapons = build.weapons;
         unit_abilities = build.unit_abilities;
         facilities = build.facilities;
-
+        basicTerrainStates = build.basicTerrainStates;
+        terrainModifiers = build.terrainModifiers;
         tran = build.tran;
     }
 
@@ -118,7 +125,8 @@ public class Ruleset {
     
   
     public static class Builder {
-
+        private final static int SMAC_MP_COST_MULTIPLIER = 3;
+        
         private List<Ideology> ideologies = new ArrayList<>();
         private Map<String, Tech> technologies = new HashMap<>();
 
@@ -129,6 +137,9 @@ public class Ruleset {
         private Map<String, UnitAbility> unit_abilities = new LinkedHashMap<>();
         private Map<String, Facility> facilities = new LinkedHashMap<>();
         private Translation tran;
+        
+        private  Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
+        private  Map<String, Terrainstat> terrainModifiers = new LinkedHashMap<>();
 
         public Builder loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
             log.debug("loadalpha_txt: {}", filename);
@@ -152,6 +163,8 @@ public class Ruleset {
             load_armor(input);
             load_weapon(input);
             load_unit_abilities(input);
+            basicTerrainStates = load_BasicTerrainTypes();
+            terrainModifiers = load_TerrainModifiers();
             return this;
         }
 
@@ -186,6 +199,27 @@ public class Ruleset {
             throw new SectionNotFoundException();  // TODO:  Change this to an exception?
         }
 
+        
+        private Map<String, Terrainstat> load_BasicTerrainTypes(){
+            Map<String, Terrainstat> basicterraintypes = new HashMap();
+            
+            basicterraintypes.put("dirt", new TerrainBaseState.Builder("dirt", 3).build());
+            basicterraintypes.put("rock", new TerrainBaseState.Builder("rock", 3).build());
+              
+            return basicterraintypes;
+        }
+        
+        private Map<String, Terrainstat> load_TerrainModifiers(){
+            Map<String, Terrainstat> terrainModifiers = new HashMap();
+            
+            terrainModifiers.put("fungus", new TerrainModifier.Builder("fungus", 9).build());
+            terrainModifiers.put("road", new TerrainModifier.Builder("road", 1).setMinMPCost(1).build());
+            terrainModifiers.put("mag", new TerrainModifier.Builder("mag", 0).setMinMPCost(0).build());
+            
+            
+            return terrainModifiers;
+        }
+        
         private Map<String, String> load_techlongs(Path location) throws IOException {
             log.debug("Load techlongs: {}", location);
             List<String> input = Files.readAllLines(location, StandardCharsets.ISO_8859_1);
@@ -392,7 +426,7 @@ public class Ruleset {
                 names.add(new Noun(line[4], line[5]));
                 names.add(new Noun(line[6], line[7]));
 
-                int speed = Integer.parseInt(line[8].trim());
+                int speed = Integer.parseInt(line[8].trim()) * SMAC_MP_COST_MULTIPLIER;
                 MovementType mtype = MovementType.convert(Integer.parseInt(line[9].trim()));
                 int range = Integer.parseInt(line[10].trim());
                 boolean missle = line[11].trim().equals("1");

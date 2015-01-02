@@ -18,33 +18,36 @@
  */
 package jac.engine.mapstuff;
 
-import jac.unit.GenericUnit;
-import java.awt.Point;
-
-import java.util.Collection;
-import java.util.Queue;
-
 /**
  *
  * @author Gregory Jordan
  */
-public interface GameMap {
-    Square viewSquare(int x, int y);
-    Square viewSquare(Point location);
-    
-    Queue<Point> pathFind(Point start, Point goal);
-    Collection<Square> generatePlayerMap(int PlayerID);
+public interface Tasks {
+    /**
+     * The total cost for this particular task.
+     * @return 
+     */
+    int getActionPointCost();
     
     /**
-     * used strictly for new units.
-     * @param x
-     * @param y
-     * @param unit
-     * @throws MapDesync 
+     * Returns 0 when the task is finished.  
+     * @return Between 0 and getActionPointCost();
      */
-    void addUnit(int x, int y, GenericUnit unit) throws MapDesync;
-        
+    int getTaskProgress();
     
-
+    /**
+     * 
+     * @param availableActionPoints
+     * @return the amount of action points used.
+     */
+    int workOnTask(int availableActionPoints);
+    
+    /**
+     * What is this particular task called.
+     * @return 
+     */
+    String getKey();  
+    
+    
     
 }

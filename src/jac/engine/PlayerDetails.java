@@ -89,7 +89,7 @@ public class PlayerDetails {
     public List<GenericUnit> findBases(int turn){
         List<GenericUnit> bases = new LinkedList<>();
         for(GenericUnit unit : genericunits){
-            if(unit.isitabase(turn, this)){
+            if(unit.isitabase(turn)){
                 bases.add(unit);
             }
         }

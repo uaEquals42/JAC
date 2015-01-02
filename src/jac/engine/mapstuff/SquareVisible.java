@@ -125,7 +125,7 @@ public class SquareVisible implements Square {
     }
 
     @Override
-    public GenericUnit view_unit(int playerID, int unitID) throws MapDesync {
+    public GenericUnit viewUnit(int playerID, int unitID) throws MapDesync {
         GenericUnit unit = units.get(playerID).get(unitID);
         if(unit==null){
             throw new MapDesync("Unit wasn't there to view");
@@ -145,5 +145,16 @@ public class SquareVisible implements Square {
         }
         return allowedtypes;
     }
-    
+
+    @Override
+    public Terrainstat getBasicTerrain() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Terrainstat> getTerrainModifiers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ 
 }

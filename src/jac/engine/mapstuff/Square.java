@@ -20,6 +20,7 @@ package jac.engine.mapstuff;
 
 import jac.Enum.MovementType;
 import jac.unit.GenericUnit;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +31,10 @@ import java.util.Set;
  interface Square {
     
     boolean visible();
-       
+    
+    Terrainstat getBasicTerrain();
+    Collection<Terrainstat> getTerrainModifiers();
+    
     int nutirents(int sea_level);
     int minerals(int sea_level);
     /**
@@ -51,6 +55,7 @@ import java.util.Set;
     boolean minerals_not_used();
     boolean solar_not_used();
     
+    
     /**
      * Return units.
      * @param playerID - a filter on which units you want to receive.
@@ -64,7 +69,7 @@ import java.util.Set;
     
     boolean unit_exists(int playerID, int unitID);
     
-    GenericUnit view_unit(int playerID, int unitID) throws MapDesync;
+    GenericUnit viewUnit(int playerID, int unitID) throws MapDesync;
     
     Set<MovementType> allowedMovementTypes(int sealevel);
 }

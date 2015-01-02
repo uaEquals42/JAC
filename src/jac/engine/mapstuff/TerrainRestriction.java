@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -18,33 +18,10 @@
  */
 package jac.engine.mapstuff;
 
-import jac.unit.GenericUnit;
-import java.awt.Point;
-
-import java.util.Collection;
-import java.util.Queue;
-
 /**
  *
  * @author Gregory Jordan
  */
-public interface GameMap {
-    Square viewSquare(int x, int y);
-    Square viewSquare(Point location);
-    
-    Queue<Point> pathFind(Point start, Point goal);
-    Collection<Square> generatePlayerMap(int PlayerID);
-    
-    /**
-     * used strictly for new units.
-     * @param x
-     * @param y
-     * @param unit
-     * @throws MapDesync 
-     */
-    void addUnit(int x, int y, GenericUnit unit) throws MapDesync;
-        
-    
-
+public class TerrainRestriction {
     
 }
