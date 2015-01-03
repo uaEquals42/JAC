@@ -18,6 +18,7 @@
  */
 package jac.engine.Faction;
 
+import jac.Enum.AI_Emphesis;
 import jac.Enum.FreeUnitType;
 import jac.Enum.SocialAreas;
 import jac.Enum.NounSex;
@@ -51,7 +52,7 @@ public class Faction {
 
     FactionSettings setting;
     Faction_Dialog dialog;
-    private String code_name;
+    private String codeName;
     private String race;
     
     public FactionSettings getSetting() {
@@ -62,8 +63,8 @@ public class Faction {
         return dialog;
     }
 
-    public String getCode_name() {
-        return code_name;
+    public String getCodeName() {
+        return codeName;
     }
 
     public String getRace() {
@@ -80,7 +81,7 @@ public class Faction {
      * @param FileName
      * @return
      */
-    public boolean load_alpha_fac_file(String FileName) {
+    public boolean loadSmacFactionFile(String FileName) {
 
 
         try {
@@ -93,21 +94,21 @@ public class Faction {
             Path path = Paths.get(FileName);
 
             
-            List<String> fac_in = Files.readAllLines(path, StandardCharsets.UTF_8);
+            List<String> textFileIn = Files.readAllLines(path, StandardCharsets.UTF_8);
             int line = 0;
 
-            line = findkey(fac_in, "#");
-            code_name = fac_in.get(line).substring(1);
-            line = nextline(line, fac_in);
-            String[] tmp = fac_in.get(line).split(",");
+            line = findKey(textFileIn, "#");
+            codeName = textFileIn.get(line).substring(1);
+            line = nextLine(line, textFileIn);
+            String[] tmp = textFileIn.get(line).split(",");
             dialog.faction_name_title = tmp[0];
             dialog.fact_short_description_of_ideology = tmp[1].trim();
             dialog.noun = tmp[2].trim();
             
-            String str_tmp = tmp[3].trim()+tmp[4].trim();
+            String temporaryString = tmp[3].trim()+tmp[4].trim();
             
                     
-            dialog.faction_name_sexP = NounSex.convert(str_tmp);
+            dialog.faction_name_sexP = NounSex.convert(temporaryString);
 
 
             dialog.leaders_name = tmp[5].trim();
@@ -122,11 +123,11 @@ public class Faction {
             // Next line in file.
             // Follows the following grammer:  Rule, rulesetting, rule, rulesetting, etc...
             line++;
-            //System.out.println(fac_in.get(line));
-            tmp = fac_in.get(line).split(",");
-            set_rules(tmp);
+            //System.out.println(textFileIn.get(line));
+            tmp = textFileIn.get(line).split(",");
+            setRules(tmp);
             line++;
-            String[] tmparray = fac_in.get(line).split(",");
+            String[] tmparray = textFileIn.get(line).split(",");
            
             switch (tmparray[2].toUpperCase().trim()) {
                 case "NIL":
@@ -167,22 +168,22 @@ public class Faction {
                     break;
 
             }
-            config_ideology(tmparray[0],tmparray[1],setting.pro_ideologies);
+            configIdeology(tmparray[0],tmparray[1],setting.pro_ideologies);
             
 
             line++;
-            tmparray = fac_in.get(line).split(",");
-           config_ideology(tmparray[0],tmparray[1],setting.anti_ideologies);
+            tmparray = textFileIn.get(line).split(",");
+           configIdeology(tmparray[0],tmparray[1],setting.anti_ideologies);
 
             // Lets skip the sentences for now
-            dialog.land_base_names = read_section(fac_in, "#BASES");
+            dialog.land_base_names = readSection(textFileIn, "#BASES");
 
 
-            dialog.water_base_names = read_section(fac_in, "#WATERBASES");
+            dialog.water_base_names = readSection(textFileIn, "#WATERBASES");
 
 
-            line = findkey(fac_in, "#BLURB");
-            dialog.faction_blurb = Quote.readblurb(line + 1, fac_in).get(0);
+            line = findKey(textFileIn, "#BLURB");
+            dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
 
 
             return true; // SUCESS
@@ -218,7 +219,7 @@ public class Faction {
             file = Paths.get(PREFIX, filename);
             this.dialog = (Faction_Dialog) jaxbUnmarshaller.unmarshal(file.toFile());
             
-            this.code_name = name;
+            this.codeName = name;
             return true;
         
         } catch (JAXBException e) {
@@ -251,7 +252,7 @@ public class Faction {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
             //specify the location and name of xml file to be created  
-            String savename = code_name + "_settings.xml";
+            String savename = codeName + "_settings.xml";
             File XMLfile = new File(PREFIX,savename);
            
             
@@ -266,7 +267,7 @@ public class Faction {
             // for getting nice formatted output  
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            savename =  code_name + "_English.xml";
+            savename =  codeName + "_English.xml";
             XMLfile = new File(PREFIX, savename);
 
             // Writing to XML file  
@@ -281,7 +282,7 @@ public class Faction {
         }
     }
     
-    private void config_ideology(String value1, String value2, List<String[]> addto){
+    private void configIdeology(String value1, String value2, List<String[]> addto){
 
         value1 = value1.trim().toLowerCase();
         value2 = value2.trim().toLowerCase();
@@ -293,7 +294,7 @@ public class Faction {
     }
     
 
-    private void set_rules(String[] input) {
+    private void setRules(String[] input) {
         String rule;
         String answ;
         for (int ii = 0; ii + 1 < input.length; ii = ii + 2) {
@@ -482,10 +483,10 @@ public class Faction {
     
     
 
-    private List<String> read_section(List<String> strlist, String code) {
+    private List<String> readSection(List<String> strlist, String code) {
 
         ArrayList<String> tmp = new ArrayList<>();
-        int line = findkey(strlist, code);
+        int line = findKey(strlist, code);
 
         // now we read in strings until we hit #END
         line++;
@@ -499,7 +500,7 @@ public class Faction {
 
     
 
-    private int findkey(List<String> strlist, String key) {
+    private int findKey(List<String> strlist, String key) {
         int line = 0;
         while (!strlist.get(line).startsWith(key) && line < strlist.size()) {
             line++;
@@ -508,7 +509,7 @@ public class Faction {
         return line;
     }
 
-    private int nextline(int line, List<String> strlist) {
+    private int nextLine(int line, List<String> strlist) {
         line++;
         while (strlist.get(line).startsWith(";")) {
             line++;
