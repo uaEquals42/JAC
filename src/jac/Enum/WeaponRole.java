@@ -22,7 +22,7 @@ package jac.Enum;
  *
  * @author Gregory Jordan
  */
-public enum CombatMode {
+public enum WeaponRole {
     PROJECTILE, 
     ENERGY, 
     MISSILE,
@@ -34,7 +34,7 @@ public enum CombatMode {
     PROBE,
     ARTIFACT;  
     public static int COUNT = 10;
-    public static CombatMode convert(int mode){
+    public static WeaponRole convert(int mode){
      
         switch(mode){
             case 0:

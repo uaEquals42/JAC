@@ -18,7 +18,7 @@
  */
 package jac.unit;
 
-import jac.Enum.CombatMode;
+import jac.Enum.WeaponRole;
 import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Translation;
 import java.util.ArrayList;
@@ -34,14 +34,14 @@ import java.util.Set;
 public class Weapon extends UnitPart{
        
     private final int offence; // -1 if psi combat.
-    private final CombatMode com_mode;
+    private final WeaponRole weaponsRole;
    
     public int getOffence() {
         return offence;
     }
 
-    public CombatMode getCom_mode() {
-        return com_mode;
+    public WeaponRole getWeaponsRole() {
+        return weaponsRole;
     }
 
  
@@ -51,7 +51,7 @@ public class Weapon extends UnitPart{
         
         build.getTran().getWeapons().put(build.getKey(), build.names);
         this.offence = build.offence;
-        this.com_mode = build.com_mode;
+        this.weaponsRole = build.com_mode;
         
         
     }
@@ -60,12 +60,12 @@ public class Weapon extends UnitPart{
         
         private final int offence; // -1 if psi combat.
      
-        private final CombatMode com_mode;
+        private final WeaponRole com_mode;
         
         private final String[] names;
         
          
-        public Builder(Translation tran, String key, int cost, int offence, CombatMode com_mode, String name, String name2){
+        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2){
             super(tran, key, cost);
             
             this.names = new String[2];

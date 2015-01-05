@@ -18,7 +18,7 @@
  */
 package jac.engine.mapstuff;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.awt.Point;
@@ -148,14 +148,14 @@ public class SquareVisible implements Square {
     }
 
     @Override
-    public Set<MovementType> allowedMovementTypes(int sealevel) {
-        Set<MovementType> allowedtypes = new HashSet<>();
-        allowedtypes.add(MovementType.AIR);
+    public Set<Domain> allowedDomains(int sealevel) {
+        Set<Domain> allowedtypes = new HashSet<>();
+        allowedtypes.add(Domain.AIR);
         if(elevation(sealevel)>0){
-            allowedtypes.add(MovementType.LAND);
+            allowedtypes.add(Domain.LAND);
         }
         else{
-            allowedtypes.add(MovementType.LAND);
+            allowedtypes.add(Domain.LAND);
         }
         return allowedtypes;
     }

@@ -18,8 +18,8 @@
  */
 package jac.unit;
 
-import jac.Enum.CombatMode;
-import jac.Enum.MovementType;
+import jac.Enum.WeaponRole;
+import jac.Enum.Domain;
 import jac.engine.ruleset.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -146,8 +146,8 @@ public class UnitAbility extends UnitPart {
 
 
         // Optional
-        private Set<MovementType> allowed_movements = new HashSet<>();
-        private Set<CombatMode> allowed_combatModes = new HashSet<>();
+        private Set<Domain> unitDomains = new HashSet<>();
+        private Set<WeaponRole> allowedUnitRoles = new HashSet<>();
 
         private int cost_code = 0;
 
@@ -181,13 +181,13 @@ public class UnitAbility extends UnitPart {
         }
 
 
-        public Builder allowedMovementTypes(Set<MovementType> movements) {
-            this.allowed_movements = movements;
+        public Builder theUnitsDomains(Set<Domain> domains) {
+            this.unitDomains = domains;
             return this;
         }
 
-        public Builder allowedCombatTypes(Set<CombatMode> allowed_combatModes) {
-            this.allowed_combatModes = allowed_combatModes;
+        public Builder allowedCombatTypes(Set<WeaponRole> allowed_combatModes) {
+            this.allowedUnitRoles = allowed_combatModes;
             return this;
         }
 
@@ -229,54 +229,54 @@ public class UnitAbility extends UnitPart {
              ;          10000000000 = Cost increased for land units
              */
             if (smacFlags.charAt(2) == '1') {
-                allowed_combatModes.clear();
-                allowed_combatModes.add(CombatMode.TRANSPORT);
+                allowedUnitRoles.clear();
+                allowedUnitRoles.add(WeaponRole.TRANSPORT);
             }
             if (smacFlags.charAt(3) == '0') {
                 // PSI Unit Flag.  If 1 then not allowed. So if 0, then it is allowed.
-                allowed_combatModes.add(CombatMode.PSI);
+                allowedUnitRoles.add(WeaponRole.PSI);
             }
                
             if (smacFlags.charAt(5) == '1') {
-                allowed_combatModes.add(CombatMode.PROBE);
-                allowed_combatModes.add(CombatMode.CONVOY);
-                allowed_combatModes.add(CombatMode.TRANSPORT); 
+                allowedUnitRoles.add(WeaponRole.PROBE);
+                allowedUnitRoles.add(WeaponRole.CONVOY);
+                allowedUnitRoles.add(WeaponRole.TRANSPORT); 
             }
             
             if (smacFlags.charAt(6) == '1') {
-                allowed_combatModes.add(CombatMode.TERRAFORMER);
+                allowedUnitRoles.add(WeaponRole.TERRAFORMER);
             }
             if (smacFlags.charAt(7) == '1') {
-                allowed_combatModes.add(CombatMode.ENERGY);
-                allowed_combatModes.add(CombatMode.MISSILE);
-                allowed_combatModes.add(CombatMode.PROJECTILE);
+                allowedUnitRoles.add(WeaponRole.ENERGY);
+                allowedUnitRoles.add(WeaponRole.MISSILE);
+                allowedUnitRoles.add(WeaponRole.PROJECTILE);
             }
 
             if (smacFlags.charAt(8) == '1') {
-                allowed_movements.add(MovementType.AIR);
+                unitDomains.add(Domain.AIR);
             }
 
             if (smacFlags.charAt(9) == '1') {
-                allowed_movements.add(MovementType.SEA);
+                unitDomains.add(Domain.SEA);
 
             }
             if (smacFlags.charAt(10) == '1') {
-                allowed_movements.add(MovementType.LAND);
+                unitDomains.add(Domain.LAND);
             }
             
             if (smacFlags.charAt(4) == '1') {              
-                allowed_combatModes.remove(CombatMode.PROBE);
+                allowedUnitRoles.remove(WeaponRole.PROBE);
             }
 
             // Now use this data to create the restrictions.
-            if (allowed_movements.size() == MovementType.COUNT) {
-                allowed_movements.clear();  // Optimization.  The code for checking assumes all are true if the list is empty.
+            if (unitDomains.size() == Domain.COUNT) {
+                unitDomains.clear();  // Optimization.  The code for checking assumes all are true if the list is empty.
             }
-            if (allowed_combatModes.size() == CombatMode.COUNT){
-                allowed_combatModes.clear();
+            if (allowedUnitRoles.size() == WeaponRole.COUNT){
+                allowedUnitRoles.clear();
             }
             
-            restrictions.add(new Restriction.Builder().SetAllowedRoles(allowed_combatModes).SetAllowedTypes(allowed_movements).build());
+            restrictions.add(new Restriction.Builder().SetAllowedRoles(allowedUnitRoles).SetAllowedTypes(unitDomains).build());
             
             
             

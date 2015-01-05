@@ -18,7 +18,7 @@
  */
 package jac.unit;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.engine.ruleset.Tech;
 import java.util.List;
 import java.util.Map;
@@ -95,9 +95,9 @@ public class Unit_Plan {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
         int def_cost = armor.getFlatcost();
         
-        if (chassis.getMovementType() == MovementType.SEA) {
+        if (chassis.getDomain() == Domain.SEA) {
             def_cost = def_cost / 2;
-        } else if (chassis.getMovementType() == MovementType.AIR) {
+        } else if (chassis.getDomain() == Domain.AIR) {
             def_cost = def_cost * 2;
         }
 
@@ -110,9 +110,9 @@ public class Unit_Plan {
 
         int runningTotal = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
 
-        if (chassis.getMovementType() == MovementType.SEA) {
+        if (chassis.getDomain() == Domain.SEA) {
             runningTotal = runningTotal / 2;
-        } else if (chassis.getMovementType() == MovementType.AIR) {
+        } else if (chassis.getDomain() == Domain.AIR) {
             runningTotal = runningTotal / 4;
         }
 

@@ -18,7 +18,7 @@
  */
 package jac.unit;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.Enum.UnitActions;
 import jac.engine.mapstuff.Square;
 import jac.engine.PlayerDetails;
@@ -84,7 +84,7 @@ public class GenericUnit {
     public boolean canUnitMoveTo(Square destination, int seaLevel){
         //TODO:  Add exceptions here for amphibious units.  Transports, etc.
         //
-        return destination.allowedMovementTypes(seaLevel).contains(chassis.getMovementType());
+        return destination.allowedDomains(seaLevel).contains(chassis.getDomain());
     }
     
     public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException{

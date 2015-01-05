@@ -18,7 +18,7 @@
  */
 package jac.engine.mapstuff;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.unit.GenericUnit;
 import java.util.Collection;
 import java.util.Map;
@@ -74,7 +74,7 @@ import java.util.Set;
     
     GenericUnit viewUnit(int playerID, int unitID) throws MapDesync;
     
-    Set<MovementType> allowedMovementTypes(int seaLevel);
+    Set<Domain> allowedDomains(int seaLevel);
     
     int calculateMovementPointCost(GenericUnit unit);
     

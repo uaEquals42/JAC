@@ -18,8 +18,8 @@
  */
 package jac.unit;
 
-import jac.Enum.CombatMode;
-import jac.Enum.MovementType;
+import jac.Enum.WeaponRole;
+import jac.Enum.Domain;
 import jac.engine.PlayerDetails;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -31,18 +31,18 @@ import java.util.Set;
  */
 public class Restriction {
 
-    private final Set<String> required_chassis;
-    private final Set<MovementType> requiredTypes;
-    private final Set<CombatMode> requiredRoles;
-    private final Set<String> required_reactor;
+    private final Set<String> required_chassis;  // Convereted.
+    private final Set<Domain> requiredTypes;  // Converted
+    private final Set<WeaponRole> requiredRoles;  // Converted
+    private final Set<String> required_reactor;  // Converted
 
 
     private final Integer length_of_effect;
 
-    private final String required_ideology;
+    private final String required_ideology;  // Converted
 
-    private final Integer base_bigger_than;
-    private final Integer base_smaller_than;
+    private final Integer base_bigger_than; //Done
+    private final Integer base_smaller_than; //Done
     private final String required_facility;
     
 
@@ -81,11 +81,11 @@ public class Restriction {
         }
 
         if (!requiredTypes.isEmpty()) {
-            result = result && requiredTypes.contains(unit.getChassis().getMovementType());
+            result = result && requiredTypes.contains(unit.getChassis().getDomain());
         }
 
         if (!requiredRoles.isEmpty()) {
-            result = result && requiredRoles.contains(unit.getWeapon().getCom_mode());
+            result = result && requiredRoles.contains(unit.getWeapon().getWeaponsRole());
         }
         
 
@@ -97,8 +97,8 @@ public class Restriction {
 
         // Optional
         private Set<String> required_chassis = new HashSet<>();
-        private Set<MovementType> requiredTypes = new HashSet<>();
-        private Set<CombatMode> requiredRoles = new HashSet<>();
+        private Set<Domain> requiredTypes = new HashSet<>();   //Done
+        private Set<WeaponRole> requiredRoles = new HashSet<>();
         private Set<String> races = new LinkedHashSet<>();
         private Set<String> required_reactor = new HashSet<>();
 
@@ -116,17 +116,17 @@ public class Restriction {
             return this;
         }
         
-        public Builder SetAllowedRoles(Set<CombatMode> commode) {
+        public Builder SetAllowedRoles(Set<WeaponRole> commode) {
             this.requiredRoles = commode;
             return this;
         }
         
-        public Builder SetAllowedTypes(Set<MovementType> allowedTypes) {
+        public Builder SetAllowedTypes(Set<Domain> allowedTypes) {
             this.requiredTypes = allowedTypes;
             return this;
         }
 
-        public Builder addAllowedType(MovementType allowedType) {
+        public Builder addAllowedType(Domain allowedType) {
             this.requiredTypes.add(allowedType);
             return this;
         }

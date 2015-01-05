@@ -18,7 +18,7 @@
  */
 package jac.unit;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
 public class Chassis extends UnitPart{
 
     private final int movementPoints;
-    private final  MovementType movementType;
+    private final  Domain domain;
     private final  boolean missle;
     private final  int base_cargo;
    
@@ -49,7 +49,7 @@ public class Chassis extends UnitPart{
         this.base_cargo = build.base_cargo;
   
         this.movementPoints = build.movementPoints;
-        this.movementType = build.triad;
+        this.domain = build.domain;
        
         this.range = build.range;
         this.percentDamageWhenOutOfRange = build.percentDamageWhenOutOfRange;
@@ -71,8 +71,8 @@ public class Chassis extends UnitPart{
         return movementPoints;
     }
 
-    public MovementType getMovementType() {
-        return movementType;
+    public Domain getDomain() {
+        return domain;
     }
 
     public boolean isMissle() {
@@ -83,7 +83,7 @@ public class Chassis extends UnitPart{
     
 
     public static class Builder  extends UnitPart.Builder<Builder>{
-        private final MovementType triad;
+        private final Domain domain;
         private final List<Noun> names;
         private final int movementPoints; 
         
@@ -94,10 +94,10 @@ public class Chassis extends UnitPart{
         private int base_cargo = 1;
    
 
-        public Builder(Translation tran, String key, int flatcost, MovementType triad, int movementPoints, List<Noun> names){
+        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names){
             super(tran, key, flatcost);
             
-            this.triad = triad;
+            this.domain = domain;
             this.movementPoints = movementPoints;
             this.names = names;
         }

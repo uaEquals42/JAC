@@ -18,7 +18,7 @@
  */
 package jac.engine.mapstuff;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import jac.unit.GenericUnit;
 import java.util.Collection;
 import java.util.Map;
@@ -109,8 +109,8 @@ public class AgeSquare implements Square{
     }
 
     @Override
-    public Set<MovementType> allowedMovementTypes(int sealevel) {
-        return square.allowedMovementTypes(sealevel);
+    public Set<Domain> allowedDomains(int sealevel) {
+        return square.allowedDomains(sealevel);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -16,32 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.Enum;
+package jac.unit.tests;
+
+import jac.engine.PlayerDetails;
+import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum MovementType {
-    LAND,
-    SEA,
-    AIR;
-    
-    /**
-     * The number of movement styles available.  Use this variable in case we add stuff like SPACE or underwater, underground, etc. 
-     */
-    public static int COUNT = 3;
-    
-    public static MovementType convert(int type){
-        if(type == 0){
-            return LAND;
-        }
-        if(type == 1){
-            return SEA;
-        }
-        if(type == 2){
-            return AIR;
-        }
-        throw new IllegalArgumentException();
+public class HasFacility  implements RestrictionTest {
+    private final String facilityKey;
+    HasFacility(String facilityKey){
+        this.facilityKey = facilityKey;
+    }
+
+    @Override
+    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
+       return unit.getUnit_facilities().containsKey(facilityKey);
     }
 }

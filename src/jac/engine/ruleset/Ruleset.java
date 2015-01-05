@@ -338,13 +338,13 @@ public class Ruleset {
             pos++;
             for (; !input.get(pos).trim().isEmpty(); pos++) {
                 String[] line = input.get(pos).split(",");
-                CombatMode mode;
+                WeaponRole mode;
                 int damage = Integer.parseInt(line[2].trim());
 
                 if (damage == -1) {
-                    mode = CombatMode.PSI;
+                    mode = WeaponRole.PSI;
                 } else {
-                    mode = CombatMode.convert(Integer.parseInt(line[3].trim()));
+                    mode = WeaponRole.convert(Integer.parseInt(line[3].trim()));
                 }
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
@@ -435,7 +435,7 @@ public class Ruleset {
                 names.add(new Noun(line[6], line[7]));
 
                 int speed = Integer.parseInt(line[8].trim()) * SMAC_MP_COST_MULTIPLIER;
-                MovementType mtype = MovementType.convert(Integer.parseInt(line[9].trim()));
+                Domain domain = Domain.convert(Integer.parseInt(line[9].trim()));
                 int range = Integer.parseInt(line[10].trim());
                 boolean missle = line[11].trim().equals("1");
                 int cargo = Integer.parseInt(line[12].trim());
@@ -456,7 +456,7 @@ public class Ruleset {
                 }
 
                 chasises.put(key,                      
-                        new Chassis.Builder(tran, key, cost, mtype, speed, names).
+                        new Chassis.Builder(tran, key, cost, domain, speed, names).
                         addPreRequisiteTech(pre_req)
                         .ismissle(missle)
                         .setCargo(cargo)
