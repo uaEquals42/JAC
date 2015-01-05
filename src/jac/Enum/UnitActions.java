@@ -16,28 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.mapstuff;
+package jac.Enum;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class CantMoveUnitException extends Exception {
-
-    /**
-     * Creates a new instance of <code>CantMoveUnitException</code> without
-     * detail message.
-     */
-    public CantMoveUnitException() {
-    }
-
-    /**
-     * Constructs an instance of <code>CantMoveUnitException</code> with the
-     * specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public CantMoveUnitException(String msg) {
-        super(msg);
-    }
+public enum UnitActions {
+    MOVING,
+    ON_HOLD,
+    WAITING;
 }

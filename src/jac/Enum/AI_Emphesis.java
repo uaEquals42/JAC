@@ -16,38 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.mapstuff;
+package jac.Enum;
 
 /**
  *
  * @author Gregory Jordan
  */
-public interface Tasks {
-    /**
-     * The total cost for this particular task.
-     * @return 
-     */
-    int getActionPointCost();
-    
-    /**
-     * Returns 0 when the task is finished.  
-     * @return Between 0 and getActionPointCost();
-     */
-    int getTaskProgress();
-    
-    /**
-     * 
-     * @param availableActionPoints
-     * @return the amount of action points used.
-     */
-    int workOnTask(int availableActionPoints);
-    
-    /**
-     * What is this particular task called.
-     * @return 
-     */
-    String getKey();  
-    
-    
-    
+public enum AI_Emphesis {
+    NIL,
+    ECONOMY,
+    EFFIC, SUPPORT,
+    TALENT,
+    MORALE,
+    POLICE,
+    GROWTH,
+    PLANET,
+    PROBE,
+    INDUSTRY,
+    RESEARCH;
 }

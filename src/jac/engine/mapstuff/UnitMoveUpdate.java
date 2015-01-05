@@ -18,7 +18,7 @@
  */
 package jac.engine.mapstuff;
 
-import java.awt.Point;
+import jac.unit.GenericUnit;
 import java.util.Collection;
 
 /**
@@ -28,14 +28,17 @@ import java.util.Collection;
 public class UnitMoveUpdate {
     private final int playerid;
     private final int unitid;
-    private final Point location;
+    private final int x;
+    private final int y;
     private final Collection<Square> updatedsquares;
     
     
-    UnitMoveUpdate(int playerid, int unitid, int x, int y, Collection<Square> updatedsquares){
-        this.playerid = playerid;
-        this.unitid = unitid;
-        location = new Point(x,y);
+    UnitMoveUpdate(GenericUnit unit, Square location, Collection<Square> updatedsquares){
+        
+        this.playerid = unit.getId_player();
+        this.unitid = unit.getId_unit();
+        this.x = location.getX();
+        this.y = location.getY();
         this.updatedsquares = updatedsquares;
     }
     

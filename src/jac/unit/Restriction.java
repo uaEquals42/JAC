@@ -81,7 +81,7 @@ public class Restriction {
         }
 
         if (!requiredTypes.isEmpty()) {
-            result = result && requiredTypes.contains(unit.getChassis().getTriad());
+            result = result && requiredTypes.contains(unit.getChassis().getMovementType());
         }
 
         if (!requiredRoles.isEmpty()) {
@@ -99,7 +99,7 @@ public class Restriction {
         private Set<String> required_chassis = new HashSet<>();
         private Set<MovementType> requiredTypes = new HashSet<>();
         private Set<CombatMode> requiredRoles = new HashSet<>();
-        private Set races = new LinkedHashSet<>();
+        private Set<String> races = new LinkedHashSet<>();
         private Set<String> required_reactor = new HashSet<>();
 
         private Integer x_turns = null;

@@ -126,14 +126,14 @@ public class SMAC_Test {
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", 1, rules.getChasises().get("Infantry").getSpeed());
+        assertEquals("Infantry movment", 3, rules.getChasises().get("Infantry").getMovementPoints());
         assertEquals("Infantry cost", 1, rules.getChasises().get("Infantry").getFlatcost());
         assertEquals("Infantry Prereqs", 0, rules.getChasises().get("Infantry").getPre_requisite_technology().size());
-        assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("Infantry").getTriad());
+        assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("Infantry").getMovementType());
         
         assertEquals("Missile prereqs", "Orbital", rules.getChasises().get("Missile").getPre_requisite_technology().get(0));
         assertEquals("Missile is a missle?", true, rules.getChasises().get("Missile").isMissle());
-        assertEquals("Missle is an air unit?", MovementType.AIR, rules.getChasises().get("Missile").getTriad());
+        assertEquals("Missle is an air unit?", MovementType.AIR, rules.getChasises().get("Missile").getMovementType());
     }
     
     

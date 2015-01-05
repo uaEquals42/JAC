@@ -18,10 +18,13 @@
  */
 package jac.engine.mapstuff;
 
+import jac.unit.MoveTask;
 import jac.engine.GameEngine;
 import jac.unit.GenericUnit;
 import java.awt.Point;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -34,7 +37,7 @@ public class Gameboard implements GameMap{
     private int width;
     private int height;
     private Square[][] map;
-    private int waterHeight = 10000; // meters, everything is in meters for height.
+    private int seaLevel = 10000; // meters, everything is in meters for height.
     //  Terrain generated above this level will be above water, terrain below will be underwater.
     
     private final GameEngine gameEngine;
@@ -50,7 +53,7 @@ public class Gameboard implements GameMap{
     public void generateTestMap() {
         for (int ww = 0; ww < width; ww++) {
             for (int hh = 0; ww < height; hh++) {
-                map[ww][hh] = new SquareTest222();
+                map[ww][hh] = new SquareVisible.Builder(ww, hh, 1000, gameEngine.getRuleset().getBasicTerrainStates().get("dirt"), gameEngine.listPlayers()).build();
             }
         }
     }
@@ -85,15 +88,26 @@ public class Gameboard implements GameMap{
         map[x][y].addUnit(unit);
     }
 
+    /**
+     * This is to be never called by the player method.  Only the unit should call this when it is ready to move to the square.
+     * @param begining
+     * @param unit
+     * @param destination 
+     */
+    public void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync{
+        // teleport command.  
+        destination.addUnit(unit);
+        begining.removeUnit(unit);
+    }
     
-    public UnitMoveUpdate moveunit_1Square(int playerkey, int unitkey, Point start, Point end) throws MapDesync, CantMoveUnitException {
+    public List<UnitMoveUpdate> moveunit_1Square(int playerkey, int unitkey, Point start, Point end) throws MapDesync, CantMoveUnitThereException {
        
         // TODO:  Figure out what this should return/throw if an enemy unit is in that square.
         
 
         // See if the unit exits in the given square.
         Square beginning = viewSquare(start);
-        if(!beginning.unit_exists(playerkey, unitkey)){
+        if(!beginning.unitExists(playerkey, unitkey)){
             throw new MapDesync("Unit not at location, Can't move");
         }
         
@@ -103,29 +117,34 @@ public class Gameboard implements GameMap{
         }
         
         GenericUnit unit = beginning.viewUnit(playerkey, unitkey);
-        Square ending = viewSquare(end);
+        Square destination = viewSquare(end);
         
-        if(! ending.allowedMovementTypes(waterHeight).contains(unit.getChassis().getTriad())){
-            // Can't move to square.  Land / Sea incompatability.
+        unit.set_movement_goal(destination, seaLevel);
+        List<Square> locationsVisited = unit.performActions(this);
+        
+        List<UnitMoveUpdate> mapUpdates = new LinkedList<>();
+        for(Square location : locationsVisited){
+            LinkedList<Square> squaresSeen = new LinkedList<>();
             
-            //Exception
-            //TODO:  Write the rule to use the isAmphibious() exception case here.
-            // If it is amphibious, a land unit can move from land into a waterbase.
+            squaresSeen.add(location);
             
-           throw new CantMoveUnitException();
+            if(unit.getSensorRange() == 1){
+                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()-1));
+                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()));
+                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()+1));
+                
+                squaresSeen.add(this.viewSquare(location.getX(), location.getY()+1));
+                squaresSeen.add(this.viewSquare(location.getX(), location.getY()-1));
+                
+                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()+1));
+                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()));
+                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()-1));
+            }
+            // TODO:  Add support for larger sensor ranges via formula.
+            mapUpdates.add(new UnitMoveUpdate(unit, location, squaresSeen));
         }
         
-        // If none of the above casses apply lets tell the unit to move 1 square.
-        
-        MoveTask moveit = new MoveTask()
-        
-        
-        
-        unit = beginning.removeUnit(playerkey, unitkey);
-        
-        viewSquare(end).addUnit(unit);
-        return end;
-        
+        return mapUpdates;
         
     }
 

@@ -30,7 +30,7 @@ import java.util.List;
 public class Chassis extends UnitPart{
 
     private final int movementPoints;
-    private final  MovementType triad;
+    private final  MovementType movementType;
     private final  boolean missle;
     private final  int base_cargo;
    
@@ -49,7 +49,7 @@ public class Chassis extends UnitPart{
         this.base_cargo = build.base_cargo;
   
         this.movementPoints = build.movementPoints;
-        this.triad = build.triad;
+        this.movementType = build.triad;
        
         this.range = build.range;
         this.percentDamageWhenOutOfRange = build.percentDamageWhenOutOfRange;
@@ -71,17 +71,15 @@ public class Chassis extends UnitPart{
         return movementPoints;
     }
 
-    public MovementType getTriad() {
-        return triad;
+    public MovementType getMovementType() {
+        return movementType;
     }
 
     public boolean isMissle() {
         return missle;
     }
+
     
-    public MovementType mode(){
-        return triad;
-    }
     
 
     public static class Builder  extends UnitPart.Builder<Builder>{

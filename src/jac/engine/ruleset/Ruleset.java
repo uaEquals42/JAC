@@ -63,6 +63,14 @@ public class Ruleset {
     
     private Translation tran;  // Currently selected translation.
 
+    public Map<String, Terrainstat> getBasicTerrainStates() {
+        return basicTerrainStates;
+    }
+
+    public Map<String, Terrainstat> getTerrainModifiers() {
+        return terrainModifiers;
+    }
+
 
     
     
@@ -201,7 +209,7 @@ public class Ruleset {
 
         
         private Map<String, Terrainstat> load_BasicTerrainTypes(){
-            Map<String, Terrainstat> basicterraintypes = new HashMap();
+            Map<String, Terrainstat> basicterraintypes = new HashMap<>();
             
             basicterraintypes.put("dirt", new TerrainBaseState.Builder("dirt", 3).build());
             basicterraintypes.put("rock", new TerrainBaseState.Builder("rock", 3).build());
@@ -210,7 +218,7 @@ public class Ruleset {
         }
         
         private Map<String, Terrainstat> load_TerrainModifiers(){
-            Map<String, Terrainstat> terrainModifiers = new HashMap();
+            Map<String, Terrainstat> terrainModifiers = new HashMap<>();
             
             terrainModifiers.put("fungus", new TerrainModifier.Builder("fungus", 9).build());
             terrainModifiers.put("road", new TerrainModifier.Builder("road", 1).setMinMPCost(1).build());

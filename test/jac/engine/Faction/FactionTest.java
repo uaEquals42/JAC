@@ -40,19 +40,19 @@ public class FactionTest {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         Faction instance = new Faction();
         boolean expResult = true;
-        boolean result = instance.load_alpha_fac_file(FileName);
+        boolean result = instance.loadSmacFactionFile(FileName);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of load_alpha_fac_file method, of class Faction.
+     * Test of loadSmacFactionFile method, of class Faction.
      */
     @Test
     public void testLoad_alpha_fac_file_rome() {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
         Faction instance = new Faction();
         boolean expResult = true;
-        boolean result = instance.load_alpha_fac_file(FileName);
+        boolean result = instance.loadSmacFactionFile(FileName);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
 
@@ -63,7 +63,7 @@ public class FactionTest {
         String FileName = "./testfiles/FactionsbyBlueFlux/Reagan/reagan.txt";
         Faction instance = new Faction();
         boolean expResult = true;
-        boolean result = instance.load_alpha_fac_file(FileName);
+        boolean result = instance.loadSmacFactionFile(FileName);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
 
@@ -72,19 +72,19 @@ public class FactionTest {
     @Test
     public void test_loading_original_factions(){
         Faction instance = new Faction();
-        assertEquals("Load Gains", true, instance.load_alpha_fac_file("./testfiles/SMACX/GAIANS.TXT"));
-        assertEquals("Load Morgan", true, instance.load_alpha_fac_file("./testfiles/SMACX/MORGAN.TXT"));
-        assertEquals("Load Peacekeepers", true, instance.load_alpha_fac_file("./testfiles/SMACX/PEACE.TXT"));
-        assertEquals("Load Angels", true, instance.load_alpha_fac_file("./testfiles/SMACX/angels.txt"));
-        assertEquals("Load Believers", true, instance.load_alpha_fac_file("./testfiles/SMACX/believe.txt"));
-        assertEquals("Load Caretakers", true, instance.load_alpha_fac_file("./testfiles/SMACX/caretake.txt"));
-        assertEquals("Load Cyborg", true, instance.load_alpha_fac_file("./testfiles/SMACX/cyborg.txt"));
-        assertEquals("Load Fungboy", true, instance.load_alpha_fac_file("./testfiles/SMACX/fungboy.txt"));
-        assertEquals("Load hive", true, instance.load_alpha_fac_file("./testfiles/SMACX/hive.txt"));
-        assertEquals("Load Pirates", true, instance.load_alpha_fac_file("./testfiles/SMACX/pirates.txt"));
-        assertEquals("Load Spartans", true, instance.load_alpha_fac_file("./testfiles/SMACX/spartans.txt"));
-        assertEquals("Load University", true, instance.load_alpha_fac_file("./testfiles/SMACX/univ.txt"));
-        assertEquals("Load Usurper", true, instance.load_alpha_fac_file("./testfiles/SMACX/usurper.txt"));
+        assertEquals("Load Gains", true, instance.loadSmacFactionFile("./testfiles/SMACX/GAIANS.TXT"));
+        assertEquals("Load Morgan", true, instance.loadSmacFactionFile("./testfiles/SMACX/MORGAN.TXT"));
+        assertEquals("Load Peacekeepers", true, instance.loadSmacFactionFile("./testfiles/SMACX/PEACE.TXT"));
+        assertEquals("Load Angels", true, instance.loadSmacFactionFile("./testfiles/SMACX/angels.txt"));
+        assertEquals("Load Believers", true, instance.loadSmacFactionFile("./testfiles/SMACX/believe.txt"));
+        assertEquals("Load Caretakers", true, instance.loadSmacFactionFile("./testfiles/SMACX/caretake.txt"));
+        assertEquals("Load Cyborg", true, instance.loadSmacFactionFile("./testfiles/SMACX/cyborg.txt"));
+        assertEquals("Load Fungboy", true, instance.loadSmacFactionFile("./testfiles/SMACX/fungboy.txt"));
+        assertEquals("Load hive", true, instance.loadSmacFactionFile("./testfiles/SMACX/hive.txt"));
+        assertEquals("Load Pirates", true, instance.loadSmacFactionFile("./testfiles/SMACX/pirates.txt"));
+        assertEquals("Load Spartans", true, instance.loadSmacFactionFile("./testfiles/SMACX/spartans.txt"));
+        assertEquals("Load University", true, instance.loadSmacFactionFile("./testfiles/SMACX/univ.txt"));
+        assertEquals("Load Usurper", true, instance.loadSmacFactionFile("./testfiles/SMACX/usurper.txt"));
               
     }
 
@@ -102,7 +102,7 @@ public class FactionTest {
     public void testSaveXML2() {
         Faction instance = new Faction();
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        instance.load_alpha_fac_file(FileName);
+        instance.loadSmacFactionFile(FileName);
         boolean result = instance.saveXML();
         assertEquals("Faction Data has been loaded, should be true", true, result); 
     }
@@ -111,7 +111,7 @@ public class FactionTest {
     public void test_load_XML() {
         Faction instance = new Faction();
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        instance.load_alpha_fac_file(FileName);
+        instance.loadSmacFactionFile(FileName);
         boolean result = instance.saveXML();
         assertEquals("Faction Data has been loaded, should be true", true, result); 
         

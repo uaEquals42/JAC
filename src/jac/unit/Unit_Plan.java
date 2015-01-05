@@ -95,9 +95,9 @@ public class Unit_Plan {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
         int def_cost = armor.getFlatcost();
         
-        if (chassis.mode() == MovementType.SEA) {
+        if (chassis.getMovementType() == MovementType.SEA) {
             def_cost = def_cost / 2;
-        } else if (chassis.mode() == MovementType.AIR) {
+        } else if (chassis.getMovementType() == MovementType.AIR) {
             def_cost = def_cost * 2;
         }
 
@@ -110,9 +110,9 @@ public class Unit_Plan {
 
         int runningTotal = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
 
-        if (chassis.mode() == MovementType.SEA) {
+        if (chassis.getMovementType() == MovementType.SEA) {
             runningTotal = runningTotal / 2;
-        } else if (chassis.mode() == MovementType.AIR) {
+        } else if (chassis.getMovementType() == MovementType.AIR) {
             runningTotal = runningTotal / 4;
         }
 

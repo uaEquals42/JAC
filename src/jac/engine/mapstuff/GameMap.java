@@ -44,6 +44,7 @@ public interface GameMap {
      */
     void addUnit(int x, int y, GenericUnit unit) throws MapDesync;
         
+    public void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync;
     
 
     

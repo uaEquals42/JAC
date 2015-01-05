@@ -28,7 +28,7 @@ import java.util.Set;
  *
  * @author Gregory Jordan
  */
- interface Square {
+ public interface Square {
     
     boolean visible();
     
@@ -65,11 +65,20 @@ import java.util.Set;
     
     GenericUnit removeUnit(int playerID, int unitID) throws MapDesync;
     
+    void removeUnit(GenericUnit unit) throws MapDesync;
+    
     void addUnit(GenericUnit unit) throws MapDesync;
     
-    boolean unit_exists(int playerID, int unitID);
+    
+    boolean unitExists(int playerID, int unitID);
     
     GenericUnit viewUnit(int playerID, int unitID) throws MapDesync;
     
-    Set<MovementType> allowedMovementTypes(int sealevel);
+    Set<MovementType> allowedMovementTypes(int seaLevel);
+    
+    int calculateMovementPointCost(GenericUnit unit);
+    
+    int getX();
+    
+    int getY();
 }

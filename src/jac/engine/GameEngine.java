@@ -20,6 +20,7 @@ package jac.engine;
 
 import jac.engine.mapstuff.Gameboard;
 import jac.engine.Faction.FactionSettings;
+import jac.engine.ruleset.Ruleset;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class GameEngine {
 
     private Gameboard gameboard;
     private List<FactionSettings> factions;
+    private List<PlayerDetails> players;
+    private Ruleset rules;
 
     public void GameEngine() {
 
@@ -50,6 +53,14 @@ public class GameEngine {
     
     void addplayer(){
         
+    }
+    
+    public List<PlayerDetails> listPlayers(){
+        return players;
+    }
+    
+    public Ruleset getRuleset(){
+        return rules;
     }
 
 }

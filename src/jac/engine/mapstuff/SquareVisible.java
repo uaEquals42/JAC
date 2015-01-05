@@ -21,30 +21,38 @@ package jac.engine.mapstuff;
 import jac.Enum.MovementType;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
+import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 
 public class SquareVisible implements Square {
     
-    private final Point2D location;
+    private final Point location;
     private final int altitude;
+    private final Terrainstat basicTerrain;
+    private List<Terrainstat> terrainModifiers;
     
     private Map<Integer, Map<Integer, GenericUnit>> units;
     
-    SquareVisible(Point2D location, int altitude, Collection<PlayerDetails> player_ids){
-        this.location = location;
-        this.altitude = altitude;
+    SquareVisible(Builder build){
+        this.location = build.location;
+        this.altitude = build.altitude;
+        this.basicTerrain = build.basicTerrain;
+        this.terrainModifiers = build.terrainModifiers;
         
         // Initialize the unit lists for each player.
-        this.units = new HashMap();
-        for(PlayerDetails player : player_ids){
+        this.units = new HashMap<>();
+        for(PlayerDetails player : build.players){
             units.put(player.getId(), new <Integer, GenericUnit>HashMap());
         }
+        
     }
     
     @Override
@@ -92,6 +100,12 @@ public class SquareVisible implements Square {
         return units.get(playerID);
     }
 
+    
+    @Override
+    public void removeUnit(GenericUnit unit) throws MapDesync {
+        this.removeUnit(unit.getId_player(), unit.getId_unit());
+    }
+    
     @Override
     public GenericUnit removeUnit(int playerID, int unitID) throws MapDesync {
         Map<Integer, GenericUnit> playerunits = units.get(playerID);
@@ -120,7 +134,7 @@ public class SquareVisible implements Square {
     }
 
     @Override
-    public boolean unit_exists(int playerID, int unitID) {
+    public boolean unitExists(int playerID, int unitID) {
         return units.get(playerID).containsKey(unitID);
     }
 
@@ -135,7 +149,7 @@ public class SquareVisible implements Square {
 
     @Override
     public Set<MovementType> allowedMovementTypes(int sealevel) {
-        Set<MovementType> allowedtypes = new HashSet();
+        Set<MovementType> allowedtypes = new HashSet<>();
         allowedtypes.add(MovementType.AIR);
         if(elevation(sealevel)>0){
             allowedtypes.add(MovementType.LAND);
@@ -148,13 +162,55 @@ public class SquareVisible implements Square {
 
     @Override
     public Terrainstat getBasicTerrain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return basicTerrain;
     }
 
     @Override
     public Collection<Terrainstat> getTerrainModifiers() {
+        return terrainModifiers;
+    }
+
+
+
+    @Override
+    public int calculateMovementPointCost(GenericUnit unit) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public int getX() {
+        return location.x;
+    }
+
+    @Override
+    public int getY() {
+        return location.y;
+    }
+
  
+    static class Builder {
+        private final Point location;
+        private final int altitude;
+        private final Terrainstat basicTerrain;       
+        private final Collection<PlayerDetails> players;
+        
+        private List<Terrainstat> terrainModifiers = new ArrayList<>();
+        
+        Builder(int x, int y, int absHeight, Terrainstat terrainType, Collection<PlayerDetails> players){
+            this.location = new Point(x,y);
+            this.altitude = absHeight;
+            this.basicTerrain = terrainType;
+            this.players = players;
+        }
+        
+        Builder addTerrainModifier(Terrainstat modifier){
+            terrainModifiers.add(modifier);
+            return this;
+        }
+        
+        SquareVisible build(){
+            return new SquareVisible(this);
+        }
+    }
+    
 }

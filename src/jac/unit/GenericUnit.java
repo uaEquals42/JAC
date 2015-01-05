@@ -19,11 +19,16 @@
 package jac.unit;
 
 import jac.Enum.MovementType;
+import jac.Enum.UnitActions;
+import jac.engine.mapstuff.Square;
 import jac.engine.PlayerDetails;
-import jac.engine.mapstuff.MoveTask;
+import jac.engine.mapstuff.CantMoveUnitThereException;
+import jac.engine.mapstuff.GameMap;
+import jac.engine.mapstuff.MapDesync;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +46,7 @@ public class GenericUnit {
     private int current_health;
     private Integer population;
     
-     private Chassis chassis;
+    private Chassis chassis;
     private Reactor reactor;
     private Armor armor;
     private Weapon weapon;
@@ -49,16 +54,18 @@ public class GenericUnit {
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
     
-    private int movement_points;
+    private int movementPoints;
     private boolean on_hold;
     private MoveTask nextmove;
     
+    private Square location;
     
-    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, PlayerDetails PlayerDetails){
+    
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location){
         construction_date = turn;
         max_health = design.max_health();
         current_health = max_health;
-        
+        this.location = location;
         chassis = design.getChassis();
         reactor = design.getReactor();
         armor = design.getArmor();
@@ -67,36 +74,62 @@ public class GenericUnit {
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
         this.id_unit = id;
-        this.player = PlayerDetails;
+        this.player = player;
         
       Integer population;
         
     }
 
-    void set_movement_goal(MoveTask moveit){
-        
+    
+    public boolean canUnitMoveTo(Square destination, int seaLevel){
+        //TODO:  Add exceptions here for amphibious units.  Transports, etc.
+        //
+        return destination.allowedMovementTypes(seaLevel).contains(chassis.getMovementType());
     }
     
-    /**
-     * Check to see if the unit has the required amount of movement points to complete the action
-     * And reduce stuff accordingly.
-     * @param ammount
-     * @return remainder.
-     */
-    int useMovementPoints(int ammount){
-        if(movement_points >= ammount){
-            movement_points = movement_points - ammount;
-            ammount = 0;
+    public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException{
+        if(canUnitMoveTo(destination, seaLevel)){
+            //TODO: Need to set up pathfinding and stuff here.
+            nextmove = new MoveTask(destination, this);
         }
         else{
-            ammount = ammount - movement_points;
-            movement_points = 0;
+            throw new CantMoveUnitThereException();
         }
-        return ammount;
     }
     
+    public List<Square> performActions(GameMap map) throws MapDesync {
+        List<Square> locations = new LinkedList<>();
+        locations.add(location);
+        if(whatIsUnitDoing()==UnitActions.MOVING){
+            movementPoints = nextmove.workOnTask(movementPoints);
+            if(nextmove.finished()){
+                map.moveUnitTo(location, this, nextmove.getDestination());
+                location = nextmove.getDestination();
+                locations.add(location);
+                //TODO:  Have it go to the next node in the pathfinding algorithm.
+                nextmove = null;
+            }
+        }
+        return locations;
+    }
+    
+    public void startOfTurn(GameMap map, int turn) throws MapDesync{
+        resetMovementPoints(turn);
+        performActions(map);
+    }
+    
+    
+    
+    public UnitActions whatIsUnitDoing(){
+        if(nextmove!=null){
+            return UnitActions.MOVING;
+        }
+        return UnitActions.WAITING;
+    }
+    
+    
     public void resetMovementPoints(int turn){
-        movement_points = calculateMaxMovementPoints(turn);
+        movementPoints = calculateMaxMovementPoints(turn);
     }
     
     int calculateMaxMovementPoints(int turn){

@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -16,22 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.Faction;
+package jac.engine.mapstuff;
 
 /**
  *
  * @author Gregory Jordan
  */
-public enum AI_Emphesis {
-    NIL,
-    ECONOMY,
-    EFFIC, SUPPORT,
-    TALENT,
-    MORALE,
-    POLICE,
-    GROWTH,
-    PLANET,
-    PROBE,
-    INDUSTRY,
-    RESEARCH;
+public class CantMoveUnitThereException extends Exception {
+
+    /**
+     * Creates a new instance of <code>CantMoveUnitException</code> without
+     * detail message.
+     */
+    public CantMoveUnitThereException() {
+    }
+
+    /**
+     * Constructs an instance of <code>CantMoveUnitException</code> with the
+     * specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public CantMoveUnitThereException(String msg) {
+        super(msg);
+    }
 }

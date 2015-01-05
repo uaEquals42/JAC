@@ -39,7 +39,7 @@ public class Red_FactionTest {
     public static void setUp() {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         instance = new Faction();
-        instance.load_alpha_fac_file(FileName);
+        instance.loadSmacFactionFile(FileName);
 
     }
     

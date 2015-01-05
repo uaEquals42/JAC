@@ -99,8 +99,8 @@ public class AgeSquare implements Square{
     }
 
     @Override
-    public boolean unit_exists(int playerID, int unitID) {
-       return square.unit_exists(playerID, unitID);
+    public boolean unitExists(int playerID, int unitID) {
+       return square.unitExists(playerID, unitID);
     }
 
     @Override
@@ -115,12 +115,32 @@ public class AgeSquare implements Square{
 
     @Override
     public Terrainstat getBasicTerrain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return square.getBasicTerrain();
     }
 
     @Override
     public Collection<Terrainstat> getTerrainModifiers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return square.getTerrainModifiers();
+    }
+
+    @Override
+    public void removeUnit(GenericUnit unit) throws MapDesync {
+        square.removeUnit(unit);
+    }
+
+    @Override
+    public int calculateMovementPointCost(GenericUnit unit) {
+        return square.calculateMovementPointCost(unit);
+    }
+
+    @Override
+    public int getX() {
+        return square.getX();
+    }
+
+    @Override
+    public int getY() {
+        return square.getY();
     }
     
 }
