@@ -19,11 +19,8 @@
 package jac.unit;
 
 import jac.engine.ruleset.Translation;
-import jac.unit.Effect;
-import jac.unit.Restriction;
-import jac.unit.UnitPart;
-import java.util.ArrayList;
-import java.util.List;
+import jac.unit.tests.RestrictionTest;
+
 
 /**
  *
@@ -58,8 +55,8 @@ public class Reactor extends UnitPart{
     public static class Builder extends UnitPart.Builder<Builder>{
         private final int power;
         private final String[] names;
-        public Builder(Translation tran, String key, int flatcost, int power, String full_name, String short_name){
-            super(tran, key, flatcost);
+        public Builder(Translation tran, String key, int flatcost, int power, String full_name, String short_name, RestrictionTest test){
+            super(tran, key, flatcost, test);
             this.power = power;
             this.names = new String[2];
             names[0] = full_name;

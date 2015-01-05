@@ -21,10 +21,8 @@ package jac.unit;
 import jac.Enum.WeaponRole;
 import jac.Enum.Domain;
 import jac.engine.ruleset.*;
-import java.util.ArrayList;
+import jac.unit.tests.RestrictionTest;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,13 +160,13 @@ public class UnitAbility extends UnitPart {
         
         
         
-        public Builder(Translation tran, String key, String name, String code, String description) {
-           super(tran, key, 0);
+        public Builder(Translation tran, String key, String name, String code, String description, RestrictionTest test) {
+           super(tran, key, 0, test);
            namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
         }
         
-        public Builder(Translation tran, String key, int flatcost, String name, String code, String description){
-            super(tran, key, flatcost);
+        public Builder(Translation tran, String key, int flatcost, String name, String code, String description, RestrictionTest test){
+            super(tran, key, flatcost, test);
             namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
         }
 

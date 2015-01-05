@@ -21,6 +21,7 @@ package jac.unit;
 import jac.Enum.Domain;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
+import jac.unit.tests.RestrictionTest;
 import java.util.List;
 
 /**
@@ -94,8 +95,8 @@ public class Chassis extends UnitPart{
         private int base_cargo = 1;
    
 
-        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names){
-            super(tran, key, flatcost);
+        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names, RestrictionTest test){
+            super(tran, key, flatcost, test);
             
             this.domain = domain;
             this.movementPoints = movementPoints;

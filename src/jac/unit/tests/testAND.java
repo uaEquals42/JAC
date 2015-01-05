@@ -20,6 +20,7 @@ package jac.unit.tests;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,14 +35,35 @@ public class testAND implements RestrictionTest{
         this.tests = tests;
     }
     
+    private testAND(Builder build){
+        this.tests = build.tests;
+    }
+    
     @Override
-    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
+    public boolean passes(GenericUnit unit, PlayerDetails player) {
         for(RestrictionTest test : tests){
-            if(! test.passes(lifespan, unit, player)){
+            if(! test.passes(unit, player)){
                 return false;
             }
         }
         
         return true;
+    }
+    
+    public class Builder {
+        private final List<RestrictionTest> tests;
+        public Builder(RestrictionTest test){
+            tests = new LinkedList<>();
+            tests.add(test);
+        }
+        
+        public Builder and(RestrictionTest test){
+            tests.add(test);
+            return this;
+        }
+        
+        public testAND build(){
+            return new testAND(this);
+        }
     }
 }

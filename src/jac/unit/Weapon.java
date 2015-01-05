@@ -21,6 +21,7 @@ package jac.unit;
 import jac.Enum.WeaponRole;
 import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Translation;
+import jac.unit.tests.RestrictionTest;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -65,8 +66,8 @@ public class Weapon extends UnitPart{
         private final String[] names;
         
          
-        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2){
-            super(tran, key, cost);
+        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2, RestrictionTest test){
+            super(tran, key, cost, test);
             
             this.names = new String[2];
             this.names[0] = name.trim();

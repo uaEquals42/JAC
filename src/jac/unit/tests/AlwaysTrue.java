@@ -18,7 +18,6 @@
  */
 package jac.unit.tests;
 
-import jac.Enum.WeaponRole;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
@@ -26,15 +25,11 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasRole implements RestrictionTest{
-    private final WeaponRole role;
-    
-    HasRole(WeaponRole role){
-        this.role = role;
-    }
+public class AlwaysTrue implements RestrictionTest{
 
     @Override
     public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getWeapon().getWeaponsRole() == role;
+        return true;
     }
+    
 }

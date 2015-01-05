@@ -20,8 +20,8 @@ package jac.unit;
 
 import jac.Enum.DefenceMode;
 import jac.engine.ruleset.Translation;
-import java.util.ArrayList;
-import java.util.List;
+import jac.unit.tests.RestrictionTest;
+
 
 /**
  *
@@ -67,8 +67,8 @@ public class Armor extends UnitPart{
     private final String[] names;
  
     
-        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2){
-            super(tran, key, flatcost);
+        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2, RestrictionTest test){
+            super(tran, key, flatcost, test);
             this.armor = armor;
             this.mode = mode;
             names = new String[2];

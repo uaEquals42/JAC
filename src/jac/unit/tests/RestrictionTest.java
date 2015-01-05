@@ -26,5 +26,5 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  */
 public interface RestrictionTest {
-    boolean passes(int lifespan, GenericUnit unit, PlayerDetails player);
+    boolean passes(GenericUnit unit, PlayerDetails player);
 }

@@ -30,12 +30,12 @@ public class RequiredDomain implements RestrictionTest {
 
     private final Domain domain;
 
-    RequiredDomain(Domain domain){
+    public RequiredDomain(Domain domain){
         this.domain = domain;
     }
     
     @Override
-    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
+    public boolean passes(GenericUnit unit, PlayerDetails player) {
         return unit.getChassis().getDomain() == domain;
     }
 

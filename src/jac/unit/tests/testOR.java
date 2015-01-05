@@ -20,23 +20,48 @@ package jac.unit.tests;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Gregory Jordan
  */
 public class testOR implements RestrictionTest{
-    private final RestrictionTest test1;
-    private final RestrictionTest test2;
+    private final List<RestrictionTest> tests;
     
-    testOR(RestrictionTest test1, RestrictionTest test2){
-        this.test1 = test1;
-        this.test2 = test2;
+    testOR(List<RestrictionTest> tests){
+        this.tests = tests;
+    }
+    
+    private testOR(Builder build){
+        tests = build.tests;
     }
     
     @Override
-    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
-        return test1.passes(lifespan, unit, player) || test2.passes(lifespan, unit, player);
+    public boolean passes(GenericUnit unit, PlayerDetails player) {
+        for(RestrictionTest test : tests){
+            if(test.passes(unit, player)){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
+    public class Builder{
+        private List<RestrictionTest> tests;
+        public Builder(RestrictionTest test){
+            tests = new ArrayList<>();
+            tests.add(test);
+        }
+        public Builder or(RestrictionTest test){
+            tests.add(test);
+            return this;
+        }
+        
+        public testOR build(){
+            return new testOR(this);
+        }
+    }
 }

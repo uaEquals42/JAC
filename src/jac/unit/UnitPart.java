@@ -20,6 +20,7 @@ package jac.unit;
 
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
+import jac.unit.tests.RestrictionTest;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,7 +34,8 @@ abstract public class UnitPart {
     
     
     private final List<Effect> effectsList;
-    private final List<Restriction> restrictions; // What has to be true, for the player to be able to see/build this part.
+    //private final List<Restriction> restrictions; 
+    private final RestrictionTest restrict_for_display;  // What has to be true, for the player to be able to see/build this part.
     private final List<String> pre_requisite_technology;  // This also has to be true.
     private final Set<String> allowed_races;
     private final String key;
@@ -43,7 +45,8 @@ abstract public class UnitPart {
     public UnitPart(Builder build){
         this.effectsList = build.effectsList;
         this.allowed_races = build.allowed_races;
-        this.restrictions = build.restrictions;
+        this.restrict_for_display = build.restrict_for_display;
+        
         this.pre_requisite_technology = build.pre_requisite_technology;
         this.key = build.key;
         this.flatcost = build.flatcost;
@@ -97,26 +100,22 @@ abstract public class UnitPart {
      * @param player
      * @return 
      */
-    public boolean available(int lifespan, GenericUnit unit, PlayerDetails player) {
+    public boolean available(GenericUnit unit, PlayerDetails player) {
         
-
-        
-        // Are there any other restrictions in place?
-        if (restrictions.isEmpty()) {
+        if (restrict_for_display==null){
             return true;
         }
-        boolean tf = true;
-        for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(lifespan, unit, player);
+        else{
+            return restrict_for_display.passes(unit, player);
         }
-        return tf;
+        
     }
     
     
     public List<Effect> active_effects(int lifespan, GenericUnit unit, PlayerDetails player){
         List<Effect> result = new ArrayList<>();
 
-        if (this.available(lifespan, unit, player)) {
+        if (this.available(unit, player)) {
             for (Effect effect : effectsList) {
                 if (effect.available(lifespan, unit, player)) {
                     result.add(effect);
@@ -131,6 +130,8 @@ abstract public class UnitPart {
            private final Translation tran;
            private final String key;
            private final int flatcost;
+           
+           private final RestrictionTest restrict_for_display; 
 
            private List<Effect> effectsList = new ArrayList<>();
            List<Restriction> restrictions = new ArrayList<>(); // What has to be true, for the player to be able to see/build this part.
@@ -138,10 +139,12 @@ abstract public class UnitPart {
            private Set<String> allowed_races = new LinkedHashSet<>();
         
 
-           public Builder(Translation tran, String key, int flatcost) {
+           public Builder(Translation tran, String key, int flatcost, RestrictionTest restrict_for_display) {
                this.tran = tran;
                this.key = key;
                this.flatcost = flatcost;
+               this.restrict_for_display = restrict_for_display;
+               
            }
 
            public T restrictToRace(String race) {

@@ -27,12 +27,12 @@ import jac.unit.GenericUnit;
  */
 public class testNOT implements RestrictionTest{
     private final RestrictionTest test;
-    testNOT(RestrictionTest test){
+    public testNOT(RestrictionTest test){
         this.test = test;
     }
     @Override
-    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
-        return !test.passes(lifespan, unit, player);
+    public boolean passes(GenericUnit unit, PlayerDetails player) {
+        return !test.passes(unit, player);
     }
     
 }

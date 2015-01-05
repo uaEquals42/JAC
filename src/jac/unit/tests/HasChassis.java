@@ -33,7 +33,7 @@ public class HasChassis implements RestrictionTest{
     }
 
     @Override
-    public boolean passes(int lifespan, GenericUnit unit, PlayerDetails player) {
+    public boolean passes(GenericUnit unit, PlayerDetails player) {
         return unit.getChassis().getKey().equals(requiredChassis);
     }
 }

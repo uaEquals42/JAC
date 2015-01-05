@@ -309,7 +309,7 @@ public class Ruleset {
                     // then it is a secret project.
                     key = "#PROJECT" + secret_count;
 
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
+                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5], new jac.unit.tests.AlwaysTrue())
                             .project()
                             .addPreRequisiteTech(row[3])
                             .quotes(blurbs.get(key))
@@ -319,7 +319,7 @@ public class Ruleset {
                 } else {
                     key = "#FAC" + facility_count;
 
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
+                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5], new jac.unit.tests.AlwaysTrue())
                             .addPreRequisiteTech(row[3])
                             .quotes(blurbs.get(key))
                             .build();
@@ -348,7 +348,7 @@ public class Ruleset {
                 }
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
-                weapons.put(key, new Weapon.Builder(tran, key, cost, damage , mode , line[0], line[1]).
+                weapons.put(key, new Weapon.Builder(tran, key, cost, damage , mode , line[0], line[1], new jac.unit.tests.AlwaysTrue()).
                         addPreRequisiteTech(line[6])
                         .build());  
             }
@@ -364,7 +364,7 @@ public class Ruleset {
                 String[] line = input.get(pos).split(",");
 
                 if (!line[2].trim().equalsIgnoreCase("Disable")) {
-                    UnitAbility abile = new UnitAbility.Builder(tran, line[0].trim(), line[0].trim(), line[3], line[5]).
+                    UnitAbility abile = new UnitAbility.Builder(tran, line[0].trim(), line[0].trim(), line[3], line[5], new jac.unit.tests.AlwaysTrue()).
                             smacAbilityFlags(line[4]).
                             addPreRequisiteTech(line[2]).
                             setCost_code(Integer.parseInt(line[1].trim())).
@@ -396,7 +396,7 @@ public class Ruleset {
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
                 armors.put(key, 
-                        new Armor.Builder(tran, key, cost, rating, mode, line[0], line[1])
+                        new Armor.Builder(tran, key, cost, rating, mode, line[0], line[1], new jac.unit.tests.AlwaysTrue())
                         .addPreRequisiteTech(line[5])
                         .build());
         
@@ -413,7 +413,9 @@ public class Ruleset {
                 String[] line = input.get(pos).split(",");
                 String key = line[1].trim();
                 int cost_power = Integer.parseInt(line[2].trim());
-                Reactor tmp = new Reactor.Builder(tran, key, cost_power,cost_power, line[0], line[1]).addPreRequisiteTech(line[3]).build();
+                Reactor tmp = new Reactor.Builder(tran, key, cost_power,cost_power, line[0], line[1], new jac.unit.tests.AlwaysTrue())
+                        .addPreRequisiteTech(line[3])
+                        .build();
                
                 reactors.put(key, tmp);
             }
@@ -456,7 +458,7 @@ public class Ruleset {
                 }
 
                 chasises.put(key,                      
-                        new Chassis.Builder(tran, key, cost, domain, speed, names).
+                        new Chassis.Builder(tran, key, cost, domain, speed, names, new jac.unit.tests.AlwaysTrue()).
                         addPreRequisiteTech(pre_req)
                         .ismissle(missle)
                         .setCargo(cargo)
