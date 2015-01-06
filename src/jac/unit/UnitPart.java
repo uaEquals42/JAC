@@ -20,6 +20,7 @@ package jac.unit;
 
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
+import jac.unit.tests.AlwaysTrue;
 import jac.unit.tests.RestrictionTest;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -95,7 +96,6 @@ abstract public class UnitPart {
     
     /**
      * Is this part usable for the current configuration?  Is there a reason you can't use this part?
-     * @param lifespan - How long this unit has been alive.
      * @param unit the unit this is a part of.
      * @param player
      * @return 
@@ -117,7 +117,7 @@ abstract public class UnitPart {
 
         if (this.available(unit, player)) {
             for (Effect effect : effectsList) {
-                if (effect.available(lifespan, unit, player)) {
+                if (effect.available(unit, player)) {
                     result.add(effect);
                 }
             }
@@ -131,15 +131,15 @@ abstract public class UnitPart {
            private final String key;
            private final int flatcost;
            
-           private final RestrictionTest restrict_for_display; 
+           private RestrictionTest restrict_for_display = new AlwaysTrue(); 
 
            private List<Effect> effectsList = new ArrayList<>();
-           List<Restriction> restrictions = new ArrayList<>(); // What has to be true, for the player to be able to see/build this part.
+           
            private List<String> pre_requisite_technology = new ArrayList<>();  // This also has to be true.
            private Set<String> allowed_races = new LinkedHashSet<>();
         
 
-           public Builder(Translation tran, String key, int flatcost, RestrictionTest restrict_for_display) {
+           public Builder(Translation tran, String key, int flatcost) {
                this.tran = tran;
                this.key = key;
                this.flatcost = flatcost;
@@ -147,6 +147,11 @@ abstract public class UnitPart {
                
            }
 
+           public T setRestrictionTest(RestrictionTest test){
+               restrict_for_display = test;
+               return (T) this;
+           }
+           
            public T restrictToRace(String race) {
                allowed_races.add(race);
                return (T) this;

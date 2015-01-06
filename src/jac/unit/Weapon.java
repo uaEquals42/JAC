@@ -66,8 +66,8 @@ public class Weapon extends UnitPart{
         private final String[] names;
         
          
-        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2, RestrictionTest test){
-            super(tran, key, cost, test);
+        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2){
+            super(tran, key, cost);
             
             this.names = new String[2];
             this.names[0] = name.trim();

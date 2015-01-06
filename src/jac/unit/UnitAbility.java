@@ -21,8 +21,11 @@ package jac.unit;
 import jac.Enum.WeaponRole;
 import jac.Enum.Domain;
 import jac.engine.ruleset.*;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.tests.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,15 +145,13 @@ public class UnitAbility extends UnitPart {
         // Required
         private final String[] namedescrip;
 
-
         // Optional
-        private Set<Domain> unitDomains = new HashSet<>();
-        private Set<WeaponRole> allowedUnitRoles = new HashSet<>();
+
+       
 
         private int cost_code = 0;
 
-        Integer max_speed_allowed;  // there was a not allowed for fast-moving units flag.  Need to know what speed was considered fast.  -1 means no limit.
-
+        
         boolean cost_increased_land = false;
 
         
@@ -160,13 +161,13 @@ public class UnitAbility extends UnitPart {
         
         
         
-        public Builder(Translation tran, String key, String name, String code, String description, RestrictionTest test) {
-           super(tran, key, 0, test);
+        public Builder(Translation tran, String key, String name, String code, String description) {
+           super(tran, key, 0);
            namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
         }
         
-        public Builder(Translation tran, String key, int flatcost, String name, String code, String description, RestrictionTest test){
-            super(tran, key, flatcost, test);
+        public Builder(Translation tran, String key, int flatcost, String name, String code, String description){
+            super(tran, key, flatcost);
             namedescrip = new String[]{name.trim(), code.trim(), description.trim()};
         }
 
@@ -177,23 +178,7 @@ public class UnitAbility extends UnitPart {
             this.cost_code = cost_code;
             return this;
         }
-
-
-        public Builder theUnitsDomains(Set<Domain> domains) {
-            this.unitDomains = domains;
-            return this;
-        }
-
-        public Builder allowedCombatTypes(Set<WeaponRole> allowed_combatModes) {
-            this.allowedUnitRoles = allowed_combatModes;
-            return this;
-        }
-
-        public Builder setMax_speed_allowed(int max_speed_allowed) {
-            this.max_speed_allowed = max_speed_allowed;
-            return this;
-        }
-
+    
         public Builder setCost_increased_land(boolean cost_increased_land) {
             this.cost_increased_land = cost_increased_land;
             return this;
@@ -202,82 +187,104 @@ public class UnitAbility extends UnitPart {
         
 
         public Builder smacAbilityFlags(String smacFlags) {
+            
+            
+            List<RestrictionTest> mainAnds = new ArrayList<>();
+            
+            List<RestrictionTest> reqDomains = new LinkedList<>();
+            List<RestrictionTest> reqRoles = new LinkedList<>();
+            
+            
             smacFlags = smacFlags.trim();
             if (smacFlags.charAt(0) == '1') {
                 cost_increased_land = true;  
             }
             if (smacFlags.charAt(1) == '1') {
-                HashSet<String> infantryonly = new HashSet<>();
-                infantryonly.add("0");
-                restrictions.add(new Restriction.Builder().SetAllowedChassis(infantryonly).build());
-                max_speed_allowed = 1;
+                mainAnds.add(new HasChassis("0"));
+                
             }
 
             /*
-             ;          00000000001 = Allowed for Land units
-             ;          00000000010 = Allowed for Sea units
-             ;          00000000100 = Allowed for Air units
-             ;          00000001000 = Allowed for Combat units
-             ;          00000010000 = Allowed for Terraformer units
-             ;          00000100000 = Allowed for Noncombat units (non-terraformer)
-             ;          00001000000 = Not allowed for probe teams
-             ;          00010000000 = Not allowed for psi units
-             ;          00100000000 = Transport units only
-             ;          01000000000 = Not allowed for fast-moving units
-             ;          10000000000 = Cost increased for land units
+             10          00000000001 = Allowed for Land units
+              9          00000000010 = Allowed for Sea units
+              8          00000000100 = Allowed for Air units
+              7          00000001000 = Allowed for Combat units
+              6          00000010000 = Allowed for Terraformer units
+              5          00000100000 = Allowed for Noncombat units (non-terraformer)
+              4          00001000000 = Not allowed for probe teams
+              3          00010000000 = Not allowed for psi units
+              2          00100000000 = Transport units only
+              1          01000000000 = Not allowed for fast-moving units
+              0          10000000000 = Cost increased for land units
              */
-            if (smacFlags.charAt(2) == '1') {
-                allowedUnitRoles.clear();
-                allowedUnitRoles.add(WeaponRole.TRANSPORT);
-            }
+
             if (smacFlags.charAt(3) == '0') {
                 // PSI Unit Flag.  If 1 then not allowed. So if 0, then it is allowed.
-                allowedUnitRoles.add(WeaponRole.PSI);
+                reqRoles.add(new HasRole(WeaponRole.PSI));
+
             }
                
             if (smacFlags.charAt(5) == '1') {
-                allowedUnitRoles.add(WeaponRole.PROBE);
-                allowedUnitRoles.add(WeaponRole.CONVOY);
-                allowedUnitRoles.add(WeaponRole.TRANSPORT); 
+                if (smacFlags.charAt(4) == '0') { 
+                    reqRoles.add(new HasRole(WeaponRole.PROBE));
+
+                }
+                reqRoles.add(new HasRole(WeaponRole.CONVOY));
+                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
+
             }
             
             if (smacFlags.charAt(6) == '1') {
-                allowedUnitRoles.add(WeaponRole.TERRAFORMER);
+                reqRoles.add(new HasRole(WeaponRole.TERRAFORMER));
+
             }
             if (smacFlags.charAt(7) == '1') {
-                allowedUnitRoles.add(WeaponRole.ENERGY);
-                allowedUnitRoles.add(WeaponRole.MISSILE);
-                allowedUnitRoles.add(WeaponRole.PROJECTILE);
+                reqRoles.add(new HasRole(WeaponRole.ENERGY));
+                reqRoles.add(new HasRole(WeaponRole.MISSILE));
+                reqRoles.add(new HasRole(WeaponRole.PROJECTILE));
+
+            }
+            
+            
+            if (smacFlags.charAt(2) == '1') {
+                reqRoles.clear();
+                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
+
             }
 
+            
             if (smacFlags.charAt(8) == '1') {
-                unitDomains.add(Domain.AIR);
+                reqDomains.add(new RequiredDomain(Domain.AIR));
+                
             }
 
             if (smacFlags.charAt(9) == '1') {
-                unitDomains.add(Domain.SEA);
+                reqDomains.add(new RequiredDomain(Domain.SEA));
+                
 
             }
             if (smacFlags.charAt(10) == '1') {
-                unitDomains.add(Domain.LAND);
+                reqDomains.add(new RequiredDomain(Domain.LAND));
+                
             }
             
-            if (smacFlags.charAt(4) == '1') {              
-                allowedUnitRoles.remove(WeaponRole.PROBE);
-            }
 
+            
+            
             // Now use this data to create the restrictions.
-            if (unitDomains.size() == Domain.COUNT) {
-                unitDomains.clear();  // Optimization.  The code for checking assumes all are true if the list is empty.
+            if (reqDomains.size() == Domain.COUNT) {
+                reqDomains.clear();  // Optimization.  The code for checking assumes all are true if the list is empty.
             }
-            if (allowedUnitRoles.size() == WeaponRole.COUNT){
-                allowedUnitRoles.clear();
+            if (reqRoles.size() == WeaponRole.COUNT){
+                reqRoles.clear();  // optimization.  If all are allowed, then we don't need to have them tested.
             }
             
-            restrictions.add(new Restriction.Builder().SetAllowedRoles(allowedUnitRoles).SetAllowedTypes(unitDomains).build());
             
+            mainAnds.add(new testOR(reqDomains));
+            mainAnds.add(new testOR(reqRoles));
             
-            
+            this.setRestrictionTest(new testAND(mainAnds));
+                
             return this;
         }
 

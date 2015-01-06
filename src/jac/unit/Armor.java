@@ -67,8 +67,8 @@ public class Armor extends UnitPart{
     private final String[] names;
  
     
-        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2, RestrictionTest test){
-            super(tran, key, flatcost, test);
+        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2){
+            super(tran, key, flatcost);
             this.armor = armor;
             this.mode = mode;
             names = new String[2];

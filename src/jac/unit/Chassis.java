@@ -95,8 +95,8 @@ public class Chassis extends UnitPart{
         private int base_cargo = 1;
    
 
-        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names, RestrictionTest test){
-            super(tran, key, flatcost, test);
+        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names){
+            super(tran, key, flatcost);
             
             this.domain = domain;
             this.movementPoints = movementPoints;

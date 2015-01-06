@@ -21,6 +21,8 @@ package jac.unit;
 import jac.Enum.EffectScope;
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ideology;
+import jac.unit.tests.AlwaysTrue;
+import jac.unit.tests.RestrictionTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,8 @@ public class Effect {
     
     
     // Optional settings.
-    final List<Restriction> restrictions;
+    //final List<Restriction> restrictions;
+    private final RestrictionTest restriction;
     
     
     /**
@@ -113,8 +116,10 @@ public class Effect {
         // Required
         final EffectScope scope;
         
+        
+        private RestrictionTest restriction = new AlwaysTrue();
+        
         // Optional
-        List<Restriction> restrictions = new ArrayList<>();
         private boolean isitabase=false; 
         private boolean can_make_facilities=false;
         private boolean can_make_units=false;
@@ -129,8 +134,8 @@ public class Effect {
             this.scope = scope;
         }
         
-        public Builder setRestrictions(List<Restriction> restrictions){
-            this.restrictions = restrictions;
+        public Builder setRestriction(RestrictionTest restriction){
+            this.restriction = restriction;
             return this;
         }
         
@@ -156,7 +161,7 @@ public class Effect {
 
     private Effect(Builder build) {
         scope = build.scope;
-        restrictions = build.restrictions;
+        restriction = build.restriction;
         isitabase = build.isitabase;
         can_make_facilities = build.can_make_facilities;
         can_make_units = build.can_make_units;
@@ -170,15 +175,8 @@ public class Effect {
 
     
     
-    public boolean available(int lifespan, GenericUnit unit, PlayerDetails player) {
-        if (restrictions.isEmpty()) {
-            return true;
-        }
-        boolean tf = true;
-        for (Restriction restrict : restrictions) {
-            tf = tf && restrict.available(lifespan, unit, player);
-        }
-        return tf;
+    public boolean available(GenericUnit unit, PlayerDetails player) {
+        return restriction.passes(unit, player);
     }
 
 }

@@ -29,7 +29,7 @@ import jac.unit.GenericUnit;
 public class HasRole implements RestrictionTest{
     private final WeaponRole role;
     
-    HasRole(WeaponRole role){
+    public HasRole(WeaponRole role){
         this.role = role;
     }
 

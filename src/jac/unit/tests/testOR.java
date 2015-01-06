@@ -30,13 +30,19 @@ import java.util.List;
 public class testOR implements RestrictionTest{
     private final List<RestrictionTest> tests;
     
-    testOR(List<RestrictionTest> tests){
+    public testOR(List<RestrictionTest> tests){
         this.tests = tests;
     }
+    
     
     private testOR(Builder build){
         tests = build.tests;
     }
+    
+    public void add(RestrictionTest test){
+        tests.add(test);
+    }
+    
     
     @Override
     public boolean passes(GenericUnit unit, PlayerDetails player) {
@@ -49,16 +55,20 @@ public class testOR implements RestrictionTest{
         return false;
     }
     
-    public class Builder{
+    public static class Builder{
         private List<RestrictionTest> tests;
+        public Builder(){
+            tests = new ArrayList<>();
+        }
         public Builder(RestrictionTest test){
             tests = new ArrayList<>();
             tests.add(test);
         }
-        public Builder or(RestrictionTest test){
+        public Builder add(RestrictionTest test){
             tests.add(test);
             return this;
         }
+            
         
         public testOR build(){
             return new testOR(this);

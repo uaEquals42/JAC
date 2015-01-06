@@ -75,8 +75,8 @@ public class Facility extends UnitPart{
          * @param name
          * @param short_description
          */
-        public Builder(String key, Translation tran, int cost, int maintence, String name, String short_description, RestrictionTest test) {
-            super(tran, key, cost,test);
+        public Builder(String key, Translation tran, int cost, int maintence, String name, String short_description) {
+            super(tran, key, cost);
             
             this.maintence = maintence;
             this.name_descript = new String[]{name.trim(), short_description.trim()};

@@ -31,13 +31,19 @@ public class testAND implements RestrictionTest{
     private final List<RestrictionTest> tests;
    
     
-    testAND(List<RestrictionTest> tests){
+    public testAND(List<RestrictionTest> tests){
         this.tests = tests;
     }
+    
+   
     
     private testAND(Builder build){
         this.tests = build.tests;
     }
+
+   
+    
+ 
     
     @Override
     public boolean passes(GenericUnit unit, PlayerDetails player) {
@@ -55,6 +61,10 @@ public class testAND implements RestrictionTest{
         public Builder(RestrictionTest test){
             tests = new LinkedList<>();
             tests.add(test);
+        }
+        public Builder(){
+            tests = new LinkedList<>();
+            
         }
         
         public Builder and(RestrictionTest test){

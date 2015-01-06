@@ -28,7 +28,7 @@ import jac.unit.GenericUnit;
 public class HasChassis implements RestrictionTest{
     private final String requiredChassis;
     
-    HasChassis(String requiredChassis){
+    public HasChassis(String requiredChassis){
         this.requiredChassis = requiredChassis;
     }
 
