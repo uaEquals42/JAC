@@ -21,7 +21,7 @@ package jac.unit;
 import jac.Enum.WeaponRole;
 import jac.engine.ruleset.Tech;
 import jac.engine.ruleset.Translation;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.effectRules.EffectValue;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;

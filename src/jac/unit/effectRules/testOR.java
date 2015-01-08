@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -27,27 +27,25 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class testOR implements RestrictionTest{
-    private final List<RestrictionTest> tests;
+public class testOR implements EffectValue<Boolean>{
+    private final List<EffectValue<Boolean>> tests;
     
-    public testOR(List<RestrictionTest> tests){
+    public testOR(List<EffectValue<Boolean>> tests){
         this.tests = tests;
     }
     
-    
-    private testOR(Builder build){
-        tests = build.tests;
+    public testOR(EffectValue<Boolean> bool1, EffectValue<Boolean> bool2){
+        tests = new ArrayList<>();
+        tests.add(bool1);
+        tests.add(bool2);
     }
     
-    public void add(RestrictionTest test){
-        tests.add(test);
-    }
-    
+ 
     
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        for(RestrictionTest test : tests){
-            if(test.passes(unit, player)){
+    public Boolean result(GenericUnit unit, PlayerDetails player) {
+        for(EffectValue<Boolean> test : tests){
+            if(test.result(unit, player)){
                 return true;
             }
         }
@@ -55,23 +53,5 @@ public class testOR implements RestrictionTest{
         return false;
     }
     
-    public static class Builder{
-        private List<RestrictionTest> tests;
-        public Builder(){
-            tests = new ArrayList<>();
-        }
-        public Builder(RestrictionTest test){
-            tests = new ArrayList<>();
-            tests.add(test);
-        }
-        public Builder add(RestrictionTest test){
-            tests.add(test);
-            return this;
-        }
-            
-        
-        public testOR build(){
-            return new testOR(this);
-        }
-    }
+
 }

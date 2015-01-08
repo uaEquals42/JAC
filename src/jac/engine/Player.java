@@ -16,20 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.engine;
 
-import jac.engine.PlayerDetails;
+import jac.engine.mapstuff.GameMap;
 import jac.unit.GenericUnit;
+import java.util.List;
 
 /**
- *
+ * 
  * @author Gregory Jordan
  */
-public class AlwaysTrue implements RestrictionTest{
-
-    @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return true;
-    }
+interface Player{
+    boolean pick_faction();
+    void imReady(boolean ready);
+    GameMap viewMap();
+    List<GenericUnit> getListMyUnits();
+    void turnStart();
+    void endTurn();
+    void giveUnitCommand();
     
 }

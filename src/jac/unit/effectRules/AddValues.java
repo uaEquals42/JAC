@@ -16,23 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
+import java.util.LinkedList;
+import java.util.List;
 
-/**
- *
- * @author Gregory Jordan
- */
-public class BasePopulationIs implements RestrictionTest{
-    private final int basePop;
-    BasePopulationIs(int baseSize){
-        this.basePop = baseSize;
+
+public class AddValues implements EffectValue<Integer> {
+    private final List<EffectValue<Integer>> values;
+    
+    public AddValues(EffectValue<Integer> value1, EffectValue<Integer> value2){
+        values = new LinkedList<>();
+        values.add(value1);
+        values.add(value2);
     }
-
+    
+    public AddValues(List<EffectValue<Integer>> values){
+        this.values = values;
+    }
+    
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getPopulation()==basePop;
+    public Integer result(GenericUnit unit, PlayerDetails player) {
+        int tmpResult = 0;
+        for(EffectValue<Integer> value : values){
+            tmpResult = tmpResult + value.result(unit, player);
+        }
+        
+        return tmpResult;
     }
+
+  
+    
 }

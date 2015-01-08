@@ -16,27 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
-import jac.Enum.Domain;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
+ * @param <T> needs to be Comparable.
  */
-public class RequiredDomain implements RestrictionTest {
-
-    private final Domain domain;
-
-    public RequiredDomain(Domain domain){
-        this.domain = domain;
-    }
-    
-    @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getChassis().getDomain() == domain;
-    }
-
+public interface EffectValue<T extends Comparable> {
+    T result(GenericUnit unit, PlayerDetails player);
 }

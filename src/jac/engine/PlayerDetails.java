@@ -21,6 +21,7 @@ package jac.engine;
 import jac.engine.Faction.Faction;
 import jac.engine.ruleset.Ideology;
 import jac.engine.ruleset.Ruleset;
+import jac.unit.Effect;
 import jac.unit.GenericUnit;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class PlayerDetails {
     private List<String> knownTechnologies;
     
     private List<GenericUnit> bases = new LinkedList<>();
-
+    private Effect empireEffects = new Effect.Builder().build();  // TODO Make this load all the unit effects.  
     
     PlayerDetails(int id, String player_name, Faction faction, long bonus_starting_energy, Ruleset rules){
         this.id = id;
@@ -89,7 +90,7 @@ public class PlayerDetails {
     public List<GenericUnit> findBases(int turn){
         List<GenericUnit> bases = new LinkedList<>();
         for(GenericUnit unit : genericunits){
-            if(unit.isitabase(turn)){
+            if(unit.isitabase()){
                 bases.add(unit);
             }
         }

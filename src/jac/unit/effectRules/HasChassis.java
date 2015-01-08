@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -25,14 +25,29 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class testNOT implements RestrictionTest{
-    private final RestrictionTest test;
-    public testNOT(RestrictionTest test){
-        this.test = test;
-    }
-    @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return !test.passes(unit, player);
+public class HasChassis<E extends Comparable> implements EffectValue<E>{
+    private final String requiredChassis;
+    private final E valueIfTrue;
+    private final E valueIfFalse;
+    
+    public HasChassis(String requiredChassis, E valueIfTrue, E valueIfFalse){
+        this.requiredChassis = requiredChassis;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
     
+    public static HasChassis<Boolean> bool(String requiredChassis){
+        return new HasChassis(requiredChassis, true, false);
+    }
+
+    @Override
+    public E result(GenericUnit unit, PlayerDetails player) {
+        if(unit.getChassis().getKey().equals(requiredChassis)){
+            return valueIfTrue;
+        }
+        else{
+            return valueIfFalse;
+        }
+        
+    }
 }

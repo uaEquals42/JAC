@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -27,53 +27,32 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class testAND implements RestrictionTest{
-    private final List<RestrictionTest> tests;
+public class testAND implements EffectValue<Boolean>{
+    private final List<EffectValue<Boolean>> tests;
    
     
-    public testAND(List<RestrictionTest> tests){
+    public testAND(List<EffectValue<Boolean>> tests){
         this.tests = tests;
     }
     
-   
-    
-    private testAND(Builder build){
-        this.tests = build.tests;
+     
+    public testAND(EffectValue<Boolean> test1, EffectValue<Boolean> test2){
+        tests = new LinkedList<>();
+        tests.add(test1);
+        tests.add(test2);
     }
-
-   
-    
  
     
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        for(RestrictionTest test : tests){
-            if(! test.passes(unit, player)){
-                return false;
+    public Boolean result(GenericUnit unit, PlayerDetails player) {
+        for(EffectValue<Boolean> test : tests){
+            if(! test.result(unit, player)){
+                return Boolean.FALSE;
             }
         }
         
-        return true;
+        return Boolean.TRUE;
     }
     
-    public class Builder {
-        private final List<RestrictionTest> tests;
-        public Builder(RestrictionTest test){
-            tests = new LinkedList<>();
-            tests.add(test);
-        }
-        public Builder(){
-            tests = new LinkedList<>();
-            
-        }
-        
-        public Builder and(RestrictionTest test){
-            tests.add(test);
-            return this;
-        }
-        
-        public testAND build(){
-            return new testAND(this);
-        }
-    }
+   
 }

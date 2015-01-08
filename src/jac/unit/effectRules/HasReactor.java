@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
-import jac.Enum.WeaponRole;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
@@ -26,15 +25,29 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasRole implements RestrictionTest{
-    private final WeaponRole role;
+public class HasReactor<E extends Comparable> implements EffectValue{
+    private final String reactorKey;
+    private final E thenValue;
+    private final E elseValue;
     
-    public HasRole(WeaponRole role){
-        this.role = role;
+    HasReactor(String reactorKey, E thenValue, E elseValue){
+        this.reactorKey = reactorKey;
+        this.thenValue = thenValue;
+        this.elseValue = elseValue;
+    }
+    
+    public static HasReactor<Boolean> HasItKey(String reactorKey){
+        return new HasReactor<>(reactorKey, true, false);
     }
 
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getWeapon().getWeaponsRole() == role;
+    public E result(GenericUnit unit, PlayerDetails player) {
+        if(unit.getReactor().getKey().equals(reactorKey)){
+            return thenValue;
+        }
+        else{
+            return elseValue;
+        }
     }
+    
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -25,15 +25,24 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasTech implements RestrictionTest{
-    private final String techKey;
+public class HasFacility<T extends Comparable>  implements EffectValue<T> {
+    private final String facilityKey;
+    private final T valueIfTrue;
+    private final T valueIfFalse;
     
-    public HasTech(String techKey){
-        this.techKey = techKey;
+    HasFacility(String facilityKey, T valueIfTrue, T valueIfFalse){
+        this.facilityKey = facilityKey;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
+
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return player.getKnownTechnologies().contains(techKey);
+    public T result(GenericUnit unit, PlayerDetails player) {
+       if(unit.getUnit_facilities().containsKey(facilityKey)){
+            return valueIfTrue;
+        }
+        else{
+            return valueIfFalse;
+        }
     }
-    
 }

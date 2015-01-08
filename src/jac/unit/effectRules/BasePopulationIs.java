@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -24,17 +24,26 @@ import jac.unit.GenericUnit;
 /**
  *
  * @author Gregory Jordan
+ * @param <E> Must be Comparable.
  */
-public class HasReactor implements RestrictionTest{
-    private final String reactorKey;
+public class BasePopulationIs<E extends Comparable> implements EffectValue<E>{
+    private final int basePop;
+    private final E valueIfTrue;
+    private final E valueIfFalse;
     
-    HasReactor(String reactorKey){
-        this.reactorKey = reactorKey;
+    BasePopulationIs(int baseSize, E valueIfTrue, E valueIfFalse){
+        this.basePop = baseSize;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
 
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getReactor().getKey().equals(reactorKey);
+    public E result(GenericUnit unit, PlayerDetails player) {
+        if(unit.getPopulation()==basePop){
+            return valueIfTrue;
+        }
+        else{
+            return valueIfFalse;
+        }
     }
-    
 }

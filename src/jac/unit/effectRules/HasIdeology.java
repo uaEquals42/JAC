@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -25,17 +25,25 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasIdeology implements RestrictionTest{
-    
+public class HasIdeology<E extends Comparable> implements EffectValue{
+    private final E valueIfTrue;
+    private final E valueIfFalse;
     private final String ideologyKey;
     
-    HasIdeology(String ideologyKey){
+    HasIdeology(String ideologyKey, E valueIfTrue, E valueIfFalse){
         this.ideologyKey = ideologyKey;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
     
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return player.getCurrent_ideologies().containsKey(ideologyKey);
+    public E result(GenericUnit unit, PlayerDetails player) {
+        if(player.getCurrent_ideologies().containsKey(ideologyKey)){
+            return valueIfTrue;
+        }
+        else{
+            return valueIfFalse;
+        }
     }
     
 }

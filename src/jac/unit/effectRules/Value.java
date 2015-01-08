@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -16,13 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.Enum;
+package jac.unit.effectRules;
+
+import jac.engine.PlayerDetails;
+import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
+ * @param <E>
  */
-public enum EffectScope {
-    SQUAREGATHERED,
-    THISUNIT,
+public class Value<E extends Comparable<E>> implements EffectValue<E>{
+
+    private final E value;
+    
+    public Value(E value){
+        this.value = value;
+    }
+    
+    public static Value<Boolean> True(){
+        return new Value<>(true);
+    }
+    
+    public static Value<Boolean> False(){
+        return new Value<>(false);
+    }
+    
+    public static Value<Integer> zero(){
+        return new Value<>(0);
+    }
+    
+    @Override
+    public E result(GenericUnit unit, PlayerDetails player) {
+        return value;
+    }
+    
+
+    
 }

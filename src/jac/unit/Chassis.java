@@ -21,7 +21,7 @@ package jac.unit;
 import jac.Enum.Domain;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.effectRules.EffectValue;
 import java.util.List;
 
 /**

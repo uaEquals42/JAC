@@ -27,27 +27,28 @@ import java.util.Map;
  *
  * @author Gregory Jordan
  */
-public class Unit_Plan {
+public class Unit_Plan implements Comparable<String>{
 
     private final Chassis chassis;
-    private Reactor reactor;
-    private Armor armor;
-    private Weapon weapon;
-    private Map<String, UnitAbility> unit_abilities;
-    private Map<String, Facility> unit_facilities;
+    private final Reactor reactor;
+    private final Armor armor;
+    private final Weapon weapon;
+    private final Map<String, UnitAbility> unit_abilities;
+    private final Map<String, Facility> unit_facilities;
+    
     private int max_health;
     private boolean prototyped = false;
     private int cost;
 
-    public Unit_Plan(Chassis chas, Reactor react, Armor def, Weapon weap, Map<String, UnitAbility> abilities) {
-        // Check to make sure inputs are 
+    public Unit_Plan(Chassis chas, Reactor react, Armor def, Weapon weap, Map<String, UnitAbility> abilities, Map<String, Facility> unitFacilities) {
         this.unit_abilities = abilities;
-        // Then set the variables
+        this.unit_facilities = unitFacilities;
         chassis = chas;
         reactor = react;
         armor = def;
         weapon = weap;
 
+        
         max_health = reactor.reactor_power() * 10;  //TODO: This is correct.  I wonder if I should have the health multiplier stored in the rules file.
 
         cost = calculate_cost();
@@ -140,6 +141,19 @@ public class Unit_Plan {
         } else {
             return runningTotal;
         }
+    }
+    
+    @Override
+    public String toString(){
+     
+
+        
+        return "Unit Plan:"+chassis.getKey()+armor.getKey()+reactor.getKey()+weapon.getKey()+unit_abilities.keySet()+unit_facilities.keySet();
+    }
+   
+    @Override
+    public int compareTo(String o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

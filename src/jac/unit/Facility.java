@@ -20,7 +20,7 @@ package jac.unit;
 
 import jac.engine.dialog.Quote;
 import jac.engine.ruleset.Translation;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.effectRules.EffectValue;
 import java.util.ArrayList;
 import java.util.List;
 

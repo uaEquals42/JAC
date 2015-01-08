@@ -27,6 +27,7 @@ import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
 import jac.engine.ruleset.Ideology;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,10 +47,10 @@ public class GenericUnit {
     private int current_health;
     private Integer population;
     
-    private Chassis chassis;
-    private Reactor reactor;
-    private Armor armor;
-    private Weapon weapon;
+    private final Unit_Plan design;
+    
+    private final Effect localEffects;
+    private final Effect empireEffects;
     
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
@@ -61,21 +62,22 @@ public class GenericUnit {
     private Square location;
     
     
+    
     public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location){
         construction_date = turn;
         max_health = design.max_health();
         current_health = max_health;
         this.location = location;
-        chassis = design.getChassis();
-        reactor = design.getReactor();
-        armor = design.getArmor();
-        weapon = design.getWeapon();
+        this.design = design;
         unit_abilities = design.getUnit_abilities();
         unit_facilities = new HashMap<>(design.getUnit_facilities());
         
         this.id_unit = id;
         this.player = player;
         
+        Effect tmp = design.getArmor().getLocalEffects();
+        localEffects = null; //TODO have this work!
+        empireEffects = null;
       Integer population;
         
     }
@@ -84,7 +86,7 @@ public class GenericUnit {
     public boolean canUnitMoveTo(Square destination, int seaLevel){
         //TODO:  Add exceptions here for amphibious units.  Transports, etc.
         //
-        return destination.allowedDomains(seaLevel).contains(chassis.getDomain());
+        return destination.allowedDomains(seaLevel).contains(design.getChassis().getDomain());
     }
     
     public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException{
@@ -134,13 +136,15 @@ public class GenericUnit {
     
     int calculateMaxMovementPoints(int turn){
         int speed = 0;
-        speed = chassis.getMovementPoints();
+        speed = design.getChassis().getMovementPoints();
         
-        for(Effect effect : activeEffects(turn)){
-            speed = speed + effect.getSpeed_boost();
-        }
+        //TODO: have this use the effect data as well.   Or just switch to using effects alone to calculate it.
+     
         return speed;
     }
+    
+    
+    
     
     /**
      * List of effects that are active upon this unit.  Where all the pre requisites for the effects are met.
@@ -148,30 +152,17 @@ public class GenericUnit {
      * @param player
      * @return 
      */
-    public List<Effect> activeEffects(int turn){
-        int lifespan = turn - construction_date;
-        ArrayList<Effect> effects = new ArrayList<>();
-        for(UnitAbility ability: unit_abilities.values()){
-            effects.addAll(ability.active_effects(lifespan, this, player));
-        }
-        
-        // TODO: Check and add in effects that apply for all units in the faction.
-        
-        return effects;
+    public Effect activeEffect(){
+        return localEffects;
+        // Would say combine local and empire.... but right now those don't work.
     }
     
     
    
-    public boolean isitabase(int turn){
-               
-        for(Effect effect : activeEffects(turn)){
-            if(effect.isIsitabase()){
-                return true;
-            }
-        }
-        return false;
-        
+    public boolean isitabase(){
+        return activeEffect().getIsitabase().result(this, player);   
     }
+    
     public int getSensorRange(){
         return 1;  // TODO: Have this be calculated based on rules and config options.
     }
@@ -189,19 +180,19 @@ public class GenericUnit {
     }
 
     public Chassis getChassis() {
-        return chassis;
+        return design.getChassis();
     }
 
     public Reactor getReactor() {
-        return reactor;
+        return design.getReactor();
     }
 
     public Armor getArmor() {
-        return armor;
+        return design.getArmor();
     }
 
     public Weapon getWeapon() {
-        return weapon;
+        return design.getWeapon();
     }
 
     public int getId_player() {

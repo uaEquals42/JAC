@@ -18,10 +18,15 @@
  */
 package jac.unit;
 
+import jac.unit.effectRules.testOR;
+import jac.unit.effectRules.testAND;
+import jac.unit.effectRules.HasChassis;
+import jac.unit.effectRules.HasRole;
+import jac.unit.effectRules.EffectValue;
+import jac.unit.effectRules.RequiredDomain;
 import jac.Enum.WeaponRole;
 import jac.Enum.Domain;
 import jac.engine.ruleset.*;
-import jac.unit.tests.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -189,10 +194,10 @@ public class UnitAbility extends UnitPart {
         public Builder smacAbilityFlags(String smacFlags) {
             
             
-            List<RestrictionTest> mainAnds = new ArrayList<>();
+            List<EffectValue<Boolean>> mainAnds = new ArrayList<>();
             
-            List<RestrictionTest> reqDomains = new LinkedList<>();
-            List<RestrictionTest> reqRoles = new LinkedList<>();
+            List<EffectValue<Boolean>> reqDomains = new LinkedList<>();
+            List<EffectValue<Boolean>> reqRoles = new LinkedList<>();
             
             
             smacFlags = smacFlags.trim();
@@ -200,7 +205,7 @@ public class UnitAbility extends UnitPart {
                 cost_increased_land = true;  
             }
             if (smacFlags.charAt(1) == '1') {
-                mainAnds.add(new HasChassis("0"));
+                mainAnds.add(HasChassis.bool("0"));
                 
             }
 
@@ -220,51 +225,51 @@ public class UnitAbility extends UnitPart {
 
             if (smacFlags.charAt(3) == '0') {
                 // PSI Unit Flag.  If 1 then not allowed. So if 0, then it is allowed.
-                reqRoles.add(new HasRole(WeaponRole.PSI));
+                reqRoles.add(HasRole.bool(WeaponRole.PSI));
 
             }
                
             if (smacFlags.charAt(5) == '1') {
                 if (smacFlags.charAt(4) == '0') { 
-                    reqRoles.add(new HasRole(WeaponRole.PROBE));
+                    reqRoles.add(HasRole.bool(WeaponRole.PROBE));
 
                 }
-                reqRoles.add(new HasRole(WeaponRole.CONVOY));
-                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
+                reqRoles.add(HasRole.bool(WeaponRole.CONVOY));
+                reqRoles.add(HasRole.bool(WeaponRole.TRANSPORT));
 
             }
             
             if (smacFlags.charAt(6) == '1') {
-                reqRoles.add(new HasRole(WeaponRole.TERRAFORMER));
+                reqRoles.add(HasRole.bool(WeaponRole.TERRAFORMER));
 
             }
             if (smacFlags.charAt(7) == '1') {
-                reqRoles.add(new HasRole(WeaponRole.ENERGY));
-                reqRoles.add(new HasRole(WeaponRole.MISSILE));
-                reqRoles.add(new HasRole(WeaponRole.PROJECTILE));
+                reqRoles.add(HasRole.bool(WeaponRole.ENERGY));
+                reqRoles.add(HasRole.bool(WeaponRole.MISSILE));
+                reqRoles.add(HasRole.bool(WeaponRole.PROJECTILE));
 
             }
             
             
             if (smacFlags.charAt(2) == '1') {
                 reqRoles.clear();
-                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
+                reqRoles.add(HasRole.bool(WeaponRole.TRANSPORT));
 
             }
 
             
             if (smacFlags.charAt(8) == '1') {
-                reqDomains.add(new RequiredDomain(Domain.AIR));
+                reqDomains.add(RequiredDomain.bool(Domain.AIR));
                 
             }
 
             if (smacFlags.charAt(9) == '1') {
-                reqDomains.add(new RequiredDomain(Domain.SEA));
+                reqDomains.add(RequiredDomain.bool(Domain.SEA));
                 
 
             }
             if (smacFlags.charAt(10) == '1') {
-                reqDomains.add(new RequiredDomain(Domain.LAND));
+                reqDomains.add(RequiredDomain.bool(Domain.LAND));
                 
             }
             

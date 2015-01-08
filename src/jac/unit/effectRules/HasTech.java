@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -25,14 +25,25 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class BasePopulationIsLessThan implements RestrictionTest {
-     private final int basePop;
-    BasePopulationIsLessThan(int baseSize){
-        this.basePop = baseSize;
+public class HasTech<E extends Comparable> implements EffectValue{
+    private final String techKey;
+    private final E valueIfTrue;
+    private final E valueIfFalse;
+    
+    
+    public HasTech(String techKey, E valueIfTrue, E valueIfFalse){
+        this.techKey = techKey;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
-
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-        return unit.getPopulation()<basePop;
+    public E result(GenericUnit unit, PlayerDetails player) {
+        if(player.getKnownTechnologies().contains(techKey)){
+            return valueIfTrue;
+        }
+        else{
+            return valueIfFalse;
+        }
     }
+    
 }

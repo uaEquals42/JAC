@@ -20,8 +20,8 @@ package jac.unit;
 
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
-import jac.unit.tests.AlwaysTrue;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.effectRules.EffectValue;
+import jac.unit.effectRules.Value;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,17 +34,20 @@ import java.util.Set;
 abstract public class UnitPart {
     
     
-    private final List<Effect> effectsList;
+    private final Effect localEffects;
+    private final Effect empireEffects;
+    
     //private final List<Restriction> restrictions; 
-    private final RestrictionTest restrict_for_display;  // What has to be true, for the player to be able to see/build this part.
+    private final EffectValue<Boolean> restrict_for_display;  // What has to be true, for the player to be able to see/build this part.
     private final List<String> pre_requisite_technology;  // This also has to be true.
     private final Set<String> allowed_races;
     private final String key;
-    private final int flatcost;
+    private final int flatcost;  //TODO:  Replace this with an EffectValue after testing to make sure if then else effect values act as expected.
     
     
     public UnitPart(Builder build){
-        this.effectsList = build.effectsList;
+        this.localEffects = build.localEffects;
+        this.empireEffects = build.empireEffects;
         this.allowed_races = build.allowed_races;
         this.restrict_for_display = build.restrict_for_display;
         
@@ -102,73 +105,70 @@ abstract public class UnitPart {
      */
     public boolean available(GenericUnit unit, PlayerDetails player) {
         
-        if (restrict_for_display==null){
-            return true;
-        }
-        else{
-            return restrict_for_display.passes(unit, player);
-        }
+            return restrict_for_display.result(unit, player);
         
-    }
-    
-    
-    public List<Effect> active_effects(int lifespan, GenericUnit unit, PlayerDetails player){
-        List<Effect> result = new ArrayList<>();
 
-        if (this.available(unit, player)) {
-            for (Effect effect : effectsList) {
-                if (effect.available(unit, player)) {
-                    result.add(effect);
-                }
+    }
+
+    public Effect getLocalEffects() {
+        return localEffects;
+    }
+
+    public Effect getEmpireEffects() {
+        return empireEffects;
+    }
+
+    
+    abstract public static class Builder<T extends Builder> {
+
+        private final Translation tran;
+        private final String key;
+        private final int flatcost;
+
+        private EffectValue<Boolean> restrict_for_display = Value.True();
+
+        private Effect localEffects = new Effect.Builder().build();
+        private Effect empireEffects = null;
+
+        private List<String> pre_requisite_technology = new ArrayList<String>();  // This also has to be true.
+        private Set<String> allowed_races = new LinkedHashSet<>();
+       
+
+        public Builder(Translation tran, String key, int flatcost) {
+            this.tran = tran;
+            this.key = key;
+            this.flatcost = flatcost;
+            this.restrict_for_display = restrict_for_display;
+
+        }
+
+        public T setRestrictionTest(EffectValue test) {
+            restrict_for_display = test;
+            return (T) this;
+        }
+
+        public T restrictToRace(String race) {
+            allowed_races.add(race);
+            return (T) this;
+        }
+
+        public T addPreRequisiteTech(String techkey) {
+            if (!techkey.trim().equalsIgnoreCase("None")) {
+                pre_requisite_technology.add(techkey.trim());
             }
+            return (T) this;
         }
-        return result;
-    }
-    
-    
-       abstract public static class Builder <T extends Builder>{
-           private final Translation tran;
-           private final String key;
-           private final int flatcost;
-           
-           private RestrictionTest restrict_for_display = new AlwaysTrue(); 
 
-           private List<Effect> effectsList = new ArrayList<>();
-           
-           private List<String> pre_requisite_technology = new ArrayList<>();  // This also has to be true.
-           private Set<String> allowed_races = new LinkedHashSet<>();
-        
+        public void setLocalEffects(Effect localEffects) {
+            this.localEffects = localEffects;
+        }
 
-           public Builder(Translation tran, String key, int flatcost) {
-               this.tran = tran;
-               this.key = key;
-               this.flatcost = flatcost;
-               this.restrict_for_display = restrict_for_display;
-               
-           }
+        public void setEmpireEffects(Effect empireEffects) {
+            this.empireEffects = empireEffects;
+        }
 
-           public T setRestrictionTest(RestrictionTest test){
-               restrict_for_display = test;
-               return (T) this;
-           }
-           
-           public T restrictToRace(String race) {
-               allowed_races.add(race);
-               return (T) this;
-           }
+       
 
-           public T addPreRequisiteTech(String techkey) {
-               if(!techkey.trim().equalsIgnoreCase("None")){
-                   pre_requisite_technology.add(techkey.trim());
-               }
-               return (T) this;
-           }
-
-           public T addEffect(Effect effect) {
-               effectsList.add(effect);
-               return (T) this;
-           }
-        
         public Translation getTran() {
             return tran;
         }
@@ -176,8 +176,7 @@ abstract public class UnitPart {
         public String getKey() {
             return key;
         }
-           
-        
-       }
-    
+
+    }
+
 }

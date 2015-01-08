@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.tests;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
@@ -25,14 +25,14 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasFacility  implements RestrictionTest {
-    private final String facilityKey;
-    HasFacility(String facilityKey){
-        this.facilityKey = facilityKey;
+public class testNOT implements EffectValue<Boolean>{
+    private final EffectValue<Boolean> test;
+    public testNOT(EffectValue test){
+        this.test = test;
     }
-
     @Override
-    public boolean passes(GenericUnit unit, PlayerDetails player) {
-       return unit.getUnit_facilities().containsKey(facilityKey);
+    public Boolean result(GenericUnit unit, PlayerDetails player) {
+        return ! test.result(unit, player);
     }
+    
 }

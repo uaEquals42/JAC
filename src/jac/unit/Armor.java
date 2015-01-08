@@ -20,7 +20,7 @@ package jac.unit;
 
 import jac.Enum.DefenceMode;
 import jac.engine.ruleset.Translation;
-import jac.unit.tests.RestrictionTest;
+import jac.unit.effectRules.EffectValue;
 
 
 /**

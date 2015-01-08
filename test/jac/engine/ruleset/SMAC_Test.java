@@ -18,7 +18,7 @@
  */
 package jac.engine.ruleset;
 
-import jac.Enum.MovementType;
+import jac.Enum.Domain;
 import java.io.IOException;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -129,11 +129,11 @@ public class SMAC_Test {
         assertEquals("Infantry movment", 3, rules.getChasises().get("Infantry").getMovementPoints());
         assertEquals("Infantry cost", 1, rules.getChasises().get("Infantry").getFlatcost());
         assertEquals("Infantry Prereqs", 0, rules.getChasises().get("Infantry").getPre_requisite_technology().size());
-        assertEquals("Infantry", MovementType.LAND, rules.getChasises().get("Infantry").getMovementType());
+        assertEquals("Infantry", Domain.LAND, rules.getChasises().get("Infantry").getDomain());
         
         assertEquals("Missile prereqs", "Orbital", rules.getChasises().get("Missile").getPre_requisite_technology().get(0));
         assertEquals("Missile is a missle?", true, rules.getChasises().get("Missile").isMissle());
-        assertEquals("Missle is an air unit?", MovementType.AIR, rules.getChasises().get("Missile").getMovementType());
+        assertEquals("Missle is an air unit?", Domain.AIR, rules.getChasises().get("Missile").getDomain());
     }
     
     
