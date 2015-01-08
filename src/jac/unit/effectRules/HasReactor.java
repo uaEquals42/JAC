@@ -27,26 +27,26 @@ import jac.unit.GenericUnit;
  */
 public class HasReactor<E extends Comparable> implements EffectValue{
     private final String reactorKey;
-    private final E thenValue;
-    private final E elseValue;
+    private final EffectValue<E> thenValue;
+    private final EffectValue<E> elseValue;
     
-    HasReactor(String reactorKey, E thenValue, E elseValue){
+    HasReactor(String reactorKey, EffectValue<E> thenValue, EffectValue<E> elseValue){
         this.reactorKey = reactorKey;
         this.thenValue = thenValue;
         this.elseValue = elseValue;
     }
     
     public static HasReactor<Boolean> HasItKey(String reactorKey){
-        return new HasReactor<>(reactorKey, true, false);
+        return new HasReactor<>(reactorKey, Value.True(), Value.False());
     }
 
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {
         if(unit.getReactor().getKey().equals(reactorKey)){
-            return thenValue;
+            return thenValue.result(unit, player);
         }
         else{
-            return elseValue;
+            return elseValue.result(unit, player);
         }
     }
     

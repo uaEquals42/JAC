@@ -41,7 +41,11 @@ public class testAND implements EffectValue<Boolean>{
         tests.add(test1);
         tests.add(test2);
     }
- 
+    
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + tests;
+    }
     
     @Override
     public Boolean result(GenericUnit unit, PlayerDetails player) {

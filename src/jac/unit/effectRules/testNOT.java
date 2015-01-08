@@ -30,6 +30,12 @@ public class testNOT implements EffectValue<Boolean>{
     public testNOT(EffectValue test){
         this.test = test;
     }
+    
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + "(" + test +")";
+    }
+    
     @Override
     public Boolean result(GenericUnit unit, PlayerDetails player) {
         return ! test.result(unit, player);

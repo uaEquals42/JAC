@@ -27,27 +27,27 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  */
 public class RequiredDomain<E extends Comparable> implements EffectValue {
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+    private final EffectValue<E> valueIfTrue;
+    private final EffectValue<E> valueIfFalse;
     private final Domain domain;
 
-    public RequiredDomain(Domain domain, E valueIfTrue, E valueIfFalse){
+    public RequiredDomain(Domain domain, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
         this.domain = domain;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
     }
     
     public static RequiredDomain<Boolean> bool(Domain domain){
-        return new RequiredDomain(domain, true, false);
+        return new RequiredDomain(domain, Value.True(), Value.False());
     }
     
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {
         if(unit.getChassis().getDomain() == domain){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
 

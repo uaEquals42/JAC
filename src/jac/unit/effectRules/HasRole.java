@@ -28,26 +28,26 @@ import jac.unit.GenericUnit;
  */
 public class HasRole<E extends Comparable> implements EffectValue{
     private final WeaponRole role;
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+    private final EffectValue<E> valueIfTrue;
+    private final EffectValue<E> valueIfFalse;
     
-    public HasRole(WeaponRole role, E valueIfTrue, E valueIfFalse){
+    public HasRole(WeaponRole role, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
         this.role = role;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
     }
     
     public static HasRole<Boolean> bool(WeaponRole role){
-        return new HasRole(role, true, false);
+        return new HasRole(role, Value.True(), Value.False());
     }
 
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {
         if(unit.getWeapon().getWeaponsRole() == role){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
 }

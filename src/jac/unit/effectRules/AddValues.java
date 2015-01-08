@@ -32,7 +32,12 @@ public class AddValues implements EffectValue<Integer> {
         values.add(value1);
         values.add(value2);
     }
-    
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + values;
+    }
+
     public AddValues(List<EffectValue<Integer>> values){
         this.values = values;
     }

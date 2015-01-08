@@ -40,7 +40,10 @@ public class testOR implements EffectValue<Boolean>{
         tests.add(bool2);
     }
     
- 
+     @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + tests;
+    }
     
     @Override
     public Boolean result(GenericUnit unit, PlayerDetails player) {

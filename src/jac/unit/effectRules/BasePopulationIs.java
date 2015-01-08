@@ -28,10 +28,10 @@ import jac.unit.GenericUnit;
  */
 public class BasePopulationIs<E extends Comparable> implements EffectValue<E>{
     private final int basePop;
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+    private final EffectValue<E> valueIfTrue;
+    private final EffectValue<E>valueIfFalse;
     
-    BasePopulationIs(int baseSize, E valueIfTrue, E valueIfFalse){
+    BasePopulationIs(int baseSize, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
         this.basePop = baseSize;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
@@ -40,10 +40,10 @@ public class BasePopulationIs<E extends Comparable> implements EffectValue<E>{
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {
         if(unit.getPopulation()==basePop){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
 }

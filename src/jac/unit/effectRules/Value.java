@@ -45,6 +45,10 @@ public class Value<E extends Comparable<E>> implements EffectValue<E>{
     public static Value<Integer> zero(){
         return new Value<>(0);
     }
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + "("+value+")";
+    }
     
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {

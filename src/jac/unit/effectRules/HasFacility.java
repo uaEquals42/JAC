@@ -27,10 +27,10 @@ import jac.unit.GenericUnit;
  */
 public class HasFacility<T extends Comparable>  implements EffectValue<T> {
     private final String facilityKey;
-    private final T valueIfTrue;
-    private final T valueIfFalse;
+    private final EffectValue<T> valueIfTrue;
+    private final EffectValue<T> valueIfFalse;
     
-    HasFacility(String facilityKey, T valueIfTrue, T valueIfFalse){
+    HasFacility(String facilityKey, EffectValue<T> valueIfTrue, EffectValue<T> valueIfFalse){
         this.facilityKey = facilityKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
@@ -39,10 +39,10 @@ public class HasFacility<T extends Comparable>  implements EffectValue<T> {
     @Override
     public T result(GenericUnit unit, PlayerDetails player) {
        if(unit.getUnit_facilities().containsKey(facilityKey)){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
 }

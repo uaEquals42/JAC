@@ -25,24 +25,24 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasIdeology<E extends Comparable> implements EffectValue{
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+public class HasIdeology<T extends Comparable> implements EffectValue{
+    private final EffectValue<T> valueIfTrue;
+    private final EffectValue<T> valueIfFalse;
     private final String ideologyKey;
     
-    HasIdeology(String ideologyKey, E valueIfTrue, E valueIfFalse){
+    HasIdeology(String ideologyKey, EffectValue<T> valueIfTrue, EffectValue<T> valueIfFalse){
         this.ideologyKey = ideologyKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
     }
     
     @Override
-    public E result(GenericUnit unit, PlayerDetails player) {
+    public T result(GenericUnit unit, PlayerDetails player) {
         if(player.getCurrent_ideologies().containsKey(ideologyKey)){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
     

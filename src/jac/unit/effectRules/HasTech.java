@@ -27,11 +27,11 @@ import jac.unit.GenericUnit;
  */
 public class HasTech<E extends Comparable> implements EffectValue{
     private final String techKey;
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+    private final EffectValue<E> valueIfTrue;
+    private final EffectValue<E> valueIfFalse;
     
     
-    public HasTech(String techKey, E valueIfTrue, E valueIfFalse){
+    public HasTech(String techKey, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
         this.techKey = techKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
@@ -39,10 +39,10 @@ public class HasTech<E extends Comparable> implements EffectValue{
     @Override
     public E result(GenericUnit unit, PlayerDetails player) {
         if(player.getKnownTechnologies().contains(techKey)){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
     
