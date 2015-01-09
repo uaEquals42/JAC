@@ -23,35 +23,40 @@ import jac.unit.GenericUnit;
 import java.util.LinkedList;
 import java.util.List;
 
-
-public class AddValues implements EffectValue<Integer> {
-    private final List<EffectValue<Integer>> values;
+/**
+ *
+ * @author Gregory Jordan
+ */
+public class OperatorAND implements EffectNode<Boolean>{
+    private final List<EffectNode<Boolean>> tests;
+   
     
-    public AddValues(EffectValue<Integer> value1, EffectValue<Integer> value2){
-        values = new LinkedList<>();
-        values.add(value1);
-        values.add(value2);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + values;
-    }
-
-    public AddValues(List<EffectValue<Integer>> values){
-        this.values = values;
+    public OperatorAND(List<EffectNode<Boolean>> tests){
+        this.tests = tests;
     }
     
+     
+    public OperatorAND(EffectNode<Boolean> test1, EffectNode<Boolean> test2){
+        tests = new LinkedList<>();
+        tests.add(test1);
+        tests.add(test2);
+    }
+    
     @Override
-    public Integer result(GenericUnit unit, PlayerDetails player) {
-        int tmpResult = 0;
-        for(EffectValue<Integer> value : values){
-            tmpResult = tmpResult + value.result(unit, player);
+    public String toString(){
+        return this.getClass().getSimpleName() + tests;
+    }
+    
+    @Override
+    public Boolean result(GenericUnit unit, PlayerDetails player) {
+        for(EffectNode<Boolean> test : tests){
+            if(! test.result(unit, player)){
+                return Boolean.FALSE;
+            }
         }
         
-        return tmpResult;
+        return Boolean.TRUE;
     }
-
-  
     
+   
 }

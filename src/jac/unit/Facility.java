@@ -20,7 +20,7 @@ package jac.unit;
 
 import jac.engine.dialog.Quote;
 import jac.engine.ruleset.Translation;
-import jac.unit.effectRules.EffectValue;
+import jac.unit.effectRules.EffectNode;
 import java.util.ArrayList;
 import java.util.List;
 

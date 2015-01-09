@@ -26,12 +26,12 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class RequiredDomain<E extends Comparable> implements EffectValue {
-    private final EffectValue<E> valueIfTrue;
-    private final EffectValue<E> valueIfFalse;
+public class RequiredDomain<E extends Comparable> implements EffectNode {
+    private final EffectNode<E> valueIfTrue;
+    private final EffectNode<E> valueIfFalse;
     private final Domain domain;
 
-    public RequiredDomain(Domain domain, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
+    public RequiredDomain(Domain domain, EffectNode<E> valueIfTrue, EffectNode<E> valueIfFalse){
         this.domain = domain;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;

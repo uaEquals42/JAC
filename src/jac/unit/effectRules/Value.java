@@ -26,7 +26,7 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  * @param <E>
  */
-public class Value<E extends Comparable<E>> implements EffectValue<E>{
+public class Value<E extends Comparable<E>> implements EffectNode<E>{
 
     private final E value;
     

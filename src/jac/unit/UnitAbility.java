@@ -18,11 +18,11 @@
  */
 package jac.unit;
 
-import jac.unit.effectRules.testOR;
-import jac.unit.effectRules.testAND;
+import jac.unit.effectRules.OperatorOr;
+import jac.unit.effectRules.OperatorAND;
 import jac.unit.effectRules.HasChassis;
 import jac.unit.effectRules.HasRole;
-import jac.unit.effectRules.EffectValue;
+import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.RequiredDomain;
 import jac.Enum.WeaponRole;
 import jac.Enum.Domain;
@@ -194,10 +194,10 @@ public class UnitAbility extends UnitPart {
         public Builder smacAbilityFlags(String smacFlags) {
             
             
-            List<EffectValue<Boolean>> mainAnds = new ArrayList<>();
+            List<EffectNode<Boolean>> mainAnds = new ArrayList<>();
             
-            List<EffectValue<Boolean>> reqDomains = new LinkedList<>();
-            List<EffectValue<Boolean>> reqRoles = new LinkedList<>();
+            List<EffectNode<Boolean>> reqDomains = new LinkedList<>();
+            List<EffectNode<Boolean>> reqRoles = new LinkedList<>();
             
             
             smacFlags = smacFlags.trim();
@@ -285,10 +285,10 @@ public class UnitAbility extends UnitPart {
             }
             
             
-            mainAnds.add(new testOR(reqDomains));
-            mainAnds.add(new testOR(reqRoles));
+            mainAnds.add(new OperatorOr(reqDomains));
+            mainAnds.add(new OperatorOr(reqRoles));
             
-            this.setRestrictionTest(new testAND(mainAnds));
+            this.setRestrictionTest(new OperatorAND(mainAnds));
                 
             return this;
         }

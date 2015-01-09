@@ -26,12 +26,12 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasRole<E extends Comparable> implements EffectValue{
+public class HasRole<E extends Comparable> implements EffectNode{
     private final WeaponRole role;
-    private final EffectValue<E> valueIfTrue;
-    private final EffectValue<E> valueIfFalse;
+    private final EffectNode<E> valueIfTrue;
+    private final EffectNode<E> valueIfFalse;
     
-    public HasRole(WeaponRole role, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
+    public HasRole(WeaponRole role, EffectNode<E> valueIfTrue, EffectNode<E> valueIfFalse){
         this.role = role;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;

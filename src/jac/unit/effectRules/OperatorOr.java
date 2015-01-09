@@ -20,25 +20,41 @@ package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class testNOT implements EffectValue<Boolean>{
-    private final EffectValue<Boolean> test;
-    public testNOT(EffectValue test){
-        this.test = test;
+public class OperatorOr implements EffectNode<Boolean>{
+    private final List<EffectNode<Boolean>> tests;
+    
+    public OperatorOr(List<EffectNode<Boolean>> tests){
+        this.tests = tests;
     }
     
-    @Override
+    public OperatorOr(EffectNode<Boolean> bool1, EffectNode<Boolean> bool2){
+        tests = new ArrayList<>();
+        tests.add(bool1);
+        tests.add(bool2);
+    }
+    
+     @Override
     public String toString(){
-        return this.getClass().getSimpleName() + "(" + test +")";
+        return this.getClass().getSimpleName() + tests;
     }
     
     @Override
     public Boolean result(GenericUnit unit, PlayerDetails player) {
-        return ! test.result(unit, player);
+        for(EffectNode<Boolean> test : tests){
+            if(test.result(unit, player)){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
+
 }

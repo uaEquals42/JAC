@@ -20,43 +20,25 @@ package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class testAND implements EffectValue<Boolean>{
-    private final List<EffectValue<Boolean>> tests;
-   
-    
-    public testAND(List<EffectValue<Boolean>> tests){
-        this.tests = tests;
-    }
-    
-     
-    public testAND(EffectValue<Boolean> test1, EffectValue<Boolean> test2){
-        tests = new LinkedList<>();
-        tests.add(test1);
-        tests.add(test2);
+public class OperatorNOT implements EffectNode<Boolean>{
+    private final EffectNode<Boolean> test;
+    public OperatorNOT(EffectNode test){
+        this.test = test;
     }
     
     @Override
     public String toString(){
-        return this.getClass().getSimpleName() + tests;
+        return this.getClass().getSimpleName() + "(" + test +")";
     }
     
     @Override
     public Boolean result(GenericUnit unit, PlayerDetails player) {
-        for(EffectValue<Boolean> test : tests){
-            if(! test.result(unit, player)){
-                return Boolean.FALSE;
-            }
-        }
-        
-        return Boolean.TRUE;
+        return ! test.result(unit, player);
     }
     
-   
 }

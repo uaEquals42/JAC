@@ -25,7 +25,7 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasChassis<E extends Comparable> implements EffectValue<E>{
+public class HasChassis<E extends Comparable> implements EffectNode<E>{
     private final String requiredChassis;
     private final E valueIfTrue;
     private final E valueIfFalse;

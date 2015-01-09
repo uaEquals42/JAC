@@ -26,6 +26,6 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  * @param <T> needs to be Comparable.
  */
-public interface EffectValue<T extends Comparable> {
+public interface EffectNode<T extends Comparable> {
     T result(GenericUnit unit, PlayerDetails player);
 }

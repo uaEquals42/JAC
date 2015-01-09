@@ -20,41 +20,38 @@ package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author Gregory Jordan
- */
-public class testOR implements EffectValue<Boolean>{
-    private final List<EffectValue<Boolean>> tests;
+
+public class OperatorAdd implements EffectNode<Integer> {
+    private final List<EffectNode<Integer>> values;
     
-    public testOR(List<EffectValue<Boolean>> tests){
-        this.tests = tests;
+    public OperatorAdd(EffectNode<Integer> value1, EffectNode<Integer> value2){
+        values = new LinkedList<>();
+        values.add(value1);
+        values.add(value2);
     }
-    
-    public testOR(EffectValue<Boolean> bool1, EffectValue<Boolean> bool2){
-        tests = new ArrayList<>();
-        tests.add(bool1);
-        tests.add(bool2);
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + values;
     }
-    
-     @Override
-    public String toString(){
-        return this.getClass().getSimpleName() + tests;
+
+    public OperatorAdd(List<EffectNode<Integer>> values){
+        this.values = values;
     }
     
     @Override
-    public Boolean result(GenericUnit unit, PlayerDetails player) {
-        for(EffectValue<Boolean> test : tests){
-            if(test.result(unit, player)){
-                return true;
-            }
+    public Integer result(GenericUnit unit, PlayerDetails player) {
+        int tmpResult = 0;
+        for(EffectNode<Integer> value : values){
+            tmpResult = tmpResult + value.result(unit, player);
         }
         
-        return false;
+        return tmpResult;
     }
-    
 
+  
+    
 }

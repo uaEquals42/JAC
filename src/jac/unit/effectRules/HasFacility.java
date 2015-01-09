@@ -25,12 +25,12 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasFacility<T extends Comparable>  implements EffectValue<T> {
+public class HasFacility<T extends Comparable>  implements EffectNode<T> {
     private final String facilityKey;
-    private final EffectValue<T> valueIfTrue;
-    private final EffectValue<T> valueIfFalse;
+    private final EffectNode<T> valueIfTrue;
+    private final EffectNode<T> valueIfFalse;
     
-    HasFacility(String facilityKey, EffectValue<T> valueIfTrue, EffectValue<T> valueIfFalse){
+    HasFacility(String facilityKey, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
         this.facilityKey = facilityKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;

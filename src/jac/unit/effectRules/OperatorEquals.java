@@ -23,14 +23,14 @@ import jac.unit.GenericUnit;
 import java.text.MessageFormat;
 
 
-public class Equals<T1 extends Comparable, T2 extends Comparable> implements EffectValue<T2> {
-    private final EffectValue<T1> value1;
-    private final EffectValue<T1> value2;
+public class OperatorEquals<T1 extends Comparable, T2 extends Comparable> implements EffectNode<T2> {
+    private final EffectNode<T1> value1;
+    private final EffectNode<T1> value2;
     
-    private final T2 valueIfTrue;
-    private final T2 valueIfFalse;
+    private final EffectNode<T2> valueIfTrue;
+    private final EffectNode<T2> valueIfFalse;
     
-    public Equals(EffectValue<T1> value1, EffectValue<T1> value2, T2 valueIfTrue, T2 valueIfFalse){
+    public OperatorEquals(EffectNode<T1> value1, EffectNode<T1> value2, EffectNode<T2> valueIfTrue, EffectNode<T2> valueIfFalse){
         this.value1 = value1;
         this.value2 = value2;
         this.valueIfTrue = valueIfTrue;
@@ -50,10 +50,10 @@ public class Equals<T1 extends Comparable, T2 extends Comparable> implements Eff
     @Override
     public T2 result(GenericUnit unit, PlayerDetails player) {
         if(value1.result(unit, player).compareTo(value2.result(unit, player)) == 0){
-            return valueIfTrue;
+            return valueIfTrue.result(unit, player);
         }
         else{
-            return valueIfFalse;
+            return valueIfFalse.result(unit, player);
         }
     }
     

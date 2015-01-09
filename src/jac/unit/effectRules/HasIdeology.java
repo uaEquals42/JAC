@@ -25,12 +25,12 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasIdeology<T extends Comparable> implements EffectValue{
-    private final EffectValue<T> valueIfTrue;
-    private final EffectValue<T> valueIfFalse;
+public class HasIdeology<T extends Comparable> implements EffectNode{
+    private final EffectNode<T> valueIfTrue;
+    private final EffectNode<T> valueIfFalse;
     private final String ideologyKey;
     
-    HasIdeology(String ideologyKey, EffectValue<T> valueIfTrue, EffectValue<T> valueIfFalse){
+    HasIdeology(String ideologyKey, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
         this.ideologyKey = ideologyKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;

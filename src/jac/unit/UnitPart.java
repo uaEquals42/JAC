@@ -20,7 +20,7 @@ package jac.unit;
 
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
-import jac.unit.effectRules.EffectValue;
+import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.Value;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -38,11 +38,11 @@ abstract public class UnitPart {
     private final Effect empireEffects;
     
     //private final List<Restriction> restrictions; 
-    private final EffectValue<Boolean> restrict_for_display;  // What has to be true, for the player to be able to see/build this part.
+    private final EffectNode<Boolean> restrict_for_display;  // What has to be true, for the player to be able to see/build this part.
     private final List<String> pre_requisite_technology;  // This also has to be true.
     private final Set<String> allowed_races;
     private final String key;
-    private final int flatcost;  //TODO:  Replace this with an EffectValue after testing to make sure if then else effect values act as expected.
+    private final int flatcost;  //TODO:  Replace this with an EffectNode after testing to make sure if then else effect values act as expected.
     
     
     public UnitPart(Builder build){
@@ -125,7 +125,7 @@ abstract public class UnitPart {
         private final String key;
         private final int flatcost;
 
-        private EffectValue<Boolean> restrict_for_display = Value.True();
+        private EffectNode<Boolean> restrict_for_display = Value.True();
 
         private Effect localEffects = new Effect.Builder().build();
         private Effect empireEffects = null;
@@ -142,7 +142,7 @@ abstract public class UnitPart {
 
         }
 
-        public T setRestrictionTest(EffectValue test) {
+        public T setRestrictionTest(EffectNode test) {
             restrict_for_display = test;
             return (T) this;
         }

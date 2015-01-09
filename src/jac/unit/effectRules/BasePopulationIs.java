@@ -26,12 +26,12 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  * @param <E> Must be Comparable.
  */
-public class BasePopulationIs<E extends Comparable> implements EffectValue<E>{
+public class BasePopulationIs<E extends Comparable> implements EffectNode<E>{
     private final int basePop;
-    private final EffectValue<E> valueIfTrue;
-    private final EffectValue<E>valueIfFalse;
+    private final EffectNode<E> valueIfTrue;
+    private final EffectNode<E>valueIfFalse;
     
-    BasePopulationIs(int baseSize, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
+    BasePopulationIs(int baseSize, EffectNode<E> valueIfTrue, EffectNode<E> valueIfFalse){
         this.basePop = baseSize;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;

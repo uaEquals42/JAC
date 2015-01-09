@@ -25,19 +25,19 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasTech<E extends Comparable> implements EffectValue{
+public class HasTech<T extends Comparable> implements EffectNode{
     private final String techKey;
-    private final EffectValue<E> valueIfTrue;
-    private final EffectValue<E> valueIfFalse;
+    private final EffectNode<T> valueIfTrue;
+    private final EffectNode<T> valueIfFalse;
     
     
-    public HasTech(String techKey, EffectValue<E> valueIfTrue, EffectValue<E> valueIfFalse){
+    public HasTech(String techKey, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
         this.techKey = techKey;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
     }
     @Override
-    public E result(GenericUnit unit, PlayerDetails player) {
+    public T result(GenericUnit unit, PlayerDetails player) {
         if(player.getKnownTechnologies().contains(techKey)){
             return valueIfTrue.result(unit, player);
         }
