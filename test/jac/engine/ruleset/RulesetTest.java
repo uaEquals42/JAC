@@ -45,7 +45,7 @@ public class RulesetTest {
         
         
         try {
-            Ruleset instance = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt").build();
+            Ruleset instance = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt");
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");
@@ -66,7 +66,7 @@ public class RulesetTest {
         Ruleset instance; 
 
         try {
-            instance = new Ruleset.Builder().loadalphax_txt().build();
+            instance = new Ruleset.Builder().loadalphax_txt();
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");

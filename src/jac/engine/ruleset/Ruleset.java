@@ -54,8 +54,10 @@ public class Ruleset {
     private final Map<String, Reactor> reactors;
     private final Map<String, Armor> armors;
     private final Map<String, Weapon> weapons;
-    private final Map<String, UnitAbility> unit_abilities;
+    private final Map<String, UnitAbility> unitAbilities;
     private final Map<String, Facility> facilities;
+    
+    private final Map<String, Unit_Plan> unitPlans;
 
     private final Map<String, Terrainstat> basicTerrainStates;
     private final Map<String, Terrainstat> terrainModifiers;
@@ -87,11 +89,12 @@ public class Ruleset {
         reactors = build.reactors;
         armors = build.armors;
         weapons = build.weapons;
-        unit_abilities = build.unit_abilities;
+        unitAbilities = build.unit_abilities;
         facilities = build.facilities;
         basicTerrainStates = build.basicTerrainStates;
         terrainModifiers = build.terrainModifiers;
         tran = build.tran;
+        this.unitPlans = build.unitPlans;
     }
 
     public List<Ideology> getIdeologies() {
@@ -123,7 +126,7 @@ public class Ruleset {
     }
 
     public Map<String, UnitAbility> getUnit_abilities() {
-        return unit_abilities;
+        return unitAbilities;
     }
 
     public Map<String, Facility> getFacilities() {
@@ -133,7 +136,7 @@ public class Ruleset {
     
   
     public static class Builder {
-        private final static int SMAC_MP_COST_MULTIPLIER = 3;
+        private final int SMAC_MP_COST_MULTIPLIER = 3;  // TODO: Load this from SMAC file.
         
         private List<Ideology> ideologies = new ArrayList<>();
         private Map<String, Tech> technologies = new HashMap<>();
@@ -145,11 +148,12 @@ public class Ruleset {
         private Map<String, UnitAbility> unit_abilities = new LinkedHashMap<>();
         private Map<String, Facility> facilities = new LinkedHashMap<>();
         private Translation tran;
+        private Map<String, Unit_Plan> unitPlans = new LinkedHashMap<>();
         
         private  Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
         private  Map<String, Terrainstat> terrainModifiers = new LinkedHashMap<>();
 
-        public Builder loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
+        public Ruleset loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
             log.debug("loadalpha_txt: {}", filename);
 
             Path path = Paths.get(filename);
@@ -172,20 +176,19 @@ public class Ruleset {
             load_weapon(input);
             load_unit_abilities(input);
             basicTerrainStates = load_BasicTerrainTypes();
-            terrainModifiers = load_TerrainModifiers();
-            return this;
+            terrainModifiers = load_TerrainModifiers();    
+            return new Ruleset(this);
+            
         }
 
-        public Builder loadalphax_txt() throws SectionNotFoundException, IOException {
+        public Ruleset loadalphax_txt() throws SectionNotFoundException, IOException {
         //TODO: implement load alphax.txt
             //TODO: Load SMAC ideologies from SOCIO
             log.warn("Function not implemented yet.");
-            return this;
-        }
-
-        public Ruleset build() {
             return new Ruleset(this);
         }
+
+       
 
         /**
          * Will find the first line that equals the string tag.

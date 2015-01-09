@@ -42,7 +42,7 @@ public class SMAC_Test {
     public static void setUp() {
         
         try {
-            rules = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt").build();
+            rules = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt");
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");
