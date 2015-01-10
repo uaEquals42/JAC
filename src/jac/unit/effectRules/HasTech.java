@@ -25,7 +25,7 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasTech<T extends Comparable> implements EffectNode{
+public class HasTech<T extends Comparable<T>> implements EffectNode<T>{
     private final String techKey;
     private final EffectNode<T> valueIfTrue;
     private final EffectNode<T> valueIfFalse;

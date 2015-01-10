@@ -23,7 +23,7 @@ import jac.unit.GenericUnit;
 import java.text.MessageFormat;
 
 
-public class OperatorEquals<T1 extends Comparable, T2 extends Comparable> implements EffectNode<T2> {
+public class OperatorEquals<T1 extends Comparable<T1>, T2 extends Comparable<T2>> implements EffectNode<T2> {
     private final EffectNode<T1> value1;
     private final EffectNode<T1> value2;
     

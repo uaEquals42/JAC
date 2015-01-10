@@ -292,14 +292,14 @@ public class Ruleset {
                  Integer check = Integer.parseInt(col[5].trim());
                  EffectNode<Integer> costOverride;
                  if(check!=0){
-                     costOverride = new Value(check);
+                     costOverride = new Value<>(check);
                      //TODO: Implement cost override for unitplan.  ARGGGGGG.
                  }
                  
                  check = Integer.parseInt(col[6].trim());
                  EffectNode<Integer> carryCapacityOverride;
                  if(check!=0){
-                     carryCapacityOverride = new Value(check);
+                     carryCapacityOverride = new Value<>(check);
                      //TODO: Implement Capacity Override for unitplan.
                  }
                  

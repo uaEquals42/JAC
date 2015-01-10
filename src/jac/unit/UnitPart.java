@@ -138,11 +138,11 @@ abstract public class UnitPart {
             this.tran = tran;
             this.key = key;
             this.flatcost = flatcost;
-            this.restrict_for_display = restrict_for_display;
+            
 
         }
 
-        public T setRestrictionTest(EffectNode test) {
+        public T setRestrictionTest(EffectNode<Boolean> test) {
             restrict_for_display = test;
             return (T) this;
         }
@@ -159,12 +159,14 @@ abstract public class UnitPart {
             return (T) this;
         }
 
-        public void setLocalEffects(Effect localEffects) {
+        public T setLocalEffects(Effect localEffects) {
             this.localEffects = localEffects;
+            return (T) this;
         }
 
-        public void setEmpireEffects(Effect empireEffects) {
+        public T setEmpireEffects(Effect empireEffects) {
             this.empireEffects = empireEffects;
+            return (T) this;
         }
 
        

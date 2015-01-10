@@ -108,7 +108,7 @@ public class TestEffectRules {
     
     @Test
     public void testEquals(){
-        assertEquals("IF True = True return 1 else 5", 1, new OperatorEquals(Value.True(),Value.True(),new Value(1), new Value(5)).result(null, null));
-        System.out.print(new OperatorEquals(Value.True(),Value.True(),new Value(1), new Value(5)));
+        assertEquals("IF True = True return 1 else 5", 1, new OperatorEquals(Value.True(),Value.True(),new Value<>(1), new Value<>(5)).result(null, null));
+        System.out.print(new OperatorEquals(Value.True(),Value.True(),new Value<>(1), new Value<>(5)));
     }
 }

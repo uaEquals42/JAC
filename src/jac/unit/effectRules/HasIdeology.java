@@ -25,7 +25,7 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasIdeology<T extends Comparable> implements EffectNode{
+public class HasIdeology<T extends Comparable<T>> implements EffectNode<T>{
     private final EffectNode<T> valueIfTrue;
     private final EffectNode<T> valueIfFalse;
     private final String ideologyKey;

@@ -25,12 +25,12 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasReactor<E extends Comparable> implements EffectNode{
+public class HasReactor<T extends Comparable<T>> implements EffectNode<T>{
     private final String reactorKey;
-    private final EffectNode<E> thenValue;
-    private final EffectNode<E> elseValue;
+    private final EffectNode<T> thenValue;
+    private final EffectNode<T> elseValue;
     
-    HasReactor(String reactorKey, EffectNode<E> thenValue, EffectNode<E> elseValue){
+    HasReactor(String reactorKey, EffectNode<T> thenValue, EffectNode<T> elseValue){
         this.reactorKey = reactorKey;
         this.thenValue = thenValue;
         this.elseValue = elseValue;
@@ -41,7 +41,7 @@ public class HasReactor<E extends Comparable> implements EffectNode{
     }
 
     @Override
-    public E result(GenericUnit unit, PlayerDetails player) {
+    public T result(GenericUnit unit, PlayerDetails player) {
         if(unit.getReactor().getKey().equals(reactorKey)){
             return thenValue.result(unit, player);
         }

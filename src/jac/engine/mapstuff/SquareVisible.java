@@ -50,7 +50,7 @@ public class SquareVisible implements Square {
         // Initialize the unit lists for each player.
         this.units = new HashMap<>();
         for(PlayerDetails player : build.players){
-            units.put(player.getId(), new <Integer, GenericUnit>HashMap());
+            units.put(player.getId(), new HashMap<Integer, GenericUnit>());
         }
         
     }

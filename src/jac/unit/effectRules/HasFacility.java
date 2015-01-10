@@ -25,7 +25,7 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasFacility<T extends Comparable>  implements EffectNode<T> {
+public class HasFacility<T extends Comparable<T>>  implements EffectNode<T> {
     private final String facilityKey;
     private final EffectNode<T> valueIfTrue;
     private final EffectNode<T> valueIfFalse;

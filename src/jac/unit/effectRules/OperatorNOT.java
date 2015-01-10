@@ -27,7 +27,7 @@ import jac.unit.GenericUnit;
  */
 public class OperatorNOT implements EffectNode<Boolean>{
     private final EffectNode<Boolean> test;
-    public OperatorNOT(EffectNode test){
+    public OperatorNOT(EffectNode<Boolean> test){
         this.test = test;
     }
     

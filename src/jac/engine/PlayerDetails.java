@@ -57,6 +57,10 @@ public class PlayerDetails {
        
     }
 
+    public Effect getEmpireEffects(){
+        return empireEffects;
+    }
+    
     public String getPlayer_name() {
         return player_name;
     }

@@ -25,23 +25,23 @@ import jac.unit.GenericUnit;
  *
  * @author Gregory Jordan
  */
-public class HasChassis<E extends Comparable> implements EffectNode<E>{
+public class HasChassis<T extends Comparable<T>> implements EffectNode<T>{
     private final String requiredChassis;
-    private final E valueIfTrue;
-    private final E valueIfFalse;
+    private final T valueIfTrue;
+    private final T valueIfFalse;
     
-    public HasChassis(String requiredChassis, E valueIfTrue, E valueIfFalse){
+    public HasChassis(String requiredChassis, T valueIfTrue, T valueIfFalse){
         this.requiredChassis = requiredChassis;
         this.valueIfTrue = valueIfTrue;
         this.valueIfFalse = valueIfFalse;
     }
     
     public static HasChassis<Boolean> bool(String requiredChassis){
-        return new HasChassis(requiredChassis, true, false);
+        return new HasChassis<>(requiredChassis, true, false);
     }
 
     @Override
-    public E result(GenericUnit unit, PlayerDetails player) {
+    public T result(GenericUnit unit, PlayerDetails player) {
         if(unit.getChassis().getKey().equals(requiredChassis)){
             return valueIfTrue;
         }
