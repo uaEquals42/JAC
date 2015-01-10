@@ -43,8 +43,7 @@ public class Tech {
     /**
      * An empty list means there are no pre-requisites.
      */
-    List<Tech> pre_requisites = new ArrayList<>(); 
-    List<String> pre_requisites_names = new ArrayList<>(); // I might have to use this for the xml files.
+    List<String> pre_requisites_names = new ArrayList<>();
     
     // I figure doing it this way will increase the modability for modders.
     boolean freetech = false;
@@ -63,6 +62,7 @@ public class Tech {
     boolean cost_from_formula = true;  
     int reasearch_cost = 5;  // Added this here for modders, so that if they want to have fixed research costs, they can.
     
+    // TODO:  Rework this class to make use of the jac.unit.effectRules instead.
     Tech(Translation tran, String id, String name, List<Quote> quotes, List<String> pre_reqs, boolean freetech, int probe_bonus, 
             int commerce_bonus, boolean revealmap, boolean genewar_offence, boolean genewar_defence,
             int fungus_energy_bonus, int fungus_mineral_bonus,int fungus_nutrient_bonus, int power, int tech, int infrastructure, int colonize){
@@ -70,6 +70,8 @@ public class Tech {
        
         this.key = id;
         this.pre_requisites_names.addAll(pre_reqs);
+        
+        
         this.freetech = freetech;
         this.probe_bonus = probe_bonus;
         this.commerce_bonus = commerce_bonus;
@@ -84,7 +86,8 @@ public class Tech {
         this.infrastructure = infrastructure;
         this.colonize = colonize;
         
-   
+        
+        
         tran.tech_quotes.put(id, quotes);
         tran.technames.put(id, name);
         

@@ -20,18 +20,19 @@ package jac.engine.ruleset;
 
 import jac.unit.*;
 import jac.Enum.*;
+import jac.unit.effectRules.*;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -221,14 +222,14 @@ public class Ruleset {
         }
         
         private Map<String, Terrainstat> load_TerrainModifiers(){
-            Map<String, Terrainstat> terrainModifiers = new HashMap<>();
+            Map<String, Terrainstat> terrainMods = new HashMap<>();
             
-            terrainModifiers.put("fungus", new TerrainModifier.Builder("fungus", 9).build());
-            terrainModifiers.put("road", new TerrainModifier.Builder("road", 1).setMinMPCost(1).build());
-            terrainModifiers.put("mag", new TerrainModifier.Builder("mag", 0).setMinMPCost(0).build());
+            terrainMods.put("fungus", new TerrainModifier.Builder("fungus", 9).build());
+            terrainMods.put("road", new TerrainModifier.Builder("road", 1).setMinMPCost(1).build());
+            terrainMods.put("mag", new TerrainModifier.Builder("mag", 0).setMinMPCost(0).build());
             
             
-            return terrainModifiers;
+            return terrainMods;
         }
         
         private Map<String, String> load_techlongs(Path location) throws IOException {
@@ -278,8 +279,39 @@ public class Ruleset {
             
             pos++;
             for (; !input.get(pos).trim().isEmpty(); pos++) {
-                String[] row = input.get(pos).split(",");
-                 String name = row[0].trim();
+                String[] col = input.get(pos).split(",");
+                
+                //Name, Chassis, Weapon, Armor, Plan, Cost, Carry, Preq, Icon, Abil
+                //Colony Pod, Infantry, Colony Pod,   Scout,      8, 0, 0, None,    -1, 000000000000000000000000
+                 String name = col[0].trim();
+                 String chassis = col[1].trim();
+                 String weapon = col[2].trim();
+                 String armor = col[3].trim();
+                 AiUnitPlan unitRole = AiUnitPlan.convert(col[4]);
+                 
+                 Integer check = Integer.parseInt(col[5].trim());
+                 EffectNode<Integer> costOverride;
+                 if(check!=0){
+                     costOverride = new Value(check);
+                     //TODO: Implement cost override for unitplan.  ARGGGGGG.
+                 }
+                 
+                 check = Integer.parseInt(col[6].trim());
+                 EffectNode<Integer> carryCapacityOverride;
+                 if(check!=0){
+                     carryCapacityOverride = new Value(check);
+                     //TODO: Implement Capacity Override for unitplan.
+                 }
+                 
+                 String prereqTech = col[7].trim();
+                 // TODO: Get the disabled, and none working here.
+                 
+                 Unit_Plan thePlan = new Unit_Plan.Builder(null, null, null, null).prototyped(true).build();
+                 
+
+                 
+                 
+                 
                  
              }
         }

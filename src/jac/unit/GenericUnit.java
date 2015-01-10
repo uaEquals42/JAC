@@ -18,93 +18,91 @@
  */
 package jac.unit;
 
-import jac.Enum.Domain;
+
 import jac.Enum.UnitActions;
 import jac.engine.mapstuff.Square;
 import jac.engine.PlayerDetails;
 import jac.engine.mapstuff.CantMoveUnitThereException;
 import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
-import jac.engine.ruleset.Ideology;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 /**
  *
  * @author Gregory Jordan
  */
 public class GenericUnit {
+
     private final int construction_date;
-    private final int max_health;
+
     private final int id_unit;
     private final PlayerDetails player;
-    
+
     private int current_health;
     private Integer population;
-    
+
     private final Unit_Plan design;
-    
+
     private final Effect localEffects;
     private final Effect empireEffects;
-    
+
     private Map<String, UnitAbility> unit_abilities;
     private Map<String, Facility> unit_facilities;
-    
+
     private int movementPoints;
     private boolean on_hold;
     private MoveTask nextmove;
-    
+
     private Square location;
-    
-    
-    
-    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location){
+
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location) {
         construction_date = turn;
-        max_health = design.max_health();
-        current_health = max_health;
+
         this.location = location;
         this.design = design;
-        unit_abilities = design.getUnit_abilities();
-        unit_facilities = new HashMap<>(design.getUnit_facilities());
-        
+        unit_abilities = design.getUnitAbilities();
+        unit_facilities = new HashMap<>(design.getUnitFacilities());
+
         this.id_unit = id;
         this.player = player;
-        
+
         Effect tmp = design.getArmor().getLocalEffects();
         localEffects = null; //TODO have this work!
         empireEffects = null;
-      Integer population;
-        
+        Integer population;
+
     }
 
-    
-    public boolean canUnitMoveTo(Square destination, int seaLevel){
+    public void setHealthToMax() {
+        current_health = getMax_health();
+    }
+
+    public boolean canUnitMoveTo(Square destination, int seaLevel) {
         //TODO:  Add exceptions here for amphibious units.  Transports, etc.
         //
         return destination.allowedDomains(seaLevel).contains(design.getChassis().getDomain());
     }
-    
-    public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException{
-        if(canUnitMoveTo(destination, seaLevel)){
+
+    public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException {
+        if (canUnitMoveTo(destination, seaLevel)) {
             //TODO: Need to set up pathfinding and stuff here.
             nextmove = new MoveTask(destination, this);
-        }
-        else{
+        } else {
             throw new CantMoveUnitThereException();
         }
     }
-    
+
     public List<Square> performActions(GameMap map) throws MapDesync {
         List<Square> locations = new LinkedList<>();
         locations.add(location);
-        if(whatIsUnitDoing()==UnitActions.MOVING){
+        if (whatIsUnitDoing() == UnitActions.MOVING) {
             movementPoints = nextmove.workOnTask(movementPoints);
-            if(nextmove.finished()){
+            if (nextmove.finished()) {
                 map.moveUnitTo(location, this, nextmove.getDestination());
                 location = nextmove.getDestination();
                 locations.add(location);
@@ -114,65 +112,59 @@ public class GenericUnit {
         }
         return locations;
     }
-    
-    public void startOfTurn(GameMap map, int turn) throws MapDesync{
+
+    public void startOfTurn(GameMap map, int turn) throws MapDesync {
         resetMovementPoints(turn);
         performActions(map);
     }
-    
-    
-    
-    public UnitActions whatIsUnitDoing(){
-        if(nextmove!=null){
+
+    public UnitActions whatIsUnitDoing() {
+        if (nextmove != null) {
             return UnitActions.MOVING;
         }
         return UnitActions.WAITING;
     }
-    
-    
-    public void resetMovementPoints(int turn){
+
+    public void resetMovementPoints(int turn) {
         movementPoints = calculateMaxMovementPoints(turn);
     }
-    
-    int calculateMaxMovementPoints(int turn){
+
+    int calculateMaxMovementPoints(int turn) {
         int speed = 0;
         speed = design.getChassis().getMovementPoints();
-        
+
         //TODO: have this use the effect data as well.   Or just switch to using effects alone to calculate it.
-     
         return speed;
     }
-    
-    
-    
-    
-    /**
-     * List of effects that are active upon this unit.  Where all the pre requisites for the effects are met.
-     * @param turn
-     * @param player
-     * @return 
-     */
-    public Effect activeEffect(){
-        return localEffects;
-        // Would say combine local and empire.... but right now those don't work.
+
+ 
+
+    public boolean isitabase() {
+        return localEffects.getIsitabase().result(this, player) || this.getEmpireEffects().getIsitabase().result(this, player);
     }
-    
-    
-   
-    public boolean isitabase(){
-        return activeEffect().getIsitabase().result(this, player);   
-    }
-    
-    public int getSensorRange(){
+
+    public int getSensorRange() {
         return 1;  // TODO: Have this be calculated based on rules and config options.
     }
-    
+
     public int getConstruction_date() {
         return construction_date;
     }
 
     public int getMax_health() {
-        return max_health;
+        return localEffects.getHealth().result(this, player) + getEmpireEffects().getHealth().result(this, player);
+    }
+
+    /**
+     * Use this class so that optimizing latter will be allot easier. Plan to
+     * cache the results, so that if the empire effects doesn't change, it will
+     * just return the result.
+     *
+     * @return
+     */
+    private Effect getEmpireEffects() {
+        //TODO: Low priority:  Make empireeffects results be cached.
+        return player.getEmpireEffects();
     }
 
     public int getCurrent_health() {
@@ -198,7 +190,7 @@ public class GenericUnit {
     public int getId_player() {
         return player.getId();
     }
-    
+
     public Map<String, UnitAbility> getUnit_abilities() {
         return unit_abilities;
     }
@@ -214,7 +206,5 @@ public class GenericUnit {
     public int getId_unit() {
         return id_unit;
     }
-    
-    
-    
+
 }

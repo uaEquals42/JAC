@@ -35,65 +35,7 @@ import java.util.Map;
 public class Effect {
     
     
-    public static Effect combine(List<Effect> effects) {
-        List<EffectNode<Boolean>> isitabase = new LinkedList<>();
-        List<EffectNode<Boolean>> can_make_facilities = new LinkedList<>();
-        List<EffectNode<Boolean>> can_make_units = new LinkedList<>();
-        List<EffectNode<Boolean>> cant_attack = new LinkedList<>();
-        List<EffectNode<Boolean>> cant_defend = new LinkedList<>();
-        List<EffectNode<Boolean>> capture_when_defeated = new LinkedList<>();
-        List<EffectNode<Boolean>> amphibious = new LinkedList<>();
-        
-        List<Map<String, ? extends EffectNode<Unit_Plan>>> converts_to = new LinkedList<>();  // Key binding, unit plan
-        List<EffectNode<Integer>> speedBoost = new LinkedList<>();
-        
 
-        // Resources Effects
-        List<EffectNode<Integer>> unitMineralProduction = new LinkedList<>();
-        List<EffectNode<Integer>> workerMineralProduction = new LinkedList<>(); // How much minerals each square produces.
-        
-        for(Effect effect : effects){
-            isitabase.add(effect.isitabase);
-            can_make_facilities.add(effect.can_make_facilities);
-            can_make_units.add(effect.can_make_units);
-            cant_attack.add(effect.cant_attack);
-            cant_defend.add(effect.cant_defend);
-            capture_when_defeated.add(effect.capture_when_defeated);
-            converts_to.add(effect.converts_to);
-            speedBoost.add(effect.speedBoost);
-            amphibious.add(effect.amphibious);
-            unitMineralProduction.add(effect.unitMineralProduction);
-            workerMineralProduction.add(effect.workerMineralProduction);
-        }
-        //TODO: Get this to do the same for all the rest.
-        return new Effect.Builder().setSpeed_boost(new OperatorAdd(speedBoost)).build();
-    }
-
-    private Effect(EffectNode<Boolean> isitabase, 
-            EffectNode<Boolean> can_make_facilities, 
-            EffectNode<Boolean> can_make_units, 
-            EffectNode<Boolean> cant_attack, 
-            EffectNode<Boolean> cant_defend, 
-            EffectNode<Boolean> capture_when_defeated, 
-            EffectNode<Boolean> amphibious, 
-            
-            Map<String, EffectNode<Unit_Plan>> converts_to, 
-            EffectNode<Integer> speedBoost, 
-            
-            EffectNode<Integer> unitMineralProduction, 
-            EffectNode<Integer> workerMineralProduction) {
-        this.isitabase = isitabase;
-        this.can_make_facilities = can_make_facilities;
-        this.can_make_units = can_make_units;
-        this.cant_attack = cant_attack;
-        this.cant_defend = cant_defend;
-        this.capture_when_defeated = capture_when_defeated;
-        this.converts_to = converts_to;
-        this.speedBoost = speedBoost;
-        this.amphibious = amphibious;
-        this.unitMineralProduction = unitMineralProduction;
-        this.workerMineralProduction = workerMineralProduction;
-    }
     
     
     /**
@@ -105,15 +47,15 @@ public class Effect {
     private final EffectNode<Boolean> can_make_units;
     private final EffectNode<Boolean> cant_attack;
     private final EffectNode<Boolean> cant_defend;
-    private final EffectNode<Boolean> capture_when_defeated;
-    
+    private final EffectNode<Boolean> capture_when_defeated;   
     private final EffectNode<Boolean> amphibious;
     
-    private final Map<String, ? extends EffectNode<Unit_Plan>> converts_to;  // Key binding, unit plan
+    private final List<UnitCoversion> converts_to;  
+    
     private final EffectNode<Integer> speedBoost;
-    
-    
-    
+    private final EffectNode<Integer> health;
+    private final EffectNode<Integer> cost;
+     
     // Resources Effects
     private final EffectNode<Integer> unitMineralProduction;   
     private final EffectNode<Integer> workerMineralProduction; // How much minerals each square produces.
@@ -145,7 +87,7 @@ public class Effect {
         return capture_when_defeated;
     }
 
-    public Map<String, ? extends EffectNode<Unit_Plan>> getConverts_to() {
+    public List<UnitCoversion> getConverts_to() {
         return converts_to;
     }
 
@@ -164,6 +106,14 @@ public class Effect {
     public EffectNode<Integer> getWorkerMineralProduction() {
         return workerMineralProduction;
     }
+
+    public EffectNode<Integer> getHealth() {
+        return health;
+    }
+
+    public EffectNode<Integer> getCost() {
+        return cost;
+    }
     
     
     
@@ -178,7 +128,7 @@ public class Effect {
         private EffectNode<Boolean> cant_defend = Value.False();
         private EffectNode<Boolean> capture_when_defeated = Value.False();
 
-        private Map<String, ? extends EffectNode<Unit_Plan>> converts_to = new HashMap<>();
+        private List<UnitCoversion> converts_to = new ArrayList<>();
 
         private EffectNode<Integer> speed_boost  = Value.zero();
 
@@ -188,7 +138,8 @@ public class Effect {
         private EffectNode<Integer> unitMineralProduction = Value.zero();
 
         private EffectNode<Integer> workerMineralProduction = Value.zero(); // How much minerals each square produces.
-
+        EffectNode<Integer> health = Value.zero();
+        EffectNode<Integer> cost = Value.zero();
 
 
         
@@ -204,6 +155,14 @@ public class Effect {
             return this;
         }
         
+        public Builder costOverride(EffectNode<Integer> value){
+            if(value!=null){
+                cost = value;
+            }
+            return this;
+        }
+        
+        
         public Builder amphibious(EffectNode<Boolean> choice){
             amphibious = choice;
             return this;
@@ -216,6 +175,20 @@ public class Effect {
         }
         
         
+        public Builder combineEffects(Effect effect1, Effect effect2, Effect effect3, Effect effect4){
+            List<Effect> effects = new ArrayList<>();
+            effects.add(effect1);
+            effects.add(effect2);
+            effects.add(effect3);
+            effects.add(effect4);
+            return combineEffects(effects);
+        }
+        
+        
+        public Builder combineEffects(List<Effect> effects){
+            
+            return this;
+        }
       
         public Effect build() {
             return new Effect(this);
@@ -234,6 +207,8 @@ public class Effect {
         this.speedBoost = build.speed_boost;
         this.unitMineralProduction = build.unitMineralProduction;
         this.workerMineralProduction = build.workerMineralProduction;
+        this.health = build.health;
+        this.cost = build.cost;
     }
 
    
