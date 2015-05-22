@@ -16,35 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit;
+package jac.unit.partTranslation;
 
-import jac.engine.PlayerDetails;
-import java.util.List;
+import jac.engine.dialog.Noun;
+import java.util.Locale;
 
 /**
  *
  * @author Gregory Jordan
  */
-public interface UnitPart {
+public class AbilityTranslation {
+    private final Locale language;
+    private final Noun fullName;
+    private final String description;
 
-    /**
-     * Is this part usable for the current configuration?  Is there a reason you can't use this part?
-     * @param unit the unit this is a part of.
-     * @param player
-     * @return
-     */
-    boolean available(GenericUnit unit, PlayerDetails player);
+    public AbilityTranslation(Locale language, Noun fullName, String description) {
+        this.fullName = fullName;
+        this.description = description;
+        this.language = language;
+    }
 
-    Effect getEmpireEffects();
+    public Locale getLanguage() {
+        return language;
+    }
 
-    int getFlatcost();
+    public Noun getFullName() {
+        return fullName;
+    }
 
-    String getKey();
-
-    Effect getLocalEffects();
-
-    List<String> getPre_requisite_technology();
-
-    boolean visible(GenericUnit unit, PlayerDetails player);
+    public String getDescription() {
+        return description;
+    }
+    
     
 }

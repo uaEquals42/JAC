@@ -26,6 +26,8 @@ import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
+import jac.unit.partTranslation.AbilityTranslation;
+import jac.unit.partTranslation.FacilityTranslation;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -343,20 +345,22 @@ public class Ruleset {
                 if (row.length == 11) {
                     // then it is a secret project.
                     key = "#PROJECT" + secret_count;
-
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
-                            .project()
+                    GenericPart generalPartDetails = new GenericPart.Builder(key, cost)
                             .addPreRequisiteTech(row[3])
-                            .quotes(blurbs.get(key))
+                            .build();
+                    FacilityTranslation ftrans = new FacilityTranslation(tran.getLanguage(), new Noun(row[0], NounSex.NEUTER_SINGULAR) , row[5], blurbs.get(key));
+                    tmp_facility = new Facility.Builder(generalPartDetails, cost, maintence, ftrans)
+                            .project()
                             .build();
 
                     secret_count++;
                 } else {
                     key = "#FAC" + facility_count;
-
-                    tmp_facility = new Facility.Builder(key, tran, cost, maintence, row[0], row[5])
+                    FacilityTranslation ftrans = new FacilityTranslation(tran.getLanguage(), new Noun(row[0], NounSex.NEUTER_SINGULAR), row[5], blurbs.get(key));
+                    GenericPart generalPartDetails = new GenericPart.Builder(key, cost)
                             .addPreRequisiteTech(row[3])
-                            .quotes(blurbs.get(key))
+                            .build();
+                    tmp_facility = new Facility.Builder(generalPartDetails, cost, maintence, ftrans)
                             .build();
 
                     facility_count++;
@@ -383,9 +387,10 @@ public class Ruleset {
                 }
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
-                weapons.put(key, new Weapon.Builder(tran, key, cost, damage , mode , line[0], line[1]).
-                        addPreRequisiteTech(line[6])
-                        .build());  
+                GenericPart generalPartDetails = new GenericPart.Builder(key, cost)
+                            .addPreRequisiteTech(line[5])
+                            .build();
+                weapons.put(key, new Weapon.Builder(generalPartDetails, damage, mode, Locale.ENGLISH, new Noun(line[0], NounSex.NEUTER_SINGULAR), new Noun(line[1], NounSex.NEUTER_SINGULAR)).build());  
             }
             log.trace("Loaded {} weapons", weapons.size());
 
@@ -394,19 +399,20 @@ public class Ruleset {
         private void load_unit_abilities(List<String> input) throws SectionNotFoundException {
             int pos = gotosection("#ABILITIES", input);
             pos++;
-
+            int keycount = 0;
             for (; !input.get(pos).trim().isEmpty(); pos++) {
                 String[] line = input.get(pos).split(",");
-
+                String key =line[0].trim().toUpperCase(Locale.ENGLISH);
                 if (!line[2].trim().equalsIgnoreCase("Disable")) {
-                    UnitAbility abile = new UnitAbility.Builder(tran, line[0].trim(), line[0].trim(), line[3], line[5]).
-                            smacAbilityFlags(line[4]).
-                            addPreRequisiteTech(line[2]).
-                            setCost_code(Integer.parseInt(line[1].trim())).
+                     GenericPart generalPartDetails = new GenericPart.Builder(key, Integer.parseInt(line[1].trim()))
+                            .addPreRequisiteTech(line[2])
+                            .smacAbilityFlags(line[4])
+                            .build();
+                    UnitAbility abile = new UnitAbility.Builder(generalPartDetails, new AbilityTranslation(tran.getLanguage(), new Noun(line[0],NounSex.NEUTER_SINGULAR), line[5])).build();
                             
-                            build();
 
-                    unit_abilities.put(line[0].trim().toUpperCase(Locale.ENGLISH), abile);
+                    unit_abilities.put(key, abile);
+                    keycount++;
                 }
 
             }
@@ -430,11 +436,12 @@ public class Ruleset {
                 }
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
-                armors.put(key, 
-                        new Armor.Builder(tran, key, cost, rating, mode, line[0], line[1])
-                        .addPreRequisiteTech(line[5])
+                armors.put(key,
+                        new Armor.Builder(tran, new GenericPart.Builder(tran, key, cost)
+                                .addPreRequisiteTech(line[5])
+                                .build(), rating, mode, line[0], line[1])
                         .build());
-        
+
             }
             log.trace("Loaded {} armors.", armors.size());
 

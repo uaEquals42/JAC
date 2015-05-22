@@ -169,7 +169,7 @@ public class Unit_Plan implements Comparable<String>{
     
     
     
-    
+    /**
     // Private methods
     private int calculate_cost() {
         //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the formula I'm using.
@@ -221,6 +221,7 @@ public class Unit_Plan implements Comparable<String>{
             return runningTotal;
         }
     }
+    */
     
     @Override
     public String toString(){

@@ -19,25 +19,27 @@
 package jac.unit;
 
 import jac.Enum.DefenceMode;
+import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
 import jac.unit.effectRules.EffectNode;
+import java.util.List;
 
 
 /**
  *
  * @author Gregory Jordan
  */
-public class Armor extends UnitPart{
+public class Armor extends PartCodeReuse implements UnitPart  {
     
     private final int armor;
     private final DefenceMode mode;
- 
     
     private Armor(Builder build){
-        super(build);
+        super(build.generalPartDetails);
+        
         this.armor = build.armor;
         this.mode = build.mode;
-        build.getTran().getArmor().put(build.getKey(), build.names);
+     
     }
     
        
@@ -59,22 +61,21 @@ public class Armor extends UnitPart{
     }
 
     
-    public static class Builder extends UnitPart.Builder<Builder>{
-        
+    public static class Builder{
+        private final GenericPart generalPartDetails;
         private final int armor;
-    private final DefenceMode mode;
-    
-    private final String[] names;
+        private final DefenceMode mode;
+        private final String[] names;
  
-    
-        public Builder(Translation tran, String key, int flatcost, int armor, DefenceMode mode, String name1, String name2){
-            super(tran, key, flatcost);
+            public Builder(GenericPart generalPartDetails, int armor, DefenceMode mode, String name1, String name2) {
+            this.generalPartDetails = generalPartDetails;
             this.armor = armor;
+           
             this.mode = mode;
             names = new String[2];
-            names[0]= name1.trim();
-            names[1]= name2.trim();
-            
+            names[0] = name1.trim();
+            names[1] = name2.trim();
+
         }
 
         public Armor build() {

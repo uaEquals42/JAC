@@ -19,23 +19,21 @@
 package jac.unit;
 
 import jac.Enum.WeaponRole;
-import jac.engine.ruleset.Tech;
-import jac.engine.ruleset.Translation;
-import jac.unit.effectRules.EffectNode;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import jac.engine.dialog.Noun;
+import jac.unit.partTranslation.NameTranslation;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class Weapon extends UnitPart{
+public class Weapon extends PartCodeReuse {
        
     private final int offence; // -1 if psi combat.
     private final WeaponRole weaponsRole;
+    private final Map<Locale, NameTranslation> translations;
    
     public int getOffence() {
         return offence;
@@ -45,36 +43,42 @@ public class Weapon extends UnitPart{
         return weaponsRole;
     }
 
- 
+    public Noun getFullName(Locale language){
+        return translations.get(language).getFullName();
+    }
+    
+    public Noun getShortName(Locale language){
+        return translations.get(language).getShortName();
+    }
     
     private Weapon(Builder build){
-        super(build);
+        super(build.generalPartDetails);
+        this.translations = build.translations;
         
-        build.getTran().getWeapons().put(build.getKey(), build.names);
+        
         this.offence = build.offence;
         this.weaponsRole = build.com_mode;
         
         
     }
     
-    public static class Builder extends UnitPart.Builder<Builder>{
+    public static class Builder{
         
         private final int offence; // -1 if psi combat.
      
         private final WeaponRole com_mode;
+        private final Map<Locale, NameTranslation> translations;
         
-        private final String[] names;
+        private final GenericPart generalPartDetails;
         
          
-        public Builder(Translation tran, String key, int cost, int offence, WeaponRole com_mode, String name, String name2){
-            super(tran, key, cost);
-            
-            this.names = new String[2];
-            this.names[0] = name.trim();
-            this.names[1] = name2.trim();
-            this.offence = offence;
-         
+        public Builder(GenericPart generalPartDetails, int offence, WeaponRole com_mode, Locale language, Noun fullName, Noun shortName){
+            translations = new HashMap<Locale, NameTranslation>(); 
+            translations.put(language, new NameTranslation(language, fullName, shortName));
+           
+            this.offence = offence; 
             this.com_mode = com_mode;
+            this.generalPartDetails = generalPartDetails;
         }
         
 

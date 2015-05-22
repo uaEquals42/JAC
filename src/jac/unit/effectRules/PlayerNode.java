@@ -16,35 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit;
+package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
-import java.util.List;
 
 /**
- *
+ *  Same as effect node, except it only needs details on the player.  Not the unit.  Used for pre-requisites.
  * @author Gregory Jordan
+ * @param <T>  Usually Boolean or Integer.
  */
-public interface UnitPart {
-
-    /**
-     * Is this part usable for the current configuration?  Is there a reason you can't use this part?
-     * @param unit the unit this is a part of.
-     * @param player
-     * @return
-     */
-    boolean available(GenericUnit unit, PlayerDetails player);
-
-    Effect getEmpireEffects();
-
-    int getFlatcost();
-
-    String getKey();
-
-    Effect getLocalEffects();
-
-    List<String> getPre_requisite_technology();
-
-    boolean visible(GenericUnit unit, PlayerDetails player);
-    
+public interface PlayerNode <T extends Comparable<T>> {
+    T result(PlayerDetails player);  
 }

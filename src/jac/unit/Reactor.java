@@ -18,24 +18,27 @@
  */
 package jac.unit;
 
-import jac.engine.ruleset.Translation;
-import jac.unit.effectRules.EffectNode;
+import jac.engine.dialog.Noun;
+import jac.unit.partTranslation.NameTranslation;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
  *
  * @author Gregory Jordan
  */
-public class Reactor extends UnitPart{
+public class Reactor extends PartCodeReuse implements UnitPart{
     private final int power;
-   
- 
+    private final Map<Locale, NameTranslation> translations;
+    
 
 
     public Reactor(Builder build){
-        super(build);
+        super(build.generalPartDetails);
         this.power = build.power;
-        build.getTran().getReactors().put(getKey(), build.names);
+        this.translations = build.translations;
         
     }
     
@@ -44,23 +47,24 @@ public class Reactor extends UnitPart{
         return power;
     }
     
-    public String full_name(Translation tran){
-        return tran.getReactors().get(getKey())[0];
+    public Noun full_name(Locale language){
+        return translations.get(language).getFullName();
     }
     
-    public String short_name(Translation tran){
-        return tran.getReactors().get(getKey())[1];
+    public Noun short_name(Locale language){
+        return translations.get(language).getShortName();
     }
     
-    public static class Builder extends UnitPart.Builder<Builder>{
+    public static class Builder{
         private final int power;
-        private final String[] names;
-        public Builder(Translation tran, String key, int flatcost, int power, String full_name, String short_name){
-            super(tran, key, flatcost);
+        private final Map<Locale, NameTranslation> translations;
+        private final GenericPart generalPartDetails;
+        
+        public Builder(GenericPart generalPartDetails, int power, Locale language, Noun full_name, Noun short_name){
+            this.generalPartDetails = generalPartDetails;
             this.power = power;
-            this.names = new String[2];
-            names[0] = full_name;
-            names[1] = short_name;
+            translations = new LinkedHashMap<>();
+            translations.put(language, new NameTranslation(language, short_name, full_name));
         }
 
         public Reactor build() {

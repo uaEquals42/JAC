@@ -19,6 +19,7 @@
 package jac.unit;
 
 import jac.Enum.Domain;
+import jac.engine.PlayerDetails;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
 import jac.unit.effectRules.EffectNode;
@@ -28,49 +29,31 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class Chassis extends UnitPart{
+public class Chassis extends PartCodeReuse {
 
-    private final int movementPoints;
-    private final  Domain domain;
-    private final  boolean missle;
-    private final  int base_cargo;
-   
-
+       private final Domain domain;
+    private final boolean missle;
     private final int range;  // how many turns from base can it go before becoming damaged/destroyed.
     private final int percentDamageWhenOutOfRange;
-  
-   
 
-    private Chassis(Builder build){
-        super(build);
+    private Chassis(Builder build) {
+        super(build.generalPartDetails);
         
-        build.getTran().getChasis().put(build.getKey(), build.names);
-        
+
+        build.tran.getChasis().put(build.generalPartDetails.getKey(), build.names);  // TODO: Replace with new translation system.
+
         this.missle = build.missle;
-        this.base_cargo = build.base_cargo;
-  
-        this.movementPoints = build.movementPoints;
+              
         this.domain = build.domain;
-       
+
         this.range = build.range;
         this.percentDamageWhenOutOfRange = build.percentDamageWhenOutOfRange;
     }
-    
-    
-  
-    public List<Noun> names(Translation tran){
+
+    public List<Noun> names(Translation tran) {
         return tran.getChasis().get(getKey());
     }
 
-    
-    public int getBase_cargo(){
-        return base_cargo;
-    }
-
-
-    public int getMovementPoints() {
-        return movementPoints;
-    }
 
     public Domain getDomain() {
         return domain;
@@ -79,56 +62,50 @@ public class Chassis extends UnitPart{
     public boolean isMissle() {
         return missle;
     }
-
     
-    
-
-    public static class Builder  extends UnitPart.Builder<Builder>{
-        private final Domain domain;
-        private final List<Noun> names;
-        private final int movementPoints; 
-        
-       private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
-       private int percentDamageWhenOutOfRange=0;  
-        
-        private boolean missle = false;
-        private int base_cargo = 1;
    
 
-        public Builder(Translation tran, String key, int flatcost, Domain domain, int movementPoints, List<Noun> names){
-            super(tran, key, flatcost);
-            
+    public static class Builder {
+        private final GenericPart generalPartDetails;
+        private final Domain domain;
+        private final List<Noun> names;
+        private final int movementPoints;
+        private final Translation tran;
+
+        private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
+        private int percentDamageWhenOutOfRange = 0;
+
+        private boolean missle = false;
+       
+
+        public Builder(Translation tran, GenericPart generalPartDetails, Domain domain, int movementPoints, List<Noun> names) {
+            this.generalPartDetails = generalPartDetails;
+            this.tran = tran;
+
             this.domain = domain;
             this.movementPoints = movementPoints;
             this.names = names;
         }
-             
-        public Builder setRange(int range){
+
+        public Builder setRange(int range) {
             this.range = range;
             return this;
         }
-        
-        public Builder damageDonewhenOutofrange(int percent){
+
+        public Builder damageDonewhenOutofrange(int percent) {
             this.percentDamageWhenOutOfRange = percent;
             return this;
         }
-       
-        
-        public Builder ismissle(boolean missle){
+
+        public Builder ismissle(boolean missle) {
             this.missle = missle;
             return this;
         }
-        
-        public Builder setCargo(int cargo){
-            base_cargo = cargo;
-            return this;
-        }
-        
-        public Chassis build(){
+
+        public Chassis build() {
             return new Chassis(this);
         }
-    
+
     }
-    
 
 }

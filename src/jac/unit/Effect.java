@@ -19,12 +19,15 @@
 package jac.unit;
 
 
+import jac.engine.PlayerDetails;
 import jac.unit.effectRules.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -35,7 +38,7 @@ import java.util.Map;
 public class Effect {
     
     
-
+    static Logger log = LoggerFactory.getLogger(Effect.class);
     
     
     /**
@@ -55,13 +58,29 @@ public class Effect {
     private final EffectNode<Integer> speedBoost;
     private final EffectNode<Integer> health;
     private final EffectNode<Integer> cost;
+    private final EffectNode<Integer> cargoCapacity;
      
     // Resources Effects
     private final EffectNode<Integer> unitMineralProduction;   
     private final EffectNode<Integer> workerMineralProduction; // How much minerals each square produces.
 
     
-    
+    private Effect(Builder build) {
+        isitabase = build.isitabase;
+        can_make_facilities = build.can_make_facilities;
+        can_make_units = build.can_make_units;
+        cant_attack = build.cant_attack;
+        cant_defend = build.cant_defend;
+        capture_when_defeated = build.capture_when_defeated;
+        converts_to = build.converts_to;
+        amphibious = build.amphibious;
+        this.speedBoost = build.speed_boost;
+        this.unitMineralProduction = build.unitMineralProduction;
+        this.workerMineralProduction = build.workerMineralProduction;
+        this.health = build.health;
+        this.cost = build.cost;
+        this.cargoCapacity = build.cargoCapacity;
+    }
     
     public EffectNode<Boolean> getIsitabase() {
         return isitabase;
@@ -114,6 +133,10 @@ public class Effect {
     public EffectNode<Integer> getCost() {
         return cost;
     }
+
+    public EffectNode<Integer> getCargoCapacity() {
+        return cargoCapacity;
+    }
     
     
     
@@ -131,6 +154,7 @@ public class Effect {
         private List<UnitCoversion> converts_to = new ArrayList<>();
 
         private EffectNode<Integer> speed_boost  = Value.zero();
+        private EffectNode<Integer> cargoCapacity = Value.zero();
 
         private EffectNode<Boolean> amphibious = Value.False();
         
@@ -174,6 +198,10 @@ public class Effect {
             return this;
         }
         
+        public Builder setCorgoCapacity(EffectNode<Integer> cargoCapacity){
+            this.cargoCapacity = cargoCapacity;
+            return this;
+        }
         
         public Builder combineEffects(Effect effect1, Effect effect2, Effect effect3, Effect effect4){
             List<Effect> effects = new ArrayList<>();
@@ -185,31 +213,106 @@ public class Effect {
         }
         
         
+        
+        
+        
         public Builder combineEffects(List<Effect> effects){
             
             return this;
         }
       
+        
+        
+    /*
+    private PlayerNode<Integer> convert_cost_code(int cost_code, PlayerDetails player){
+        int value = 0;
+        if (cost_code > 0) {
+            value = cost_code;
+        }
+        int weaponcost = weapon.getFlatcost();
+        int armor_cost = armor.getFlatcost();
+        int chassis_cost = chassis.getFlatcost();
+        switch (cost_code) {
+            case 0:
+                return super.getFlatcost();
+            case -1:
+                value = weaponcost / armor_cost;
+                break;
+            case -2:
+                value = weaponcost - 1;
+                break;
+            case -3:
+                value = armor_cost - 1;
+                break;
+            case -4:
+                value = chassis_cost - 1;
+                break;
+            case -5:
+                value = weaponcost + armor_cost - 2;
+                break;
+            case -6:
+                value = weaponcost + chassis_cost - 2;
+                break;
+            case -7:
+                value = armor_cost + chassis_cost - 2;
+                break;
+            default:
+                log.error("Reached end of switch statement.  Invalid number supplied.");
+                // This could should never be reached.  Its mostly here in cose someone accidently removes a check someplace.
+                throw new IllegalArgumentException("Reached end of switch statement.  Invalid number supplied.");
+                
+        }
+        return value;
+    }
+    */
+        
+    public int calculate_cost(int base_cost, Weapon weapon, Armor armor, Chassis chassis) {
+
+        /*
+         ; Special Unit Abilities
+
+         ; Cost   = Cost factor of ability
+         ;          1+ = Straight Cost; 25% increase per unit of cost
+         ;           0 = None
+         ;          -1 = Increases w/ ratio of weapon to armor: 0, 1, or 2.
+         ;               Rounded DOWN. Never higher than 2.
+         ;               Examples: For a W1,A2 unit, cost is 0
+         ;                         For a W3,A2 unit, cost is 1 (3/2 rounded down)
+         ;                         For a W6,A3 unit, cost is 2
+         ;          -2 = Increases w/ weapon value
+         ;          -3 = Increases w/ armor value
+         ;          -4 = Increases w/ speed value
+         ;          -5 = Increases w/ weapon+armor value
+         ;          -6 = Increases w/ weapon+speed value
+         ;          -7 = Increases w/ armor+speed value
+         */
+        // http://alphacentauri2.info/index.php?topic=12897.msg61597#msg61597
+        /*
+         Acording to Yitzi
+         Ok (weapon, armor, and chassis all refer to the weapon/armor/chassis cost):
+         -1 costs 0 if weapon<armor, 1 if 2*armor>weapon>=armor, and 2 if weapon>=2*armor.
+         -2 has cost equal to weapon-1.
+         -3 has cost equal to armor-1.
+         -4 has cost equal to chassis-1.
+         -5 has cost equal to weapon+armor-2.
+         -6 has cost equal to weapon+chassis-2.
+         -7 has cost equal to armor+chassis-2.
+        
+         It's used as if that were the positive ability cost, i.e. positive total_unit_cost = (unit_cost *(1+ability_cost / 4))
+         */
+        
+        
+        return 0;
+    }
+        
+        
+        
         public Effect build() {
             return new Effect(this);
         }
     }
 
-    private Effect(Builder build) {
-        isitabase = build.isitabase;
-        can_make_facilities = build.can_make_facilities;
-        can_make_units = build.can_make_units;
-        cant_attack = build.cant_attack;
-        cant_defend = build.cant_defend;
-        capture_when_defeated = build.capture_when_defeated;
-        converts_to = build.converts_to;
-        amphibious = build.amphibious;
-        this.speedBoost = build.speed_boost;
-        this.unitMineralProduction = build.unitMineralProduction;
-        this.workerMineralProduction = build.workerMineralProduction;
-        this.health = build.health;
-        this.cost = build.cost;
-    }
+  
 
    
 

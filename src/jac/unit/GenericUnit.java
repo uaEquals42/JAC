@@ -114,7 +114,7 @@ public class GenericUnit {
     }
 
     public void startOfTurn(GameMap map, int turn) throws MapDesync {
-        resetMovementPoints(turn);
+        resetMovementPoints();
         performActions(map);
     }
 
@@ -125,15 +125,12 @@ public class GenericUnit {
         return UnitActions.WAITING;
     }
 
-    public void resetMovementPoints(int turn) {
-        movementPoints = calculateMaxMovementPoints(turn);
+    public void resetMovementPoints() {
+        movementPoints = calculateMaxMovementPoints();
     }
 
-    int calculateMaxMovementPoints(int turn) {
-        int speed = 0;
-        speed = design.getChassis().getMovementPoints();
-
-        //TODO: have this use the effect data as well.   Or just switch to using effects alone to calculate it.
+    int calculateMaxMovementPoints() { 
+        int speed = localEffects.getSpeedBoost().result(this, player) + this.getEmpireEffects().getSpeedBoost().result(this, player);
         return speed;
     }
 
