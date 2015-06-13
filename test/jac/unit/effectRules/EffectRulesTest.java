@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Gregory Jordan
  */
-public class TestEffectRules {
+public class EffectRulesTest {
      /**
      * Test of result method, of class OperatorEquals.
      */
@@ -100,8 +100,8 @@ public class TestEffectRules {
     
     @Test
     public void testADD(){
-        EffectNode tmp = new OperatorAdd(new Value<>(1), new Value<>(1));
-        assertEquals("1 + 1", 2, tmp.result(null, null));
+        EffectNode<Integer> tmp = new OperatorAdd(new Value<>(1), new Value<>(1));
+        assertEquals("1 + 1", 2, (int)tmp.result(null, null));
         
         assertEquals("1 - 1", 0, (int) new OperatorAdd(new Value<>(1), new Value<>(-1)).result(null, null));
     }
@@ -109,6 +109,6 @@ public class TestEffectRules {
     @Test
     public void testEquals(){
         assertEquals("IF True = True return 1 else 5", 1, new OperatorEquals(Value.True(),Value.True(),new Value<>(1), new Value<>(5)).result(null, null));
-        System.out.print(new OperatorEquals(Value.True(),Value.True(),new Value<>(1), new Value<>(5)));
+        System.out.print(new OperatorEquals<>(Value.True(),Value.True(),new Value<>(1), new Value<>(5)));
     }
 }
