@@ -21,6 +21,7 @@ package jac.unit;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import jac.unit.partTranslation.FacilityTranslation;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class Facility extends PartCodeReuse {
 
         private final GenericPart generalPartDetails;
 
-        private Map<Locale, FacilityTranslation> translations;
+        private Map<Locale, FacilityTranslation> translations = new HashMap<>();
 
         // optional parameters - initiallized to default values.
         private boolean secret_project = false;
@@ -83,6 +84,7 @@ public class Facility extends PartCodeReuse {
          * @param generalPartDetails
          * @param cost
          * @param maintence
+         * @param translation
          */
         public Builder(GenericPart generalPartDetails, int cost, int maintence, FacilityTranslation translation) {
             this.generalPartDetails = generalPartDetails;

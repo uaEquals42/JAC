@@ -27,6 +27,7 @@ import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
 import jac.unit.partTranslation.AbilityTranslation;
+import jac.unit.partTranslation.ChassisTranslation;
 import jac.unit.partTranslation.FacilityTranslation;
 
 import java.io.IOException;
@@ -65,8 +66,8 @@ public class Ruleset {
     private final Map<String, Terrainstat> basicTerrainStates;
     private final Map<String, Terrainstat> terrainModifiers;
     
+   
     
-    private Translation tran;  // Currently selected translation.
 
     public Map<String, Terrainstat> getBasicTerrainStates() {
         return basicTerrainStates;
@@ -96,7 +97,7 @@ public class Ruleset {
         facilities = build.facilities;
         basicTerrainStates = build.basicTerrainStates;
         terrainModifiers = build.terrainModifiers;
-        tran = build.tran;
+
         this.unitPlans = build.unitPlans;
     }
 
@@ -120,9 +121,7 @@ public class Ruleset {
         return weapons;
     }
 
-    public Translation getTran() {
-        return tran;
-    }
+
 
     public Map<String, Tech> getTechnologies() {
         return technologies;
@@ -139,6 +138,8 @@ public class Ruleset {
     
   
     public static class Builder {
+        static Locale FILELOCALE = Locale.ENGLISH;
+        
         private final int SMAC_MP_COST_MULTIPLIER = 3;  // TODO: Load this from SMAC file.
         
         private List<Ideology> ideologies = new ArrayList<>();
@@ -150,7 +151,7 @@ public class Ruleset {
         private Map<String, Weapon> weapons = new LinkedHashMap<>();
         private Map<String, UnitAbility> unit_abilities = new LinkedHashMap<>();
         private Map<String, Facility> facilities = new LinkedHashMap<>();
-        private Translation tran;
+      
         private Map<String, Unit_Plan> unitPlans = new LinkedHashMap<>();
         
         private  Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
@@ -162,16 +163,16 @@ public class Ruleset {
             Path path = Paths.get(filename);
 
             List<String> input = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
-            tran = new Translation(Locale.ENGLISH);
+            //tran = new Translation(Locale.ENGLISH);
 
             // load these in first.
             Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
-            tran.opening_quote = blurbs.get("#OPENING").get(0);
+            //tran.opening_quote = blurbs.get("#OPENING").get(0);
 
             Map<String, String> techlongs = load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
 
             load_ideologies(input);
-            load_technologies(input, blurbs);
+            //load_technologies(input, blurbs);
             load_facilities(input, blurbs);
             load_chassis(input);
             load_reactor(input);
@@ -348,7 +349,7 @@ public class Ruleset {
                     GenericPart generalPartDetails = new GenericPart.Builder(key, cost)
                             .addPreRequisiteTech(row[3])
                             .build();
-                    FacilityTranslation ftrans = new FacilityTranslation(tran.getLanguage(), new Noun(row[0], NounSex.NEUTER_SINGULAR) , row[5], blurbs.get(key));
+                    FacilityTranslation ftrans = new FacilityTranslation(FILELOCALE, new Noun(row[0], NounSex.NEUTER_SINGULAR) , row[5], blurbs.get(key));
                     tmp_facility = new Facility.Builder(generalPartDetails, cost, maintence, ftrans)
                             .project()
                             .build();
@@ -356,7 +357,7 @@ public class Ruleset {
                     secret_count++;
                 } else {
                     key = "#FAC" + facility_count;
-                    FacilityTranslation ftrans = new FacilityTranslation(tran.getLanguage(), new Noun(row[0], NounSex.NEUTER_SINGULAR), row[5], blurbs.get(key));
+                    FacilityTranslation ftrans = new FacilityTranslation(FILELOCALE, new Noun(row[0], NounSex.NEUTER_SINGULAR), row[5], blurbs.get(key));
                     GenericPart generalPartDetails = new GenericPart.Builder(key, cost)
                             .addPreRequisiteTech(row[3])
                             .build();
@@ -399,7 +400,7 @@ public class Ruleset {
         private void load_unit_abilities(List<String> input) throws SectionNotFoundException {
             int pos = gotosection("#ABILITIES", input);
             pos++;
-            int keycount = 0;
+
             for (; !input.get(pos).trim().isEmpty(); pos++) {
                 String[] line = input.get(pos).split(",");
                 String key =line[0].trim().toUpperCase(Locale.ENGLISH);
@@ -408,11 +409,11 @@ public class Ruleset {
                             .addPreRequisiteTech(line[2])
                             .smacAbilityFlags(line[4])
                             .build();
-                    UnitAbility abile = new UnitAbility.Builder(generalPartDetails, new AbilityTranslation(tran.getLanguage(), new Noun(line[0],NounSex.NEUTER_SINGULAR), line[5])).build();
+                    UnitAbility abile = new UnitAbility.Builder(generalPartDetails, new AbilityTranslation(FILELOCALE, new Noun(line[0],NounSex.NEUTER_SINGULAR), line[5])).build();
                             
 
                     unit_abilities.put(key, abile);
-                    keycount++;
+
                 }
 
             }
@@ -437,7 +438,7 @@ public class Ruleset {
                 String key = line[1].trim();
                 int cost = Integer.parseInt(line[4].trim());
                 armors.put(key,
-                        new Armor.Builder(tran, new GenericPart.Builder(tran, key, cost)
+                        new Armor.Builder(new GenericPart.Builder(key, cost)
                                 .addPreRequisiteTech(line[5])
                                 .build(), rating, mode, line[0], line[1])
                         .build());
@@ -455,9 +456,13 @@ public class Ruleset {
                 String[] line = input.get(pos).split(",");
                 String key = line[1].trim();
                 int cost_power = Integer.parseInt(line[2].trim());
-                Reactor tmp = new Reactor.Builder(tran, key, cost_power,cost_power, line[0], line[1])
+                Noun fullname = new Noun(line[0]);
+                Noun shortname = new Noun(line[1]);
+                GenericPart genstats = new GenericPart.Builder(key, cost_power)
                         .addPreRequisiteTech(line[3])
                         .build();
+                Reactor tmp = new Reactor.Builder(genstats, cost_power, Locale.ENGLISH, fullname, shortname).build();
+       
                
                 reactors.put(key, tmp);
             }
@@ -472,21 +477,19 @@ public class Ruleset {
                 
                 String[] line = input.get(pos).split(",");
                 String key = line[0].trim();
-                List<Noun> names = new ArrayList<>();
-                names.add(new Noun(line[0], line[1]));
-                names.add(new Noun(line[2], line[3]));
-                names.add(new Noun(line[4], line[5]));
-                names.add(new Noun(line[6], line[7]));
+           
+      
+               
 
-                int speed = Integer.parseInt(line[8].trim()) * SMAC_MP_COST_MULTIPLIER;
+                Value speed = new Value(Integer.parseInt(line[8].trim()) * SMAC_MP_COST_MULTIPLIER);
                 Domain domain = Domain.convert(Integer.parseInt(line[9].trim()));
                 int range = Integer.parseInt(line[10].trim());
                 boolean missle = line[11].trim().equals("1");
-                int cargo = Integer.parseInt(line[12].trim());
+                Value cargo = new Value(Integer.parseInt(line[12].trim()));
                 int cost = Integer.parseInt(line[13].trim());
                 String pre_req = line[14].trim();
-                names.add(new Noun(line[15], line[16]));
-                names.add(new Noun(line[17], line[18]));
+         
+                ChassisTranslation names = new ChassisTranslation(FILELOCALE, new Noun(line[0], line[1]), new Noun(line[2], line[3]),new Noun(line[15], line[16]), new Noun(line[4], line[5]),new Noun(line[6], line[7]),new Noun(line[17], line[18]) );
 
                 int damage = 0;
                 if (key.equalsIgnoreCase("Needlejet")) {
@@ -498,12 +501,19 @@ public class Ruleset {
                 if (key.equalsIgnoreCase("Missile")) {
                     damage = 100;
                 }
-
+                Effect localEffect = new Effect.Builder().
+                        setCorgoCapacity(cargo).
+                        setSpeed_boost(speed).
+                        build();
+                
+                GenericPart genstats = new GenericPart.Builder(key, cost)
+                        .addPreRequisiteTech(pre_req)
+                        .setLocalEffects(localEffect)
+                        .build();
+                
                 chasises.put(key,                      
-                        new Chassis.Builder(tran, key, cost, domain, speed, names).
-                        addPreRequisiteTech(pre_req)
+                        new Chassis.Builder(genstats, domain, names)     
                         .ismissle(missle)
-                        .setCargo(cargo)
                         .setRange(range)
                         .damageDonewhenOutofrange(damage)
                         .build()
@@ -513,6 +523,7 @@ public class Ruleset {
 
         }
 
+        /*
         private void load_technologies(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
             int pos = gotosection("#TECHNOLOGY", input);
             pos++;
@@ -544,13 +555,14 @@ public class Ruleset {
                             fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
                             Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
                             Integer.parseInt(row[5].trim()));
-                    tran.technames.put(id, row[0].trim());
+                    //tran.technames.put(id, row[0].trim());
                     technologies.put(id, new_tech);
                 }
 
             }
 
         }
+        */
 
         private void load_ideologies(List<String> input) throws SectionNotFoundException {
             int pos = gotosection("#SOCIO", input);

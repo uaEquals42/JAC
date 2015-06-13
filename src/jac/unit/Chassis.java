@@ -23,7 +23,9 @@ import jac.engine.PlayerDetails;
 import jac.engine.ruleset.*;
 import jac.engine.dialog.Noun;
 import jac.unit.effectRules.EffectNode;
+import jac.unit.partTranslation.ChassisTranslation;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -35,12 +37,12 @@ public class Chassis extends PartCodeReuse {
     private final boolean missle;
     private final int range;  // how many turns from base can it go before becoming damaged/destroyed.
     private final int percentDamageWhenOutOfRange;
+    
 
     private Chassis(Builder build) {
         super(build.generalPartDetails);
         
 
-        build.tran.getChasis().put(build.generalPartDetails.getKey(), build.names);  // TODO: Replace with new translation system.
 
         this.missle = build.missle;
               
@@ -68,9 +70,9 @@ public class Chassis extends PartCodeReuse {
     public static class Builder {
         private final GenericPart generalPartDetails;
         private final Domain domain;
-        private final List<Noun> names;
-        private final int movementPoints;
-        private final Translation tran;
+        
+       
+        private final ChassisTranslation names;
 
         private Integer range;  // how many turns from base can it go before becoming damaged/destroyed.
         private int percentDamageWhenOutOfRange = 0;
@@ -78,12 +80,10 @@ public class Chassis extends PartCodeReuse {
         private boolean missle = false;
        
 
-        public Builder(Translation tran, GenericPart generalPartDetails, Domain domain, int movementPoints, List<Noun> names) {
+        public Builder(GenericPart generalPartDetails, Domain domain, ChassisTranslation names) {
             this.generalPartDetails = generalPartDetails;
-            this.tran = tran;
-
             this.domain = domain;
-            this.movementPoints = movementPoints;
+     
             this.names = names;
         }
 

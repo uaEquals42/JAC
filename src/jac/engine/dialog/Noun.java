@@ -34,6 +34,11 @@ public class Noun {
         sex_sp = sp;
     }
     
+    public Noun(String noun){
+        this.noun = noun.trim();
+        sex_sp = NounSex.NEUTER_SINGULAR;
+    }
+    
     public Noun(String noun, String sex){
       this(noun, NounSex.convert(sex.trim()));  
     }

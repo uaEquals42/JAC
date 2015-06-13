@@ -45,6 +45,9 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
     public static Value<Integer> zero(){
         return new Value<>(0);
     }
+    
+    
+    
     @Override
     public String toString(){
         return this.getClass().getSimpleName() + "("+value+")";
