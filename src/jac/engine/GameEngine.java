@@ -35,7 +35,7 @@ public class GameEngine {
     private Ruleset rules;
 
     public void GameEngine() {
-
+        // load ins
     }
 
     public void createnewmap() {
@@ -46,6 +46,9 @@ public class GameEngine {
         
     }
     
+    void load_factions(){
+        
+    }
     public boolean canbeinsamesquare(int player1id, int player2id){
         // TODO: Actually keep track of alliances.
         return false;
