@@ -48,8 +48,8 @@ public class Effect {
     private final EffectNode<Boolean> isitabase; 
     private final EffectNode<Boolean> can_make_facilities;
     private final EffectNode<Boolean> can_make_units;
-    private final EffectNode<Boolean> cant_attack;
-    private final EffectNode<Boolean> cant_defend;
+    private final EffectNode<Boolean> can_attack;
+    private final EffectNode<Boolean> can_defend;
     private final EffectNode<Boolean> capture_when_defeated;   
     private final EffectNode<Boolean> amphibious;
     
@@ -69,8 +69,8 @@ public class Effect {
         isitabase = build.isitabase;
         can_make_facilities = build.can_make_facilities;
         can_make_units = build.can_make_units;
-        cant_attack = build.cant_attack;
-        cant_defend = build.cant_defend;
+        can_attack = build.can_attack;
+        can_defend = build.can_defend;
         capture_when_defeated = build.capture_when_defeated;
         converts_to = build.converts_to;
         amphibious = build.amphibious;
@@ -94,12 +94,12 @@ public class Effect {
         return can_make_units;
     }
 
-    public EffectNode<Boolean> getCant_attack() {
-        return cant_attack;
+    public EffectNode<Boolean> getCan_attack() {
+        return can_attack;
     }
 
-    public EffectNode<Boolean> getCant_defend() {
-        return cant_defend;
+    public EffectNode<Boolean> getCan_defend() {
+        return can_defend;
     }
 
     public EffectNode<Boolean> getCapture_when_defeated() {
@@ -147,8 +147,8 @@ public class Effect {
         private EffectNode<Boolean> isitabase = Value.False();
         private EffectNode<Boolean> can_make_facilities = Value.False();
         private EffectNode<Boolean> can_make_units = Value.False();
-        private EffectNode<Boolean> cant_attack = Value.False();
-        private EffectNode<Boolean> cant_defend = Value.False();
+        private EffectNode<Boolean> can_attack = Value.True();
+        private EffectNode<Boolean> can_defend = Value.True();
         private EffectNode<Boolean> capture_when_defeated = Value.False();
 
         private List<UnitCoversion> converts_to = new ArrayList<>();
@@ -173,8 +173,8 @@ public class Effect {
             isitabase = Value.True();
             can_make_facilities = Value.True();
             can_make_units = Value.True();
-            cant_attack = Value.True();
-            cant_defend = Value.True();
+            can_attack = Value.True();
+            can_defend = Value.True();
             capture_when_defeated = Value.True();
             return this;
         }
