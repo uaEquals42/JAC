@@ -18,18 +18,15 @@
  */
 package jac.engine.Faction;
 import jac.Enum.SocialAreas;
-import jac.engine.Faction.Faction;
 import java.io.IOException;
-import java.lang.Integer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -39,14 +36,16 @@ public class Red_FactionTest {
     
     public Red_FactionTest() {
     }
+    static org.slf4j.Logger log = LoggerFactory.getLogger(Red_FactionTest.class);
     static Faction instance;
-    
+    static final Path MOD_LOCATION = Paths.get("./Mods/TestFactions");
     @BeforeClass
     public static void setUp() {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
         
         try {
             instance = Faction.loadSmacFactionFile(FileName);
+            
         } catch (IOException ex) {
             Logger.getLogger(Red_FactionTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Failed to load the test file: " + FileName);
@@ -56,11 +55,18 @@ public class Red_FactionTest {
     
     
     @Test
-    public void testSaveXML2() throws IOException{
-        instance.toJson(Paths.get("./Mods/TestFactions"));
-        
-       
+    public void testLoadJson() throws IOException{
+        instance.toJson(MOD_LOCATION);  
+        Faction fac = Faction.loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED"));
+        log.debug(fac.toString());
     }
+    
+    @Test
+    public void testSaveJson() throws IOException{
+        instance.toJson(Paths.get("./Mods/TestFactions"));  
+    }
+    
+    
 
     @Test
     @SuppressWarnings("BoxingBoxedValue")

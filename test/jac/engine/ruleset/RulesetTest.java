@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author Gregory Jordan
  */
 public class RulesetTest {
-    private static Logger log = LoggerFactory.getLogger(RulesetTest.class);
+    static Logger log = LoggerFactory.getLogger(RulesetTest.class);
     public RulesetTest() {
     }
     

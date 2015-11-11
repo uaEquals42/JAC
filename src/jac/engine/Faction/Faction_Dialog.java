@@ -44,6 +44,10 @@ public class Faction_Dialog {
         
         return gson.toJson(this);
     }
+
+    public Locale getLanguage() {
+        return language;
+    }
     
     Locale language;
 

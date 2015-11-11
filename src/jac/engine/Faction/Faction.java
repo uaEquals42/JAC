@@ -24,8 +24,11 @@ import jac.Enum.AI_Emphesis;
 import jac.Enum.FreeUnitType;
 import jac.Enum.SocialAreas;
 import jac.Enum.NounSex;
+import jac.engine.FileHelpers;
 import jac.engine.dialog.Quote;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -47,8 +50,8 @@ import org.slf4j.LoggerFactory;
  * @author Gregory Jordan
  */
 public class Faction {
-
-    private static final String PREFIX = "./Factions/";
+    private static final String SETTING_FILE_NAME = "settings.json";
+    public static final String FACTION_FOLDER = "./Factions/";
     static Logger log = LoggerFactory.getLogger(Faction.class);
 
     final FactionSettings setting;
@@ -191,42 +194,33 @@ public class Faction {
 
         line = findKey(textFileIn, "#BLURB");
         dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
-        Map translations = new HashMap<Locale, Faction_Dialog>();
+        Map<Locale, Faction_Dialog> translations = new HashMap<>();
         translations.put(Locale.ENGLISH, dialog);
         return new Faction(tmp_setting, translations);
     }
 
-    /**
-     * Will read in the given XML. This function is likely to be edited in the
-     * future. TODO: Update this when the factions data layout is figured out
-     * better. (for translations)
-     *
-     * @param name
-     * @return
-     */
-    /**
-     * public static Faction readXML(Path settingsXML) throws JAXBException {
-     *
-     * JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
-     * Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-     * //StringReader sr = new StringReader(xml); FactionSettings setting =
-     * (FactionSettings) jaxbUnmarshaller.unmarshal(settingsXML.toFile());
-     *
-     * jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-     * jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-     *
-     * String filename = setting.codeName + "_English.xml"; // TODO: make this
-     * work for multiple languages. Path file = Paths.get(PREFIX, filename);
-     * Faction_Dialog dialog = (Faction_Dialog)
-     * jaxbUnmarshaller.unmarshal(file.toFile());
-     *
-     * return new Faction(setting, dialog);
-     *
-     * }*
-     */
+
+    
+    public static Faction loadJson(Path folder) throws FileNotFoundException, IOException{
+        log.trace("loadJson: {}", folder.toString());
+        Gson gson = new Gson();
+    
+        FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME).toFile()), FactionSettings.class);
+        
+        Map<Locale, Faction_Dialog> languages = new HashMap<>();
+        
+        List<Path> paths = FileHelpers.listFiles(folder, "lang_*.json");
+        for(Path pp : paths){
+            Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
+            languages.put(dialog.getLanguage(), dialog);
+        }
+        
+        return new Faction(setting, languages);
+    }
+    
     public void toJson(Path rulset_location) throws IOException {
 
-        Path saveLocation = rulset_location.resolve(PREFIX).resolve(this.getCodeName());
+        Path saveLocation = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
         // See if folder exists, if no... create it.
         File folder = saveLocation.toFile();
         boolean test = folder.mkdirs();
@@ -239,60 +233,19 @@ public class Faction {
         Gson gson = builder.create();
 
         String settings = gson.toJson(this.setting);
-        try (FileWriter file = new FileWriter(saveLocation.resolve("settings.json").toString())) {
+        try (FileWriter file = new FileWriter(saveLocation.resolve(SETTING_FILE_NAME).toString())) {
             file.write(settings);
         }
         log.trace("Available Translations");
         for (Locale language : translations.keySet()) {
             log.trace("{}",language.getLanguage());
-            try (FileWriter file = new FileWriter(saveLocation.resolve(language.getISO3Language() + ".json").toString())) {
+            try (FileWriter file = new FileWriter(saveLocation.resolve("lang_"+language.getISO3Language() + ".json").toString())) {
                 file.write(gson.toJson(translations.get(language)));
             }
         }
     }
 
-    /**
-     *
-     * @return
-     *
-     * public Path saveXML() throws PropertyException, JAXBException {
-     *
-     * Path result; File folder = new File(PREFIX); boolean test =
-     * folder.mkdirs(); log.debug("Had to create Factions folder: {}", test);
-     *
-     * // create JAXB context and initializing Marshaller JAXBContext
-     * jaxbContext = JAXBContext.newInstance(FactionSettings.class); Marshaller
-     * jaxbMarshaller = jaxbContext.createMarshaller();
-     *
-     * // for getting nice formatted output
-     * jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-     * Boolean.TRUE);
-     *
-     * //specify the location and name of xml file to be created String savename
-     * = setting.codeName + "_settings.xml";
-     *
-     * File XMLfile = new File(PREFIX, savename); result = XMLfile.toPath();
-     *
-     * // Writing to XML file jaxbMarshaller.marshal(setting, XMLfile); //
-     * Writing to console //jaxbMarshaller.marshal(setting, System.out); //
-     * TODO: move this to the logging system.
-     *
-     * jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-     * jaxbMarshaller = jaxbContext.createMarshaller();
-     *
-     * // for getting nice formatted output
-     * jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-     * Boolean.TRUE);
-     *
-     * savename = setting.codeName + "_English.xml"; XMLfile = new File(PREFIX,
-     * savename);
-     *
-     * // Writing to XML file jaxbMarshaller.marshal(dialog, XMLfile); //
-     * Writing to console //jaxbMarshaller.marshal(dialog, System.out);
-     *
-     * return result; }
-    *
-     */
+
     private static void configIdeology(String value1, String value2, List<String[]> addto) {
 
         value1 = value1.trim().toLowerCase();
