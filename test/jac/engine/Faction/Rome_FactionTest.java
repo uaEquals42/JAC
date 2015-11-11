@@ -20,6 +20,11 @@ package jac.engine.Faction;
 
 import jac.Enum.SocialAreas;
 import jac.engine.Faction.Faction;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -38,16 +43,21 @@ public class Rome_FactionTest {
     @BeforeClass
     public static void setUp() {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        instance = new Faction();
-        instance.loadSmacFactionFile(FileName);
+        
+        try {
+            instance = Faction.loadSmacFactionFile(FileName);
+        } catch (IOException ex) {
+            Logger.getLogger(Rome_FactionTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Failed to load the test file: " + FileName);
+        }
 
     }
 
     @Test
-    public void testSaveXML2() {
+    public void testSaveXML2() throws JAXBException {
 
-        boolean result = instance.saveXML();
-        assertEquals("Faction Data has been loaded, should be true", true, result); // We haven't loaded any faction data.  So it should return false.
+        Path result = instance.saveXML();
+        
     }
     
     

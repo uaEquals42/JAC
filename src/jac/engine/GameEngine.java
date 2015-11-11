@@ -18,22 +18,34 @@
  */
 package jac.engine;
 
+import jac.engine.Faction.Faction;
 import jac.engine.mapstuff.Gameboard;
 import jac.engine.Faction.FactionSettings;
 import jac.engine.ruleset.Ruleset;
+import jac.engine.ruleset.SectionNotFoundException;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Gregory Jordan
  */
 public class GameEngine {
-
+    private static final Logger log = LoggerFactory.getLogger(GameEngine.class);
     private Gameboard gameboard;
     private List<FactionSettings> factions;
     private List<PlayerDetails> players;
     private Ruleset rules;
 
+
+    
     public void GameEngine() {
         // load ins
     }
@@ -42,12 +54,19 @@ public class GameEngine {
         gameboard = new Gameboard(200, 200, 50, this);
     }
     
-    void load_ruleset(){
-        
+    void load_ruleset(String location) throws SectionNotFoundException, IOException{
+        //TODO: have a trigger and load from xml the rulesets.
+        rules = new Ruleset.Builder().loadalpha_txt(location);
     }
     
-    void load_factions(){
-        
+    List<FactionSettings> load_factions() throws IOException{
+        // First we need to generate a list of available factions.
+        List<Path> faction_settings = FileHelpers.listFiles(Paths.get("./Factions"), "*settings.xml");
+        log.debug(faction_settings.toString());
+        for(Path pp : faction_settings){
+            
+        }
+    return null;
     }
     public boolean canbeinsamesquare(int player1id, int player2id){
         // TODO: Actually keep track of alliances.

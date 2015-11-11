@@ -19,15 +19,20 @@
 package jac.engine.Faction;
 
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * This loads all the smac factions... sees if any errors generated.
  * @author Gregory Jordan
  */
 public class FactionTest {
-    
+   private static final String SMACX_LOCATION = "./testfiles/SMACX/";
     public FactionTest() {
 
         
@@ -35,44 +40,22 @@ public class FactionTest {
     // This just tries loading in all the different factions in the tests.
     
     @Test
-    public void load_faction_red(){
-   
-        String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
-        Faction instance = new Faction();
-        boolean expResult = true;
-        boolean result = instance.loadSmacFactionFile(FileName);
-        assertEquals(expResult, result);
+    public void test_gaians(){
+       try {
+           Faction gaians = Faction.loadSmacFactionFile(SMACX_LOCATION+"GAIANS.TXT");
+       } catch (IOException ex) {
+           Logger.getLogger(FactionTest.class.getName()).log(Level.SEVERE, null, ex);
+           fail("IOException");
+       }
     }
 
-    /**
-     * Test of loadSmacFactionFile method, of class Faction.
-     */
-    @Test
-    public void testLoad_alpha_fac_file_rome() {
-        String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        Faction instance = new Faction();
-        boolean expResult = true;
-        boolean result = instance.loadSmacFactionFile(FileName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
 
-    }
-    
-    @Test
-    public void testLoad_alpha_fac_file_reagan() {
-        String FileName = "./testfiles/FactionsbyBlueFlux/Reagan/reagan.txt";
-        Faction instance = new Faction();
-        boolean expResult = true;
-        boolean result = instance.loadSmacFactionFile(FileName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
 
-    }
-    
+    /*
     @Test
     public void test_loading_original_factions(){
-        Faction instance = new Faction();
-        assertEquals("Load Gains", true, instance.loadSmacFactionFile("./testfiles/SMACX/GAIANS.TXT"));
+       
+        assertEquals("Load Gains", true, instance.loadSmacFactionFile("GAIANS.TXT"));
         assertEquals("Load Morgan", true, instance.loadSmacFactionFile("./testfiles/SMACX/MORGAN.TXT"));
         assertEquals("Load Peacekeepers", true, instance.loadSmacFactionFile("./testfiles/SMACX/PEACE.TXT"));
         assertEquals("Load Angels", true, instance.loadSmacFactionFile("./testfiles/SMACX/angels.txt"));
@@ -87,37 +70,39 @@ public class FactionTest {
         assertEquals("Load Usurper", true, instance.loadSmacFactionFile("./testfiles/SMACX/usurper.txt"));
               
     }
+*/
+    
 
-    /**
-     * Test of saveXML method, of class Faction.
-     */
-    @Test
-    public void testSaveXML() {
-        Faction instance = new Faction();
-        boolean result = instance.saveXML();
-        assertEquals("The faction data hasn't been set yet, should return false", false, result); // We haven't loaded any faction data.  So it should return false.
-    }
     
     @Test
-    public void testSaveXML2() {
-        Faction instance = new Faction();
+    public void testSaveXML2() throws IOException, JAXBException {
+        
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        instance.loadSmacFactionFile(FileName);
-        boolean result = instance.saveXML();
-        assertEquals("Faction Data has been loaded, should be true", true, result); 
+        Faction instance = Faction.loadSmacFactionFile(FileName);
+        Path result = instance.saveXML();
+        
     }
     
      @Test
-    public void test_load_XML() {
-        Faction instance = new Faction();
+    public void test_load_XML() throws JAXBException {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        instance.loadSmacFactionFile(FileName);
-        boolean result = instance.saveXML();
-        assertEquals("Faction Data has been loaded, should be true", true, result); 
+        Faction instance;
+       try {
+           instance = Faction.loadSmacFactionFile(FileName);
+           Path result = instance.saveXML();
+          
+            
+            instance = Faction.readXML(result);
+            Boolean test = instance.getCodeName().equalsIgnoreCase("ROME");
+        assertEquals("Faction Data has been loaded, should be true", true, test); 
+            
+       } catch (IOException ex) {
+           Logger.getLogger(FactionTest.class.getName()).log(Level.SEVERE, null, ex);
+       }
         
-        instance = new Faction();
-        result = instance.readXML("ROME");
-        assertEquals("Faction Data has been loaded, should be true", true, result); 
+        
+        
+        
         
     }
     

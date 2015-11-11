@@ -39,6 +39,12 @@ XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FactionSettings {
 	
+    @XmlElement
+     String codeName;
+    
+    @XmlElement
+     String race;
+        
 	// RULES:
 	@XmlElement
         int ai_fight; // willingness to fight.
