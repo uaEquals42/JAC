@@ -54,7 +54,7 @@ public class Ruleset {
     private final List<Ideology> ideologies;
     private final Map<String, Tech> technologies;
 
-    private final Map<String, Chassis> chasises;
+    private final Map<String, Chassis> chassis;
     private final Map<String, Reactor> reactors;
     private final Map<String, Armor> armors;
     private final Map<String, Weapon> weapons;
@@ -67,7 +67,7 @@ public class Ruleset {
     private final Map<String, Terrainstat> terrainModifiers;
     
    
-    
+
 
     public Map<String, Terrainstat> getBasicTerrainStates() {
         return basicTerrainStates;
@@ -89,7 +89,7 @@ public class Ruleset {
         ideologies = build.ideologies;
         technologies = build.technologies;
 
-        chasises = build.chasises;
+        chassis = build.chasises;
         reactors = build.reactors;
         armors = build.armors;
         weapons = build.weapons;
@@ -105,8 +105,8 @@ public class Ruleset {
         return ideologies;
     }
 
-    public Map<String, Chassis> getChasises() {
-        return chasises;
+    public Map<String, Chassis> getChassis() {
+        return chassis;
     }
 
     public Map<String, Reactor> getReactors() {

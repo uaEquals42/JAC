@@ -19,6 +19,8 @@
 package jac.engine.Faction;
 
 //import engine.dialog.QuestionYN;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jac.engine.xmladaptors.JAXLanguageAdaptor;
 import jac.Enum.NounSex;
 import jac.engine.dialog.Quote;
@@ -43,6 +45,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Faction_Dialog {
 
+    public String toJson(){
+        GsonBuilder builder = new GsonBuilder();
+        builder = builder.setPrettyPrinting().serializeNulls();
+        Gson gson = builder.create();
+        
+        return gson.toJson(this);
+    }
+    
     @XmlJavaTypeAdapter(JAXLanguageAdaptor.class)
     Locale language;
     @XmlElement

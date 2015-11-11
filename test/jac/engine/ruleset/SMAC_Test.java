@@ -127,14 +127,14 @@ public class SMAC_Test {
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", new Value(3).toString(), rules.getChasises().get("Infantry").getLocalEffects().getSpeedBoost().toString());
-        assertEquals("Infantry cost", 1, rules.getChasises().get("Infantry").getFlatcost());
-        assertEquals("Infantry Prereqs", 0, rules.getChasises().get("Infantry").getPre_requisite_technology().size());
-        assertEquals("Infantry", Domain.LAND, rules.getChasises().get("Infantry").getDomain());
+        assertEquals("Infantry movment", new Value(3).toString(), rules.getChassis().get("Infantry").getLocalEffects().getSpeedBoost().toString());
+        assertEquals("Infantry cost", 1, rules.getChassis().get("Infantry").getFlatcost());
+        assertEquals("Infantry Prereqs", 0, rules.getChassis().get("Infantry").getPre_requisite_technology().size());
+        assertEquals("Infantry", Domain.LAND, rules.getChassis().get("Infantry").getDomain());
         
-        assertEquals("Missile prereqs", "Orbital", rules.getChasises().get("Missile").getPre_requisite_technology().get(0));
-        assertEquals("Missile is a missle?", true, rules.getChasises().get("Missile").isMissle());
-        assertEquals("Missle is an air unit?", Domain.AIR, rules.getChasises().get("Missile").getDomain());
+        assertEquals("Missile prereqs", "Orbital", rules.getChassis().get("Missile").getPre_requisite_technology().get(0));
+        assertEquals("Missile is a missle?", true, rules.getChassis().get("Missile").isMissle());
+        assertEquals("Missle is an air unit?", Domain.AIR, rules.getChassis().get("Missile").getDomain());
     }
     
     

@@ -18,27 +18,27 @@
  */
 package jac.engine.Faction;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jac.Enum.AI_Emphesis;
 import jac.Enum.FreeUnitType;
 import jac.Enum.SocialAreas;
 import jac.Enum.NounSex;
 import jac.engine.dialog.Quote;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-
-import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,23 +48,39 @@ import org.slf4j.LoggerFactory;
  */
 public class Faction {
 
-    private static final Logger log = LoggerFactory.getLogger(Faction.class);
-    private static String PREFIX = "./Factions/";
+    private static final String PREFIX = "./Factions/";
+    static Logger log = LoggerFactory.getLogger(Faction.class);
 
     final FactionSettings setting;
-    final Faction_Dialog dialog;
+    final Map<Locale, Faction_Dialog> translations;
 
-    public Faction(FactionSettings setting, Faction_Dialog dialog) {
+    public Faction(FactionSettings setting, Map<Locale, Faction_Dialog> translations) {
         this.setting = setting;
-        this.dialog = dialog;
+        this.translations = translations;
     }
 
     public FactionSettings getSetting() {
         return setting;
     }
 
-    public Faction_Dialog getDialog() {
-        return dialog;
+    public Faction_Dialog getDialog(Locale language) throws ExceptionNoFactionDialog {
+        if (translations.isEmpty()) {
+            log.error("Faction {} is missing all translations.", this.setting.codeName);
+            throw new ExceptionNoFactionDialog(this.setting.codeName);
+        }
+
+        if (translations.containsKey(language)) {
+            return translations.get(language);
+        } else if (translations.containsKey(Locale.ENGLISH)) {
+            log.warn("Fallback to English");
+            return translations.get(Locale.ENGLISH);
+        } else {
+            Locale key = translations.keySet().iterator().next();
+            log.warn("Falling back to {}", key);
+            return translations.get(key);
+
+        }
+
     }
 
     public String getCodeName() {
@@ -82,7 +98,7 @@ public class Faction {
      * @return
      */
     public static Faction loadSmacFactionFile(String FileName) throws IOException {
-
+        log.debug("Load Smac Faction at {}", FileName);
         FactionSettings tmp_setting = new FactionSettings();
         tmp_setting.race = "human";  // TODO: Set to alien if it is the alien people.
 
@@ -175,8 +191,9 @@ public class Faction {
 
         line = findKey(textFileIn, "#BLURB");
         dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
-
-        return new Faction(tmp_setting, dialog);
+        Map translations = new HashMap<Locale, Faction_Dialog>();
+        translations.put(Locale.ENGLISH, dialog);
+        return new Faction(tmp_setting, translations);
     }
 
     /**
@@ -187,70 +204,95 @@ public class Faction {
      * @param name
      * @return
      */
-    public static Faction readXML(Path settingsXML) throws JAXBException {
+    /**
+     * public static Faction readXML(Path settingsXML) throws JAXBException {
+     *
+     * JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
+     * Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+     * //StringReader sr = new StringReader(xml); FactionSettings setting =
+     * (FactionSettings) jaxbUnmarshaller.unmarshal(settingsXML.toFile());
+     *
+     * jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
+     * jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+     *
+     * String filename = setting.codeName + "_English.xml"; // TODO: make this
+     * work for multiple languages. Path file = Paths.get(PREFIX, filename);
+     * Faction_Dialog dialog = (Faction_Dialog)
+     * jaxbUnmarshaller.unmarshal(file.toFile());
+     *
+     * return new Faction(setting, dialog);
+     *
+     * }*
+     */
+    public void toJson(Path rulset_location) throws IOException {
 
-        JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        //StringReader sr = new StringReader(xml);  
-        FactionSettings setting = (FactionSettings) jaxbUnmarshaller.unmarshal(settingsXML.toFile());
+        Path saveLocation = rulset_location.resolve(PREFIX).resolve(this.getCodeName());
+        // See if folder exists, if no... create it.
+        File folder = saveLocation.toFile();
+        boolean test = folder.mkdirs();
+        if (test) {
+            log.debug("Created Faction {} folder", getCodeName());
+        }
 
-        jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-        jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        GsonBuilder builder = new GsonBuilder();
+        builder = builder.setPrettyPrinting().serializeNulls();
+        Gson gson = builder.create();
 
-        String filename = setting.codeName + "_English.xml"; // TODO: make this work for multiple languages.
-        Path file = Paths.get(PREFIX, filename);
-        Faction_Dialog dialog = (Faction_Dialog) jaxbUnmarshaller.unmarshal(file.toFile());
-
-        return new Faction(setting, dialog);
-
+        String settings = gson.toJson(this.setting);
+        try (FileWriter file = new FileWriter(saveLocation.resolve("settings.json").toString())) {
+            file.write(settings);
+        }
+        log.trace("Available Translations");
+        for (Locale language : translations.keySet()) {
+            log.trace("{}",language.getLanguage());
+            try (FileWriter file = new FileWriter(saveLocation.resolve(language.getISO3Language() + ".json").toString())) {
+                file.write(gson.toJson(translations.get(language)));
+            }
+        }
     }
 
     /**
      *
      * @return
+     *
+     * public Path saveXML() throws PropertyException, JAXBException {
+     *
+     * Path result; File folder = new File(PREFIX); boolean test =
+     * folder.mkdirs(); log.debug("Had to create Factions folder: {}", test);
+     *
+     * // create JAXB context and initializing Marshaller JAXBContext
+     * jaxbContext = JAXBContext.newInstance(FactionSettings.class); Marshaller
+     * jaxbMarshaller = jaxbContext.createMarshaller();
+     *
+     * // for getting nice formatted output
+     * jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+     * Boolean.TRUE);
+     *
+     * //specify the location and name of xml file to be created String savename
+     * = setting.codeName + "_settings.xml";
+     *
+     * File XMLfile = new File(PREFIX, savename); result = XMLfile.toPath();
+     *
+     * // Writing to XML file jaxbMarshaller.marshal(setting, XMLfile); //
+     * Writing to console //jaxbMarshaller.marshal(setting, System.out); //
+     * TODO: move this to the logging system.
+     *
+     * jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
+     * jaxbMarshaller = jaxbContext.createMarshaller();
+     *
+     * // for getting nice formatted output
+     * jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+     * Boolean.TRUE);
+     *
+     * savename = setting.codeName + "_English.xml"; XMLfile = new File(PREFIX,
+     * savename);
+     *
+     * // Writing to XML file jaxbMarshaller.marshal(dialog, XMLfile); //
+     * Writing to console //jaxbMarshaller.marshal(dialog, System.out);
+     *
+     * return result; }
+    *
      */
-    public Path saveXML() throws PropertyException, JAXBException {
-
-        Path result;
-        File folder = new File(PREFIX);
-        boolean test = folder.mkdirs();
-        log.debug("Had to create Factions folder: {}", test);
-
-        // create JAXB context and initializing Marshaller  
-        JAXBContext jaxbContext = JAXBContext.newInstance(FactionSettings.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-        // for getting nice formatted output  
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-        //specify the location and name of xml file to be created  
-        String savename = setting.codeName + "_settings.xml";
-
-        File XMLfile = new File(PREFIX, savename);
-        result = XMLfile.toPath();
-
-        // Writing to XML file  
-        jaxbMarshaller.marshal(setting, XMLfile);
-        // Writing to console  
-        //jaxbMarshaller.marshal(setting, System.out); // TODO: move this to the logging system.
-
-        jaxbContext = JAXBContext.newInstance(Faction_Dialog.class);
-        jaxbMarshaller = jaxbContext.createMarshaller();
-
-        // for getting nice formatted output  
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-        savename = setting.codeName + "_English.xml";
-        XMLfile = new File(PREFIX, savename);
-
-        // Writing to XML file  
-        jaxbMarshaller.marshal(dialog, XMLfile);
-        // Writing to console  
-        //jaxbMarshaller.marshal(dialog, System.out);
-
-        return result;
-    }
-
     private static void configIdeology(String value1, String value2, List<String[]> addto) {
 
         value1 = value1.trim().toLowerCase();

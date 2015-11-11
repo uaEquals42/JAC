@@ -22,6 +22,7 @@ import jac.engine.Faction.Faction;
 import java.io.IOException;
 import java.lang.Integer;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
@@ -55,8 +56,9 @@ public class Red_FactionTest {
     
     
     @Test
-    public void testSaveXML2() throws JAXBException {
-        Path result = instance.saveXML();
+    public void testSaveXML2() throws IOException{
+        instance.toJson(Paths.get("./Mods/TestFactions"));
+        
        
     }
 

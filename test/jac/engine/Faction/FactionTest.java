@@ -21,6 +21,7 @@ package jac.engine.Faction;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
@@ -75,35 +76,14 @@ public class FactionTest {
 
     
     @Test
-    public void testSaveXML2() throws IOException, JAXBException {
+    public void testToJson() throws IOException, JAXBException {
         
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
         Faction instance = Faction.loadSmacFactionFile(FileName);
-        Path result = instance.saveXML();
+        instance.toJson(Paths.get("./Mods/TestFactions"));
         
     }
     
-     @Test
-    public void test_load_XML() throws JAXBException {
-        String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        Faction instance;
-       try {
-           instance = Faction.loadSmacFactionFile(FileName);
-           Path result = instance.saveXML();
-          
-            
-            instance = Faction.readXML(result);
-            Boolean test = instance.getCodeName().equalsIgnoreCase("ROME");
-        assertEquals("Faction Data has been loaded, should be true", true, test); 
-            
-       } catch (IOException ex) {
-           Logger.getLogger(FactionTest.class.getName()).log(Level.SEVERE, null, ex);
-       }
-        
-        
-        
-        
-        
-    }
+
     
 }
