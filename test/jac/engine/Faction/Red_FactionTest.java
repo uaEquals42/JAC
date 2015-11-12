@@ -40,32 +40,16 @@ public class Red_FactionTest {
     static Faction instance;
     static final Path MOD_LOCATION = Paths.get("./Mods/TestFactions");
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws IOException {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
-        
-        try {
-            instance = Faction.loadSmacFactionFile(FileName);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(Red_FactionTest.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Failed to load the test file: " + FileName);
-        }
+
+        instance = Faction.loadSmacFactionFile(FileName);
+        instance.toJson(MOD_LOCATION);
+        instance = Faction.loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED"));
 
     }
     
-    
-    @Test
-    public void testLoadJson() throws IOException{
-        instance.toJson(MOD_LOCATION);  
-        Faction fac = Faction.loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED"));
-        log.debug(fac.toString());
-    }
-    
-    @Test
-    public void testSaveJson() throws IOException{
-        instance.toJson(Paths.get("./Mods/TestFactions"));  
-    }
-    
+        
     
 
     @Test
