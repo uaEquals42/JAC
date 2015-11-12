@@ -125,7 +125,7 @@ public class FactionSettings {
     int votes;  //TODO: look up what this was supposed to be...
     boolean freeproto = false;
     boolean aquatic_faction = false;
-    boolean alien_faction = false;
+
 
     List<String[]> pro_ideologies = new ArrayList<>();
     List<String[]> anti_ideologies = new ArrayList<>();

@@ -228,19 +228,14 @@ public class Faction {
             log.debug("Created Faction {} folder", getCodeName());
         }
 
-        GsonBuilder builder = new GsonBuilder();
-        builder = builder.setPrettyPrinting().serializeNulls();
-        Gson gson = builder.create();
-
-        String settings = gson.toJson(this.setting);
         try (FileWriter file = new FileWriter(saveLocation.resolve(SETTING_FILE_NAME).toString())) {
-            file.write(settings);
+            file.write(setting.toJson());
         }
         log.trace("Available Translations");
         for (Locale language : translations.keySet()) {
             log.trace("{}",language.getLanguage());
             try (FileWriter file = new FileWriter(saveLocation.resolve("lang_"+language.getISO3Language() + ".json").toString())) {
-                file.write(gson.toJson(translations.get(language)));
+                file.write(translations.get(language).toJson());
             }
         }
     }
@@ -395,7 +390,7 @@ public class Faction {
                     break;
 
                 case "ALIEN":
-                    setting.alien_faction = true;
+                    setting.race = "alien";
                     break;
 
                 case "FREEFAC":
