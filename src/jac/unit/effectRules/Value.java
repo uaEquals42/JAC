@@ -42,7 +42,7 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
         return new Value<>(false);
     }
     
-    public static Value<Integer> zero(){
+    public static Value<Integer> Zero(){
         return new Value<>(0);
     }
     

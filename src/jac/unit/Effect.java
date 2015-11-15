@@ -21,7 +21,9 @@ package jac.unit;
 
 import jac.unit.effectRules.*;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,188 +38,71 @@ public class Effect {
     
     static Logger log = LoggerFactory.getLogger(Effect.class);
     
-    
-    /**
-     * is it a base?  aka.  Does it have a population that can gather resources.
-     * true - it has a population.
-     */
-    private final EffectNode<Boolean> isitabase; 
-    private final EffectNode<Boolean> can_make_facilities;
-    private final EffectNode<Boolean> can_make_units;
-    private final EffectNode<Boolean> can_attack;
-    private final EffectNode<Boolean> can_defend;
-    private final EffectNode<Boolean> capture_when_defeated;   
-    private final EffectNode<Boolean> amphibious;
-    
-    private final List<UnitCoversion> converts_to;  
-    
-    private final EffectNode<Integer> speedBoost;
-    private final EffectNode<Integer> health;
-    private final EffectNode<Integer> cost;
-    private final EffectNode<Integer> cargoCapacity;
      
-    // Resources Effects
-    private final EffectNode<Integer> unitMineralProduction;   
-    private final EffectNode<Integer> workerMineralProduction; // How much minerals each square produces.
+    private final List<UnitCoversion> converts_to; 
+    /**
+     * // Yes I'm using a map.  Yes a switch would probably be faster to run... 
+     * but this will save allot of time writing and testing a bunch of switch statements.  
+     * If we need the speed... we can optimize latter after the design has been finalized.
+     * Doing this.... really... shrunk down the lines of code needed to be written.
+     */
+    Map<EffectNames, EffectNode> effects; 
 
     
     private Effect(Builder build) {
-        isitabase = build.isitabase;
-        can_make_facilities = build.can_make_facilities;
-        can_make_units = build.can_make_units;
-        can_attack = build.can_attack;
-        can_defend = build.can_defend;
-        capture_when_defeated = build.capture_when_defeated;
+   
         converts_to = build.converts_to;
-        amphibious = build.amphibious;
-        this.speedBoost = build.speed_boost;
-        this.unitMineralProduction = build.unitMineralProduction;
-        this.workerMineralProduction = build.workerMineralProduction;
-        this.health = build.health;
-        this.cost = build.cost;
-        this.cargoCapacity = build.cargoCapacity;
-    }
-    
-    public EffectNode<Boolean> getIsitabase() {
-        return isitabase;
-    }
-
-    public EffectNode<Boolean> getCan_make_facilities() {
-        return can_make_facilities;
-    }
-
-    public EffectNode<Boolean> getCan_make_units() {
-        return can_make_units;
-    }
-
-    public EffectNode<Boolean> getCan_attack() {
-        return can_attack;
-    }
-
-    public EffectNode<Boolean> getCan_defend() {
-        return can_defend;
-    }
-
-    public EffectNode<Boolean> getCapture_when_defeated() {
-        return capture_when_defeated;
-    }
-
-    public List<UnitCoversion> getConverts_to() {
-        return converts_to;
-    }
-
-    public EffectNode<Integer> getSpeedBoost() {
-        return speedBoost;
-    }
-
-    public EffectNode<Boolean> getAmphibious() {
-        return amphibious;
-    }
-
-    public EffectNode<Integer> getUnitMineralProduction() {
-        return unitMineralProduction;
-    }
-
-    public EffectNode<Integer> getWorkerMineralProduction() {
-        return workerMineralProduction;
-    }
-
-    public EffectNode<Integer> getHealth() {
-        return health;
-    }
-
-    public EffectNode<Integer> getCost() {
-        return cost;
-    }
-
-    public EffectNode<Integer> getCargoCapacity() {
-        return cargoCapacity;
+        this.effects = build.effects;
     }
     
     
-    
+     public EffectNode getVariable(EffectNames var){
+        return effects.get(var);
+    }
     
     public static class Builder {
         
-        
-        private EffectNode<Boolean> isitabase = Value.False();
-        private EffectNode<Boolean> can_make_facilities = Value.False();
-        private EffectNode<Boolean> can_make_units = Value.False();
-        private EffectNode<Boolean> can_attack = Value.True();
-        private EffectNode<Boolean> can_defend = Value.True();
-        private EffectNode<Boolean> capture_when_defeated = Value.False();
-
+        private Map<EffectNames, EffectNode> effects = new EnumMap<>(EffectNames.class);
+            
         private List<UnitCoversion> converts_to = new ArrayList<>();
 
-        private EffectNode<Integer> speed_boost  = Value.zero();
-        private EffectNode<Integer> cargoCapacity = Value.zero();
 
-        private EffectNode<Boolean> amphibious = Value.False();
-        
-        // Resources Effects
-        private EffectNode<Integer> unitMineralProduction = Value.zero();
-
-        private EffectNode<Integer> workerMineralProduction = Value.zero(); // How much minerals each square produces.
-        EffectNode<Integer> health = Value.zero();
-        EffectNode<Integer> cost = Value.zero();
-
-
-        
+        public Builder(){
+            effects.put(EffectNames.IS_IT_A_BASE, Value.False());
+            effects.put(EffectNames.AMPHIBIOUS, Value.False());
+            effects.put(EffectNames.CAN_DEFEND, Value.False());
+            effects.put(EffectNames.CAN_IT_ATTACK, Value.False());
+            effects.put(EffectNames.CAN_MAKE_FACILITIES, Value.False());
+            effects.put(EffectNames.CAN_MAKE_UNITS, Value.False());
+            effects.put(EffectNames.CAPTURED_WHEN_DEFEATED, Value.False());
+            effects.put(EffectNames.CARGO_CAPACITY, Value.Zero());
+            effects.put(EffectNames.HEALTH, Value.Zero());
+            effects.put(EffectNames.IS_IT_A_BASE, Value.False());
+            effects.put(EffectNames.SPEED_BOOST, Value.Zero());
+            
+        }
         
         
         public Builder makeItABase() {
-            isitabase = Value.True();
-            can_make_facilities = Value.True();
-            can_make_units = Value.True();
-            can_attack = Value.True();
-            can_defend = Value.True();
-            capture_when_defeated = Value.True();
+            effects.put(EffectNames.IS_IT_A_BASE, Value.True());
+            effects.put(EffectNames.CAN_MAKE_FACILITIES, Value.True());
+            effects.put(EffectNames.CAN_MAKE_UNITS, Value.True());
+            effects.put(EffectNames.CAPTURED_WHEN_DEFEATED, Value.True());
             return this;
         }
         
-        public Builder costOverride(EffectNode<Integer> value){
-            if(value!=null){
-                cost = value;
-            }
+        public Builder makeItAUnit(){
+            effects.put(EffectNames.CAN_IT_ATTACK, Value.True());
+            effects.put(EffectNames.CAN_DEFEND, Value.True());
             return this;
         }
         
         
-        public Builder amphibious(EffectNode<Boolean> choice){
-            amphibious = choice;
-            return this;
-        }
-        
+       public Builder setFlag(EffectNames effect, EffectNode value){
+           effects.put(effect, value);
+           return this;
+       }
 
-        public Builder setSpeed_boost(EffectNode<Integer> speed_boost) {
-            this.speed_boost = speed_boost;
-            return this;
-        }
-        
-        public Builder setCorgoCapacity(EffectNode<Integer> cargoCapacity){
-            this.cargoCapacity = cargoCapacity;
-            return this;
-        }
-        
-        public Builder combineEffects(Effect effect1, Effect effect2, Effect effect3, Effect effect4){
-            List<Effect> effects = new ArrayList<>();
-            effects.add(effect1);
-            effects.add(effect2);
-            effects.add(effect3);
-            effects.add(effect4);
-            return combineEffects(effects);
-        }
-        
-        
-        
-        
-        
-        public Builder combineEffects(List<Effect> effects){
-            
-            return this;
-        }
-      
-        
         
     /*
     private PlayerNode<Integer> convert_cost_code(int cost_code, PlayerDetails player){
