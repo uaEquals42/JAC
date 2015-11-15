@@ -46,6 +46,7 @@ public class FactionSettings {
 
     String codeName;
     String race;
+    
 
     // RULES:
     int ai_fight; // willingness to fight.

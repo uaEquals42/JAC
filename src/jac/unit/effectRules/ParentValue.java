@@ -19,20 +19,35 @@
 package jac.unit.effectRules;
 
 import jac.engine.PlayerDetails;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import jac.unit.Effect;
+import jac.unit.GenericUnit;
 
 /**
- * Test the PlayerNode Implementations.
+ *
  * @author Gregory Jordan
+ * @param <E>
  */
-public class PlayerNodeTest {
+public class ParentValue<E extends Comparable<E>> implements EffectNode<E>{
+
+
+  
+   EffectNames key;
+   Effect parent;
     
-    public PlayerNodeTest() {
+    public ParentValue(EffectNames key){
+        this.key = key;
     }
-
+    
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + "("+parent.toString()+")";
+    }
+    
+    @Override
+    public E result(GenericUnit unit, Effect parentEffect) {
+        return parentEffect.result(unit, parentEffect);
+    }
     
 
-    
     
 }

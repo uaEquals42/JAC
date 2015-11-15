@@ -43,7 +43,7 @@ public class EffectRulesTest {
         assertEquals("Value(FALSE) ", Boolean.FALSE, new Value<>(false).result(null, null));
         
         //Now to integers.
-        assertEquals("Value.zero() ", new Integer(0), Value.zero().result(null, null));
+        assertEquals("Value.zero() ", new Integer(0), Value.Zero().result(null, null));
         assertEquals("Value(5) ", new Integer(5), new Value<>(5).result(null, null));
         
         

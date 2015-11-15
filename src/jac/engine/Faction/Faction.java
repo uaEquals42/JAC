@@ -19,7 +19,6 @@
 package jac.engine.Faction;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import jac.Enum.AI_Emphesis;
 import jac.Enum.FreeUnitType;
 import jac.Enum.SocialAreas;
