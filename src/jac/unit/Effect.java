@@ -71,15 +71,15 @@ public class Effect {
         return boolEffects.get(var);
     }
     
-    public Integer getIntValue(IntNames var, GenericUnit unit){
+    public Integer getIntValue(IntNames var, Unit unit){
         return intEffects.get(var).result(unit);
     }
     
-    public Float getFloatValue(IntNames var, GenericUnit unit){
+    public Float getFloatValue(IntNames var, Unit unit){
         return multiplier.get(var).result(unit);
     }
      
-    public Boolean getBoolValue(BoolNames var, GenericUnit unit){
+    public Boolean getBoolValue(BoolNames var, Unit unit){
         return boolEffects.get(var).result(unit);
     }
     

@@ -18,26 +18,24 @@
  */
 package jac.unit;
 
-import java.util.List;
-import java.util.Map;
+import jac.Enum.IntNames;
 
 /**
- *
+ * Stores code shared between Unit_Plan and GenericUnit.  
  * @author Gregory Jordan
  */
-public interface Unit {
-    Chassis getChassis();
+public class UnitLibrary {
     
-    Reactor getReactor();
+    static int calculateInteger(IntNames name, Unit unit) {
+        int value = 0;
+        float multiplier = 1;
+        for (Effect eff : unit.getLocalEffects()) {
+            value = value + eff.getIntValue(name, unit);
+            multiplier = multiplier * eff.getFloatValue(name, unit);
+        }
 
-    Armor getArmor();
-
-    Weapon getWeapon();
-    
-    Map<String, UnitAbility> getUnitAbilities();
-    
-    Map<String, Facility> getUnitFacilities();
-    
-    public List<Effect> getLocalEffects();
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return (int) (value * multiplier);
+    }
     
 }

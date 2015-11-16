@@ -59,6 +59,10 @@ public class GenericUnit implements Unit{
 
     private Square location;
 
+    public List<Effect> getLocalEffects() {
+        return localEffects;
+    }
+
     public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location) {
         construction_date = turn;
 
@@ -78,7 +82,7 @@ public class GenericUnit implements Unit{
     }
 
     public void setHealthToMax() {
-        current_health = calculateInteger(IntNames.HEALTH);
+        current_health = UnitLibrary.calculateInteger(IntNames.HEALTH,this);
     }
 
     public boolean canUnitMoveTo(Square destination, int seaLevel) {
@@ -125,19 +129,7 @@ public class GenericUnit implements Unit{
     }
 
     public void resetMovementPoints() {
-        movementPoints = calculateInteger(IntNames.SPEED_BOOST);
-    }
-
-    int calculateInteger(IntNames name) {
-        int value = 0;
-        float multiplier = 1;
-        for (Effect eff : localEffects) {
-            value = value + eff.getIntValue(name, this);
-            multiplier = multiplier * eff.getFloatValue(name, this);
-        }
-
-        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
-        return (int) (value * multiplier);
+        movementPoints = UnitLibrary.calculateInteger(IntNames.SPEED_BOOST,this);
     }
 
     boolean calculateBool(BoolNames name) {
