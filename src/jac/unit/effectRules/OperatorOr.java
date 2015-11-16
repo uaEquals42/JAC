@@ -18,7 +18,7 @@
  */
 package jac.unit.effectRules;
 
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class OperatorOr implements EffectNode<Boolean>{
     }
     
     @Override
-    public Boolean result(GenericUnit unit) {
+    public Boolean result(Unit unit) {
         for(EffectNode<Boolean> test : tests){
             if(test.result(unit)){
                 return true;

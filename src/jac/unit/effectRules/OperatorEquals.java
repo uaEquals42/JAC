@@ -18,7 +18,7 @@
  */
 package jac.unit.effectRules;
 
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 import java.text.MessageFormat;
 
 
@@ -40,7 +40,7 @@ public class OperatorEquals<T1 extends Comparable<T1>> implements EffectNode<Boo
     }
     
     @Override
-    public Boolean result(GenericUnit unit) {
+    public Boolean result(Unit unit) {
         return value1.result(unit)==value2.result(unit);
     }
     

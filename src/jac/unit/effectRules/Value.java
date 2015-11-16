@@ -18,7 +18,7 @@
  */
 package jac.unit.effectRules;
 
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 
 /**
  *
@@ -56,7 +56,7 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
     }
     
     @Override
-    public E result(GenericUnit unit) {
+    public E result(Unit unit) {
         return value;
     }
     

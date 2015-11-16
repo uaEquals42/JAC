@@ -19,7 +19,7 @@
 package jac.unit.effectRules;
 
 import jac.Enum.Domain;
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 
 /**
  *
@@ -34,7 +34,7 @@ public class RequiredDomain<T extends Comparable<T>> implements EffectNode<Boole
     
     
     @Override
-    public Boolean result(GenericUnit unit) {
+    public Boolean result(Unit unit) {
         return unit.getChassis().getDomain() == domain;
          
     }

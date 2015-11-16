@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @author Gregory Jordan
  */
-public class Unit_Plan implements Comparable<String>{
+public class Unit_Plan implements Comparable<String>, Unit{
 
     private final Chassis chassis;
     private final Reactor reactor;

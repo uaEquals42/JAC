@@ -18,7 +18,7 @@
  */
 package jac.unit.effectRules;
 
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 
 /**
  *
@@ -34,7 +34,7 @@ public class HasChassis<T extends Comparable<T>> implements EffectNode<Boolean>{
 
 
     @Override
-    public Boolean result(GenericUnit unit) {
+    public Boolean result(Unit unit) {
         return unit.getChassis().getKey().equals(requiredChassis);
     }
 }

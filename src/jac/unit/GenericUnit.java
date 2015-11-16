@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author Gregory Jordan
  */
-public class GenericUnit {
+public class GenericUnit implements Unit{
 
     private final int construction_date;
 
@@ -144,7 +144,7 @@ public class GenericUnit {
         for (Effect eff : localEffects) {
             if (eff.getBoolValue(name, this)) {
                 return true;
-            };
+            }
         }
 
         // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
@@ -178,34 +178,42 @@ public class GenericUnit {
         return current_health;
     }
 
+    @Override
     public Chassis getChassis() {
         return design.getChassis();
     }
 
+    @Override
     public Reactor getReactor() {
         return design.getReactor();
     }
 
+    @Override
     public Armor getArmor() {
         return design.getArmor();
     }
 
+    @Override
     public Weapon getWeapon() {
         return design.getWeapon();
+    }
+
+
+    
+@Override
+    public Map<String, UnitAbility> getUnitAbilities() {
+        return unit_abilities;
+    }
+
+    @Override
+    public Map<String, Facility> getUnitFacilities() {
+        return unit_facilities;
     }
 
     public int getId_player() {
         return player.getId();
     }
-
-    public Map<String, UnitAbility> getUnit_abilities() {
-        return unit_abilities;
-    }
-
-    public Map<String, Facility> getUnit_facilities() {
-        return unit_facilities;
-    }
-
+    
     public Integer getPopulation() {
         return population;
     }

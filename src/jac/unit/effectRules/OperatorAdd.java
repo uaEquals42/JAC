@@ -18,7 +18,7 @@
  */
 package jac.unit.effectRules;
 
-import jac.unit.GenericUnit;
+import jac.unit.Unit;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class OperatorAdd implements EffectNode<Integer> {
 
     
     @Override
-    public Integer result(GenericUnit unit) {
+    public Integer result(Unit unit) {
         int tmpResult = 0;
         for(EffectNode<Integer> value : values){
             tmpResult = tmpResult + value.result(unit);
