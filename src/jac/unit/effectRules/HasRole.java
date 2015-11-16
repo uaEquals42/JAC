@@ -19,35 +19,22 @@
 package jac.unit.effectRules;
 
 import jac.Enum.WeaponRole;
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class HasRole<T extends Comparable<T>> implements EffectNode<T>{
+public class HasRole<T extends Comparable<T>> implements EffectNode<Boolean>{
     private final WeaponRole role;
-    private final EffectNode<T> valueIfTrue;
-    private final EffectNode<T> valueIfFalse;
     
-    public HasRole(WeaponRole role, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
+    
+    public HasRole(WeaponRole role){
         this.role = role;
-        this.valueIfTrue = valueIfTrue;
-        this.valueIfFalse = valueIfFalse;
-    }
-    
-    public static HasRole<Boolean> bool(WeaponRole role){
-        return new HasRole<>(role, Value.True(), Value.False());
     }
 
     @Override
-    public T result(GenericUnit unit, PlayerDetails player) {
-        if(unit.getWeapon().getWeaponsRole() == role){
-            return valueIfTrue.result(unit, player);
-        }
-        else{
-            return valueIfFalse.result(unit, player);
-        }
+    public Boolean result(GenericUnit unit) {
+        return unit.getWeapon().getWeaponsRole() == role;     
     }
 }

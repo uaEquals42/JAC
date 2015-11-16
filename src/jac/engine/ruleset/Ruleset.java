@@ -18,18 +18,32 @@
  */
 package jac.engine.ruleset;
 
-import jac.unit.*;
-import jac.Enum.*;
-import jac.unit.effectRules.*;
+import jac.Enum.AiUnitPlan;
+import jac.Enum.DefenceMode;
+import jac.Enum.Domain;
+import jac.Enum.IntNames;
+import jac.Enum.NounSex;
+import jac.Enum.SocialAreas;
+import jac.Enum.WeaponRole;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
+import jac.unit.Armor;
+import jac.unit.Chassis;
+import jac.unit.Effect;
+import jac.unit.Facility;
+import jac.unit.GenericPart;
+import jac.unit.Reactor;
+import jac.unit.UnitAbility;
+import jac.unit.Unit_Plan;
+import jac.unit.Weapon;
+import jac.unit.effectRules.EffectNode;
+import jac.unit.effectRules.Value;
 import jac.unit.partTranslation.AbilityTranslation;
 import jac.unit.partTranslation.ChassisTranslation;
 import jac.unit.partTranslation.FacilityTranslation;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -502,9 +516,10 @@ public class Ruleset {
                     damage = 100;
                 }
                 Effect localEffect = new Effect.Builder().
-                        setCorgoCapacity(cargo).
-                        setSpeed_boost(speed).
+                        setIntFlag(IntNames.CARGO_CAPACITY, cargo).
+                        setIntFlag(IntNames.SPEED_BOOST, speed).
                         build();
+
                 
                 GenericPart genstats = new GenericPart.Builder(key, cost)
                         .addPreRequisiteTech(pre_req)

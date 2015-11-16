@@ -18,36 +18,31 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class HasReactor<T extends Comparable<T>> implements EffectNode<T>{
-    private final String reactorKey;
-    private final EffectNode<T> thenValue;
-    private final EffectNode<T> elseValue;
+public class IfThenElse<T extends Comparable<T>> implements EffectNode<T>{
+    private final EffectNode<Boolean> ifStatement;
+    private final EffectNode<T> valueIfTrue;
+    private final EffectNode<T> valueIfFalse;
     
-    HasReactor(String reactorKey, EffectNode<T> thenValue, EffectNode<T> elseValue){
-        this.reactorKey = reactorKey;
-        this.thenValue = thenValue;
-        this.elseValue = elseValue;
+    public IfThenElse(EffectNode<Boolean> ifStatement, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
+        this.ifStatement = ifStatement;
+        this.valueIfTrue = valueIfTrue;
+        this.valueIfFalse = valueIfFalse;
     }
     
-    public static HasReactor<Boolean> HasItKey(String reactorKey){
-        return new HasReactor<>(reactorKey, Value.True(), Value.False());
-    }
 
     @Override
-    public T result(GenericUnit unit, PlayerDetails player) {
-        if(unit.getReactor().getKey().equals(reactorKey)){
-            return thenValue.result(unit, player);
+    public T result(GenericUnit unit) {
+        if(ifStatement.result(unit)){
+            return valueIfTrue.result(unit);
         }
         else{
-            return elseValue.result(unit, player);
+            return valueIfFalse.result(unit);
         }
     }
-    
 }

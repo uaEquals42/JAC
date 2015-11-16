@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
@@ -26,24 +25,14 @@ import jac.unit.GenericUnit;
  * @author Gregory Jordan
  * @param <T> Must be Comparable.
  */
-public class BasePopulationIs<T extends Comparable<T>> implements EffectNode<T>{
-    private final int basePop;
-    private final EffectNode<T> valueIfTrue;
-    private final EffectNode<T>valueIfFalse;
+public class BasePopulationIs<T extends Comparable<T>> implements EffectNode<Integer>{
     
-    BasePopulationIs(int baseSize, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
-        this.basePop = baseSize;
-        this.valueIfTrue = valueIfTrue;
-        this.valueIfFalse = valueIfFalse;
+    
+    BasePopulationIs(){
     }
 
     @Override
-    public T result(GenericUnit unit, PlayerDetails player) {
-        if(unit.getPopulation()==basePop){
-            return valueIfTrue.result(unit, player);
-        }
-        else{
-            return valueIfFalse.result(unit, player);
-        }
+    public Integer result(GenericUnit unit) {
+        return unit.getPopulation();
     }
 }

@@ -18,36 +18,23 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class HasChassis<T extends Comparable<T>> implements EffectNode<T>{
+public class HasChassis<T extends Comparable<T>> implements EffectNode<Boolean>{
     private final String requiredChassis;
-    private final T valueIfTrue;
-    private final T valueIfFalse;
+
     
-    public HasChassis(String requiredChassis, T valueIfTrue, T valueIfFalse){
+    public HasChassis(String requiredChassis){
         this.requiredChassis = requiredChassis;
-        this.valueIfTrue = valueIfTrue;
-        this.valueIfFalse = valueIfFalse;
-    }
-    
-    public static HasChassis<Boolean> bool(String requiredChassis){
-        return new HasChassis<>(requiredChassis, true, false);
     }
 
+
     @Override
-    public T result(GenericUnit unit, PlayerDetails player) {
-        if(unit.getChassis().getKey().equals(requiredChassis)){
-            return valueIfTrue;
-        }
-        else{
-            return valueIfFalse;
-        }
-        
+    public Boolean result(GenericUnit unit) {
+        return unit.getChassis().getKey().equals(requiredChassis);
     }
 }

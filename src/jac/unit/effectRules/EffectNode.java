@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
@@ -27,5 +26,5 @@ import jac.unit.GenericUnit;
  * @param <T> needs to be Comparable.
  */
 public interface EffectNode<T extends Comparable<T>> {
-    T result(GenericUnit unit, PlayerDetails player);
+    T result(GenericUnit unit);
 }

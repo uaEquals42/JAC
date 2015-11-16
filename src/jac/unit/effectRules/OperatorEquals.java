@@ -18,43 +18,30 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.text.MessageFormat;
 
 
-public class OperatorEquals<T1 extends Comparable<T1>, T2 extends Comparable<T2>> implements EffectNode<T2> {
+public class OperatorEquals<T1 extends Comparable<T1>> implements EffectNode<Boolean> {
     private final EffectNode<T1> value1;
     private final EffectNode<T1> value2;
     
-    private final EffectNode<T2> valueIfTrue;
-    private final EffectNode<T2> valueIfFalse;
     
-    public OperatorEquals(EffectNode<T1> value1, EffectNode<T1> value2, EffectNode<T2> valueIfTrue, EffectNode<T2> valueIfFalse){
+    public OperatorEquals(EffectNode<T1> value1, EffectNode<T1> value2){
         this.value1 = value1;
         this.value2 = value2;
-        this.valueIfTrue = valueIfTrue;
-        this.valueIfFalse = valueIfFalse;
+
     }
 
     @Override
     public String toString() {
-        return MessageFormat.format("if({0} == {1})'{'\n"
-                + "{2} \n"
-                + "else '{'\n"
-                + "{3} \n"
-                + "'}'", value1, value2, valueIfTrue, valueIfFalse);
+        return MessageFormat.format("({0} == {1})", value1, value2);
         
     }
     
     @Override
-    public T2 result(GenericUnit unit, PlayerDetails player) {
-        if(value1.result(unit, player).compareTo(value2.result(unit, player)) == 0){
-            return valueIfTrue.result(unit, player);
-        }
-        else{
-            return valueIfFalse.result(unit, player);
-        }
+    public Boolean result(GenericUnit unit) {
+        return value1.result(unit)==value2.result(unit);
     }
     
 }

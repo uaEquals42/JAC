@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
@@ -37,8 +36,8 @@ public class OperatorNOT implements EffectNode<Boolean>{
     }
     
     @Override
-    public Boolean result(GenericUnit unit, PlayerDetails player) {
-        return ! test.result(unit, player);
+    public Boolean result(GenericUnit unit) {
+        return ! test.result(unit);
     }
     
 }

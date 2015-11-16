@@ -18,19 +18,18 @@
  */
 package jac.unit;
 
-
+import jac.Enum.BoolNames;
+import jac.Enum.IntNames;
 import jac.Enum.UnitActions;
-import jac.engine.mapstuff.Square;
 import jac.engine.PlayerDetails;
 import jac.engine.mapstuff.CantMoveUnitThereException;
 import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
-
+import jac.engine.mapstuff.Square;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  *
@@ -48,7 +47,7 @@ public class GenericUnit {
 
     private final Unit_Plan design;
 
-    private final Effect localEffects;
+    private final List<Effect> localEffects;
     private final Effect empireEffects;
 
     private Map<String, UnitAbility> unit_abilities;
@@ -72,14 +71,14 @@ public class GenericUnit {
         this.player = player;
 
         Effect tmp = design.getArmor().getLocalEffects();
-        localEffects = null; //TODO have this work!
+        localEffects = design.getEffects(); //TODO have this work!
         empireEffects = null;
         Integer population;
 
     }
 
     public void setHealthToMax() {
-        current_health = getMax_health();
+        current_health = calculateInteger(IntNames.HEALTH);
     }
 
     public boolean canUnitMoveTo(Square destination, int seaLevel) {
@@ -126,19 +125,33 @@ public class GenericUnit {
     }
 
     public void resetMovementPoints() {
-        movementPoints = calculateMaxMovementPoints();
+        movementPoints = calculateInteger(IntNames.SPEED_BOOST);
     }
 
-    int calculateMaxMovementPoints() { 
-        int speed = localEffects.getSpeedBoost().result(this, player) + this.getEmpireEffects().getSpeedBoost().result(this, player);
-        return speed;
+    int calculateInteger(IntNames name) {
+        int value = 0;
+        float multiplier = 1;
+        for (Effect eff : localEffects) {
+            value = value + eff.getIntValue(name, this);
+            multiplier = multiplier * eff.getFloatValue(name, this);
+        }
+
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return (int) (value * multiplier);
     }
 
- 
+    boolean calculateBool(BoolNames name) {
+        for (Effect eff : localEffects) {
+            if (eff.getBoolValue(name, this)) {
+                return true;
+            };
+        }
 
-    public boolean isitabase() {
-        return localEffects.getIsitabase().result(this, player) || this.getEmpireEffects().getIsitabase().result(this, player);
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return false;
+
     }
+
 
     public int getSensorRange() {
         return 1;  // TODO: Have this be calculated based on rules and config options.
@@ -148,9 +161,6 @@ public class GenericUnit {
         return construction_date;
     }
 
-    public int getMax_health() {
-        return localEffects.getHealth().result(this, player) + getEmpireEffects().getHealth().result(this, player);
-    }
 
     /**
      * Use this class so that optimizing latter will be allot easier. Plan to
@@ -202,6 +212,10 @@ public class GenericUnit {
 
     public int getId_unit() {
         return id_unit;
+    }
+
+    public boolean isitabase() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

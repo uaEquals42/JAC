@@ -19,7 +19,10 @@
 package jac.unit;
 
 
-import jac.unit.effectRules.*;
+import jac.Enum.BoolNames;
+import jac.Enum.IntNames;
+import jac.unit.effectRules.EffectNode;
+import jac.unit.effectRules.Value;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -46,60 +49,88 @@ public class Effect {
      * If we need the speed... we can optimize latter after the design has been finalized.
      * Doing this.... really... shrunk down the lines of code needed to be written.
      */
-    Map<EffectNames, EffectNode> effects; 
+    private final Map<IntNames, EffectNode<Integer>> intEffects; 
+    private final Map<IntNames, EffectNode<Float>> multiplier; 
+    private final Map<BoolNames, EffectNode<Boolean>> boolEffects; 
 
     
     private Effect(Builder build) {
    
         converts_to = build.converts_to;
-        this.effects = build.effects;
+        this.intEffects = build.intEffects;
+        this.boolEffects = build.boolEffects;
+        multiplier = build.multiplier;
     }
     
     
-     public EffectNode getVariable(EffectNames var){
-        return effects.get(var);
+     public EffectNode<Integer> getIntVariable(IntNames var){
+        return intEffects.get(var);
     }
+     
+    public EffectNode<Boolean> getBoolVariable(BoolNames var){
+        return boolEffects.get(var);
+    }
+    
+    public Integer getIntValue(IntNames var, GenericUnit unit){
+        return intEffects.get(var).result(unit);
+    }
+    
+    public Float getFloatValue(IntNames var, GenericUnit unit){
+        return multiplier.get(var).result(unit);
+    }
+     
+    public Boolean getBoolValue(BoolNames var, GenericUnit unit){
+        return boolEffects.get(var).result(unit);
+    }
+    
     
     public static class Builder {
         
-        private Map<EffectNames, EffectNode> effects = new EnumMap<>(EffectNames.class);
+        private Map<BoolNames, EffectNode<Boolean>> boolEffects = new EnumMap<>(BoolNames.class);
+        Map<IntNames, EffectNode<Integer>> intEffects = new EnumMap<>(IntNames.class); 
+        Map<IntNames, EffectNode<Float>> multiplier = new EnumMap<>(IntNames.class);
             
         private List<UnitCoversion> converts_to = new ArrayList<>();
 
 
         public Builder(){
-            effects.put(EffectNames.IS_IT_A_BASE, Value.False());
-            effects.put(EffectNames.AMPHIBIOUS, Value.False());
-            effects.put(EffectNames.CAN_DEFEND, Value.False());
-            effects.put(EffectNames.CAN_IT_ATTACK, Value.False());
-            effects.put(EffectNames.CAN_MAKE_FACILITIES, Value.False());
-            effects.put(EffectNames.CAN_MAKE_UNITS, Value.False());
-            effects.put(EffectNames.CAPTURED_WHEN_DEFEATED, Value.False());
-            effects.put(EffectNames.CARGO_CAPACITY, Value.Zero());
-            effects.put(EffectNames.HEALTH, Value.Zero());
-            effects.put(EffectNames.IS_IT_A_BASE, Value.False());
-            effects.put(EffectNames.SPEED_BOOST, Value.Zero());
+            for(BoolNames nnn : BoolNames.values()){
+                boolEffects.put(nnn, Value.False());
+            }
+            
+            for(IntNames nnn : IntNames.values()){
+                intEffects.put(nnn, Value.Zero());
+            }
+            
+            for(IntNames nnn : IntNames.values()){
+                multiplier.put(nnn, Value.One());
+            }
             
         }
         
         
         public Builder makeItABase() {
-            effects.put(EffectNames.IS_IT_A_BASE, Value.True());
-            effects.put(EffectNames.CAN_MAKE_FACILITIES, Value.True());
-            effects.put(EffectNames.CAN_MAKE_UNITS, Value.True());
-            effects.put(EffectNames.CAPTURED_WHEN_DEFEATED, Value.True());
+            boolEffects.put(BoolNames.IS_IT_A_BASE, Value.True());
+            boolEffects.put(BoolNames.CAN_MAKE_FACILITIES, Value.True());
+            boolEffects.put(BoolNames.CAN_MAKE_UNITS, Value.True());
+            boolEffects.put(BoolNames.CAPTURED_WHEN_DEFEATED, Value.True());
             return this;
         }
         
         public Builder makeItAUnit(){
-            effects.put(EffectNames.CAN_IT_ATTACK, Value.True());
-            effects.put(EffectNames.CAN_DEFEND, Value.True());
+            boolEffects.put(BoolNames.CAN_IT_ATTACK, Value.True());
+            boolEffects.put(BoolNames.CAN_DEFEND, Value.True());
             return this;
         }
         
         
-       public Builder setFlag(EffectNames effect, EffectNode value){
-           effects.put(effect, value);
+       public Builder setBoolFlag(BoolNames effect, EffectNode<Boolean> value){
+           boolEffects.put(effect, value);
+           return this;
+       }
+       
+        public Builder setIntFlag(IntNames effect, EffectNode<Integer> value){
+          intEffects.put(effect, value);
            return this;
        }
 

@@ -19,36 +19,24 @@
 package jac.unit.effectRules;
 
 import jac.Enum.Domain;
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class RequiredDomain<T extends Comparable<T>> implements EffectNode<T> {
-    private final EffectNode<T> valueIfTrue;
-    private final EffectNode<T> valueIfFalse;
+public class RequiredDomain<T extends Comparable<T>> implements EffectNode<Boolean> {
     private final Domain domain;
 
-    public RequiredDomain(Domain domain, EffectNode<T> valueIfTrue, EffectNode<T> valueIfFalse){
+    public RequiredDomain(Domain domain){
         this.domain = domain;
-        this.valueIfTrue = valueIfTrue;
-        this.valueIfFalse = valueIfFalse;
     }
     
-    public static RequiredDomain<Boolean> bool(Domain domain){
-        return new RequiredDomain<Boolean>(domain, Value.True(), Value.False());
-    }
     
     @Override
-    public T result(GenericUnit unit, PlayerDetails player) {
-        if(unit.getChassis().getDomain() == domain){
-            return valueIfTrue.result(unit, player);
-        }
-        else{
-            return valueIfFalse.result(unit, player);
-        }
+    public Boolean result(GenericUnit unit) {
+        return unit.getChassis().getDomain() == domain;
+         
     }
 
 }

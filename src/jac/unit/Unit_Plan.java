@@ -18,8 +18,6 @@
  */
 package jac.unit;
 
-import jac.Enum.Domain;
-import jac.engine.ruleset.Tech;
 import jac.unit.effectRules.EffectNode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,21 +36,25 @@ public class Unit_Plan implements Comparable<String>{
     private final Weapon weapon;
     private final Map<String, UnitAbility> unitAbilities;
     private final Map<String, Facility> unitFacilities;
-    private final Effect planEffect;
+    private final  List<Effect> locEffect;
     
   
     private boolean prototyped = false;
     private int cost;
 
+    public List<Effect> getEffects(){
+        return locEffect;
+    }
      
     private Unit_Plan(Builder build){
+        this.prototyped = build.prototyped;
         this.armor = build.armor;
         this.chassis = build.chassis;
         this.reactor = build.reactor;
         this.weapon = build.weapon;
         this.unitAbilities = build.unitAbilities;
         this.unitFacilities = build.unitFacilities;
-        this.planEffect = build.planLocalEffect;
+        this.locEffect = build.locEffect;
     }
 
     public static class Builder{
@@ -61,7 +63,7 @@ public class Unit_Plan implements Comparable<String>{
         private final Armor armor;
         private final Weapon weapon;
         
-        private Effect planLocalEffect;
+        List<Effect> locEffect = new ArrayList<>();
         
         
         private boolean prototyped = false;
@@ -106,7 +108,7 @@ public class Unit_Plan implements Comparable<String>{
         }
         
         private Builder regenEffect(){
-             List<Effect> locEffect = new ArrayList<>();
+            
             locEffect.add(chassis.getLocalEffects());
             locEffect.add(reactor.getLocalEffects());
             locEffect.add(armor.getLocalEffects());
@@ -120,9 +122,6 @@ public class Unit_Plan implements Comparable<String>{
                 locEffect.add(facility.getLocalEffects());
             }
             
-            planLocalEffect = new Effect.Builder().
-                    combineEffects(locEffect).
-                    costOverride(costoverride).build();
             
             return this;
         }

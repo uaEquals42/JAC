@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 
 /**
@@ -46,7 +45,10 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
         return new Value<>(0);
     }
     
-    
+
+    public static Value<Float> One(){
+        return new Value<Float>(1f);
+    }
     
     @Override
     public String toString(){
@@ -54,7 +56,7 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
     }
     
     @Override
-    public E result(GenericUnit unit, PlayerDetails player) {
+    public E result(GenericUnit unit) {
         return value;
     }
     

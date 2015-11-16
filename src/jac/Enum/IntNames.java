@@ -16,25 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.unit.effectRules;
+package jac.Enum;
 
 
 /**
  *
  * @author  Gregory Jordan
  */
-public enum EffectNames {
-    // Base related effects
-    IS_IT_A_BASE,
-    CAN_MAKE_FACILITIES,
-    CAN_MAKE_UNITS,
-    CAPTURED_WHEN_DEFEATED,
-    
-    //General Effects
-    AMPHIBIOUS,
-    CAN_IT_ATTACK,
-    CAN_DEFEND,
-    
+public enum IntNames {
     
     //More traditional unit effects
     SPEED_BOOST, 

@@ -21,7 +21,6 @@ package jac.unit;
 import jac.Enum.Domain;
 import jac.Enum.WeaponRole;
 import jac.engine.PlayerDetails;
-import jac.engine.ruleset.Translation;
 import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.HasChassis;
 import jac.unit.effectRules.HasRole;
@@ -118,7 +117,7 @@ public class GenericPart implements UnitPart {
     @Override
     public boolean available(GenericUnit unit, PlayerDetails player) {
         
-            return restrict_for_display.result(unit, player);
+            return restrict_for_display.result(unit);
         
 
     }
@@ -199,7 +198,7 @@ public class GenericPart implements UnitPart {
                 //#TODO: increaseLandCost = true;  
             }
             if (smacFlags.charAt(1) == '1') {
-                mainAnds.add(HasChassis.bool("0"));
+                mainAnds.add(new HasChassis("0"));
                 
             }
 
@@ -219,51 +218,53 @@ public class GenericPart implements UnitPart {
 
             if (smacFlags.charAt(3) == '0') {
                 // PSI Unit Flag.  If 1 then not allowed. So if 0, then it is allowed.
-                reqRoles.add(HasRole.bool(WeaponRole.PSI));
+                reqRoles.add(new HasRole(WeaponRole.PSI));
 
             }
                
             if (smacFlags.charAt(5) == '1') {
+                // 5          00000100000 = Allowed for Noncombat units (non-terraformer)
                 if (smacFlags.charAt(4) == '0') { 
-                    reqRoles.add(HasRole.bool(WeaponRole.PROBE));
+                    reqRoles.add(new HasRole(WeaponRole.PROBE));
 
                 }
-                reqRoles.add(HasRole.bool(WeaponRole.CONVOY));
-                reqRoles.add(HasRole.bool(WeaponRole.TRANSPORT));
+                reqRoles.add(new HasRole(WeaponRole.CONVOY));
+                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
 
             }
             
             if (smacFlags.charAt(6) == '1') {
-                reqRoles.add(HasRole.bool(WeaponRole.TERRAFORMER));
+                //6          00000010000 = Allowed for Terraformer units
+                reqRoles.add(new HasRole(WeaponRole.TERRAFORMER));
 
             }
             if (smacFlags.charAt(7) == '1') {
-                reqRoles.add(HasRole.bool(WeaponRole.ENERGY));
-                reqRoles.add(HasRole.bool(WeaponRole.MISSILE));
-                reqRoles.add(HasRole.bool(WeaponRole.PROJECTILE));
+                reqRoles.add(new HasRole(WeaponRole.ENERGY));
+                reqRoles.add(new HasRole(WeaponRole.MISSILE));
+                reqRoles.add(new HasRole(WeaponRole.PROJECTILE));
 
             }
             
             
             if (smacFlags.charAt(2) == '1') {
                 reqRoles.clear();
-                reqRoles.add(HasRole.bool(WeaponRole.TRANSPORT));
+                reqRoles.add(new HasRole(WeaponRole.TRANSPORT));
 
             }
 
             
             if (smacFlags.charAt(8) == '1') {
-                reqDomains.add(RequiredDomain.bool(Domain.AIR));
+                reqDomains.add(new RequiredDomain(Domain.AIR));
                 
             }
 
             if (smacFlags.charAt(9) == '1') {
-                reqDomains.add(RequiredDomain.bool(Domain.SEA));
+                reqDomains.add(new RequiredDomain(Domain.SEA));
                 
 
             }
             if (smacFlags.charAt(10) == '1') {
-                reqDomains.add(RequiredDomain.bool(Domain.LAND));
+                reqDomains.add(new RequiredDomain(Domain.LAND));
                 
             }
             

@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,21 +31,23 @@ public class OperatorAdd implements EffectNode<Integer> {
         values.add(value1);
         values.add(value2);
     }
+    
+    public OperatorAdd(List<EffectNode<Integer>> values){
+        this.values = values;
+    }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + values;
     }
 
-    public OperatorAdd(List<EffectNode<Integer>> values){
-        this.values = values;
-    }
+
     
     @Override
-    public Integer result(GenericUnit unit, PlayerDetails player) {
+    public Integer result(GenericUnit unit) {
         int tmpResult = 0;
         for(EffectNode<Integer> value : values){
-            tmpResult = tmpResult + value.result(unit, player);
+            tmpResult = tmpResult + value.result(unit);
         }
         
         return tmpResult;

@@ -18,7 +18,6 @@
  */
 package jac.unit.effectRules;
 
-import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,9 +47,9 @@ public class OperatorAND implements EffectNode<Boolean>{
     }
     
     @Override
-    public Boolean result(GenericUnit unit, PlayerDetails player) {
+    public Boolean result(GenericUnit unit) {
         for(EffectNode<Boolean> test : tests){
-            if(! test.result(unit, player)){
+            if(! test.result(unit)){
                 return Boolean.FALSE;
             }
         }
