@@ -19,10 +19,8 @@
 package jac.unit;
 
 import jac.Enum.DefenceMode;
-import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Translation;
-import jac.unit.effectRules.EffectNode;
-import java.util.List;
+
 
 
 /**

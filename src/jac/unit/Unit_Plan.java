@@ -129,7 +129,7 @@ public class Unit_Plan implements Comparable<String>, Unit {
      */
     @Override
     public String toString() {
-        return "Unit Plan:" + chassisKey + armorKey + reactorKey + weaponKey + unitAbilityKeys.toString() + unitFacilityKeys.toString();
+        return "Unit Plan: C:" + chassisKey +" A: " + armorKey + " R:" + reactorKey + " W: " + weaponKey + " " + unitAbilityKeys.toString() + unitFacilityKeys.toString();
     }
 
     @Override

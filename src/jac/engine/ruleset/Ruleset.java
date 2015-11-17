@@ -101,6 +101,14 @@ public class Ruleset {
         this.unitPlans = build.unitPlans;
     }
 
+    public Map<String, UnitAbility> getUnitAbilities() {
+        return unitAbilities;
+    }
+
+    public Map<String, Unit_Plan> getUnitPlans() {
+        return unitPlans;
+    }
+
     public List<Ideology> getIdeologies() {
         return ideologies;
     }
@@ -179,6 +187,7 @@ public class Ruleset {
             load_armor(input);
             load_weapon(input);
             load_unit_abilities(input);
+            load_unitDesigns(input);
             basicTerrainStates = load_BasicTerrainTypes();
             terrainModifiers = load_TerrainModifiers();    
             return new Ruleset(this);
@@ -277,6 +286,7 @@ public class Ruleset {
         }
 
         private void load_unitDesigns(List<String> input) throws SectionNotFoundException {
+            log.debug("Load unit Designs");
             int pos = gotosection("#UNITS", input);
             pos++;
             
@@ -309,10 +319,10 @@ public class Ruleset {
                  String prereqTech = col[7].trim();
                  // TODO: Get the disabled, and none working here.
                  
-                 Unit_Plan thePlan = new Unit_Plan.Builder(null, null, null, null).prototyped(true).build();
+                 Unit_Plan thePlan = new Unit_Plan.Builder(chassis,"Fission" , armor, weapon).prototyped(true).build();
                  
 
-                 
+                 unitPlans.put(name, thePlan);
                  
                  
                  

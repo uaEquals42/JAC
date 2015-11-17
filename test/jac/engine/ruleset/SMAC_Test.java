@@ -142,8 +142,12 @@ public class SMAC_Test {
     
     @Test
     public void test_Facility(){
-        assertEquals("Number of facilities/secrectprojects", 71, rules.getFacilities().size());
-        
-        
+        assertEquals("Number of facilities/secrectprojects", 71, rules.getFacilities().size());   
+    }
+    
+    @Test
+    public void test_unitPlans(){
+        assertEquals("Number of plans saved",14 ,rules.getUnitPlans().size());
+        //TODO: Add test for specific units on this list.
     }
 }
