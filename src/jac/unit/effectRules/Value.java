@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -56,7 +57,7 @@ public class Value<E extends Comparable<E>> implements EffectNode<E>{
     }
     
     @Override
-    public E result(Unit unit) {
+    public E result(Unit unit, Ruleset rules) {
         return value;
     }
     

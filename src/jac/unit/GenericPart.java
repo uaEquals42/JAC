@@ -21,6 +21,7 @@ package jac.unit;
 import jac.Enum.Domain;
 import jac.Enum.WeaponRole;
 import jac.engine.PlayerDetails;
+import jac.engine.ruleset.Ruleset;
 import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.HasChassis;
 import jac.unit.effectRules.HasRole;
@@ -115,11 +116,8 @@ public class GenericPart implements UnitPart {
      * @return 
      */
     @Override
-    public boolean available(GenericUnit unit, PlayerDetails player) {
-        
-            return restrict_for_display.result(unit);
-        
-
+    public boolean available(GenericUnit unit, PlayerDetails player, Ruleset rules) {     
+            return restrict_for_display.result(unit, rules);
     }
 
     @Override

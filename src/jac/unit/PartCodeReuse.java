@@ -19,6 +19,7 @@
 package jac.unit;
 
 import jac.engine.PlayerDetails;
+import jac.engine.ruleset.Ruleset;
 import java.util.List;
 
 /**
@@ -35,8 +36,8 @@ abstract class PartCodeReuse implements UnitPart{
     
     
         @Override
-    public boolean available(GenericUnit unit, PlayerDetails player) {
-        return generalPartDetails.available(unit, player);
+    public boolean available(GenericUnit unit, PlayerDetails player, Ruleset rules) {
+        return generalPartDetails.available(unit, player, rules);
     }
 
     @Override

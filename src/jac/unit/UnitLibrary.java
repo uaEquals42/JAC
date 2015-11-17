@@ -18,24 +18,40 @@
  */
 package jac.unit;
 
+import jac.Enum.BoolNames;
 import jac.Enum.IntNames;
+import jac.engine.ruleset.Ruleset;
 
 /**
  * Stores code shared between Unit_Plan and GenericUnit.  
+ * TODO: This probably should be changed from static to instances inside GenericUnit and PlayerData when it comes time to optimize stuff.
  * @author Gregory Jordan
  */
 public class UnitLibrary {
     
-    static int calculateInteger(IntNames name, Unit unit) {
+    static int calculateInteger(IntNames name, Unit unit, Ruleset rules) {
+        // TODO: Also have it calculate the effects of the square it is on... (if any).
         int value = 0;
         float multiplier = 1;
-        for (Effect eff : unit.getLocalEffects()) {
-            value = value + eff.getIntValue(name, unit);
-            multiplier = multiplier * eff.getFloatValue(name, unit);
+        for (Effect eff : unit.getLocalEffects(rules)) {
+            value = value + eff.getIntValue(name, unit, rules);
+            multiplier = multiplier * eff.getFloatValue(name, unit, rules);
         }
 
         // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
         return (int) (value * multiplier);
+    }
+    
+    static boolean calculateBool(BoolNames name, Unit unit, Ruleset rules) {
+        for (Effect eff : unit.getLocalEffects(rules)) {
+            if (eff.getBoolValue(name, unit, rules)) {
+                return true;
+            }
+        }
+
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return false;
+
     }
     
 }

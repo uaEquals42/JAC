@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.GenericUnit;
 import jac.unit.Unit;
 
@@ -31,14 +32,10 @@ public class BasePopulationIs<T extends Comparable<T>> implements EffectNode<Int
     
     BasePopulationIs(){
     }
-
-    public Integer result(GenericUnit unit) {
-        return unit.getPopulation();
-    }
     
     @Override
-    public Integer result(Unit unit) {
-        throw new IllegalArgumentException();
+    public Integer result(Unit unit, Ruleset rules) {
+        return unit.getPopulation();
     }
     
 

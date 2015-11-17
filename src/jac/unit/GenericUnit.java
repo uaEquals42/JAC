@@ -26,16 +26,18 @@ import jac.engine.mapstuff.CantMoveUnitThereException;
 import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
 import jac.engine.mapstuff.Square;
+import jac.engine.ruleset.Ruleset;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class GenericUnit implements Unit{
+public class GenericUnit implements Unit {
 
     private final int construction_date;
 
@@ -58,47 +60,43 @@ public class GenericUnit implements Unit{
     private MoveTask nextmove;
 
     private Square location;
+    private Ruleset rules;
 
-    public List<Effect> getLocalEffects() {
-        return localEffects;
-    }
-
-    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location) {
+    public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location, Ruleset rules) {
         construction_date = turn;
-
+        this.rules = rules;
         this.location = location;
         this.design = design;
-        unit_abilities = design.getUnitAbilities();
-        unit_facilities = new HashMap<>(design.getUnitFacilities());
+        unit_abilities = new HashMap<>();
+        for(String key : design.getUnitAbilityKeys()){
+            unit_abilities.put(key, rules.getUnit_abilities().get(key));
+        }
+        unit_facilities = new HashMap<>();
+        for(String key : design.getUnitFacilityKeys()){
+            unit_facilities.put(key, rules.getFacilities().get(key));
+        }
+        
 
         this.id_unit = id;
         this.player = player;
 
-        Effect tmp = design.getArmor().getLocalEffects();
-        localEffects = design.getEffects(); //TODO have this work!
+        
+        localEffects = design.getLocalEffects(rules) ;
         empireEffects = null;
         Integer population;
 
     }
 
+    @Override
+    public List<Effect> getLocalEffects(Ruleset Rules) {
+        return localEffects;
+    }
+
     public void setHealthToMax() {
-        current_health = UnitLibrary.calculateInteger(IntNames.HEALTH,this);
+        current_health = UnitLibrary.calculateInteger(IntNames.HEALTH, this,rules);
     }
 
-    public boolean canUnitMoveTo(Square destination, int seaLevel) {
-        //TODO:  Add exceptions here for amphibious units.  Transports, etc.
-        //
-        return destination.allowedDomains(seaLevel).contains(design.getChassis().getDomain());
-    }
-
-    public void set_movement_goal(Square destination, int seaLevel) throws CantMoveUnitThereException {
-        if (canUnitMoveTo(destination, seaLevel)) {
-            //TODO: Need to set up pathfinding and stuff here.
-            nextmove = new MoveTask(destination, this);
-        } else {
-            throw new CantMoveUnitThereException();
-        }
-    }
+   
 
     public List<Square> performActions(GameMap map) throws MapDesync {
         List<Square> locations = new LinkedList<>();
@@ -129,30 +127,20 @@ public class GenericUnit implements Unit{
     }
 
     public void resetMovementPoints() {
-        movementPoints = UnitLibrary.calculateInteger(IntNames.SPEED_BOOST,this);
+        movementPoints = UnitLibrary.calculateInteger(IntNames.SPEED, this, rules);
     }
 
-    boolean calculateBool(BoolNames name) {
-        for (Effect eff : localEffects) {
-            if (eff.getBoolValue(name, this)) {
-                return true;
-            }
-        }
-
-        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
-        return false;
-
+    public boolean calculateBool(BoolNames name) {
+       return UnitLibrary.calculateBool(name, this, rules);
     }
-
-
-    public int getSensorRange() {
-        return 1;  // TODO: Have this be calculated based on rules and config options.
+    
+    public int calculateIntger(IntNames name){
+        return UnitLibrary.calculateInteger(name, this, rules);
     }
 
     public int getConstruction_date() {
         return construction_date;
     }
-
 
     /**
      * Use this class so that optimizing latter will be allot easier. Plan to
@@ -170,42 +158,12 @@ public class GenericUnit implements Unit{
         return current_health;
     }
 
-    @Override
-    public Chassis getChassis() {
-        return design.getChassis();
-    }
 
-    @Override
-    public Reactor getReactor() {
-        return design.getReactor();
-    }
-
-    @Override
-    public Armor getArmor() {
-        return design.getArmor();
-    }
-
-    @Override
-    public Weapon getWeapon() {
-        return design.getWeapon();
-    }
-
-
-    
-@Override
-    public Map<String, UnitAbility> getUnitAbilities() {
-        return unit_abilities;
-    }
-
-    @Override
-    public Map<String, Facility> getUnitFacilities() {
-        return unit_facilities;
-    }
 
     public int getId_player() {
         return player.getId();
     }
-    
+
     public Integer getPopulation() {
         return population;
     }
@@ -214,8 +172,35 @@ public class GenericUnit implements Unit{
         return id_unit;
     }
 
-    public boolean isitabase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    @Override
+    public String getChassisKey() {
+        return design.getChassisKey();
+    }
+
+    @Override
+    public String getReactorKey() {
+       return design.getReactorKey();
+    }
+
+    @Override
+    public String getArmorKey() {
+        return design.getArmorKey();
+    }
+
+    @Override
+    public String getWeaponKey() {
+        return design.getWeaponKey();
+    }
+
+    @Override
+    public Set<String> getUnitAbilityKeys() {
+       return design.getUnitAbilityKeys();
+    }
+
+    @Override
+    public Set<String> getUnitFacilityKeys() {
+        return design.getUnitFacilityKeys();
     }
 
 }

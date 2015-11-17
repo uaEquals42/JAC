@@ -21,6 +21,7 @@ package jac.unit;
 
 import jac.Enum.BoolNames;
 import jac.Enum.IntNames;
+import jac.engine.ruleset.Ruleset;
 import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.Value;
 import java.util.ArrayList;
@@ -71,16 +72,16 @@ public class Effect {
         return boolEffects.get(var);
     }
     
-    public Integer getIntValue(IntNames var, Unit unit){
-        return intEffects.get(var).result(unit);
+    public Integer getIntValue(IntNames var, Unit unit, Ruleset rules){
+        return intEffects.get(var).result(unit, rules);
     }
     
-    public Float getFloatValue(IntNames var, Unit unit){
-        return multiplier.get(var).result(unit);
+    public Float getFloatValue(IntNames var, Unit unit, Ruleset rules){
+        return multiplier.get(var).result(unit, rules);
     }
      
-    public Boolean getBoolValue(BoolNames var, Unit unit){
-        return boolEffects.get(var).result(unit);
+    public Boolean getBoolValue(BoolNames var, Unit unit, Ruleset rules){
+        return boolEffects.get(var).result(unit, rules);
     }
     
     

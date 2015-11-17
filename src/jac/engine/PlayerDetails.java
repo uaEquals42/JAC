@@ -18,6 +18,7 @@
  */
 package jac.engine;
 
+import jac.Enum.BoolNames;
 import jac.engine.Faction.Faction;
 import jac.engine.ruleset.Ideology;
 import jac.engine.ruleset.Ruleset;
@@ -94,7 +95,7 @@ public class PlayerDetails {
     public List<GenericUnit> findBases(int turn){
         List<GenericUnit> bases = new LinkedList<>();
         for(GenericUnit unit : genericunits){
-            if(unit.isitabase()){
+            if(unit.calculateBool(BoolNames.IS_IT_A_BASE)){
                 bases.add(unit);
             }
         }

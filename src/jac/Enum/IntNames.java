@@ -26,7 +26,7 @@ package jac.Enum;
 public enum IntNames {
     
     //More traditional unit effects
-    SPEED_BOOST, 
+    SPEED, 
     HEALTH,
     COST,
     CARGO_CAPACITY,

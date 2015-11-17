@@ -18,27 +18,13 @@
  */
 package jac.engine.ruleset;
 
-import jac.Enum.AiUnitPlan;
-import jac.Enum.DefenceMode;
-import jac.Enum.Domain;
-import jac.Enum.IntNames;
-import jac.Enum.NounSex;
-import jac.Enum.SocialAreas;
-import jac.Enum.WeaponRole;
+import jac.Enum.*;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
-import jac.unit.Armor;
-import jac.unit.Chassis;
-import jac.unit.Effect;
-import jac.unit.Facility;
-import jac.unit.GenericPart;
-import jac.unit.Reactor;
-import jac.unit.UnitAbility;
-import jac.unit.Unit_Plan;
-import jac.unit.Weapon;
+import jac.unit.*;
 import jac.unit.effectRules.EffectNode;
 import jac.unit.effectRules.Value;
 import jac.unit.partTranslation.AbilityTranslation;
@@ -517,7 +503,7 @@ public class Ruleset {
                 }
                 Effect localEffect = new Effect.Builder().
                         setIntFlag(IntNames.CARGO_CAPACITY, cargo).
-                        setIntFlag(IntNames.SPEED_BOOST, speed).
+                        setIntFlag(IntNames.SPEED, speed).
                         build();
 
                 

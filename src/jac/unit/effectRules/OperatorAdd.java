@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,10 +45,10 @@ public class OperatorAdd implements EffectNode<Integer> {
 
     
     @Override
-    public Integer result(Unit unit) {
+    public Integer result(Unit unit, Ruleset rules) {
         int tmpResult = 0;
         for(EffectNode<Integer> value : values){
-            tmpResult = tmpResult + value.result(unit);
+            tmpResult = tmpResult + value.result(unit, rules);
         }
         
         return tmpResult;

@@ -38,14 +38,14 @@ public class EffectRulesTest {
     @Test
     public void testValue() {
         
-        assertEquals("Value.True ", Boolean.TRUE, Value.True().result(null));
-        assertEquals("Value.False ", Boolean.FALSE, Value.False().result(null));
-        assertEquals("Value(True) ", Boolean.TRUE, new Value<>(true).result(null));
-        assertEquals("Value(FALSE) ", Boolean.FALSE, new Value<>(false).result(null));
+        assertEquals("Value.True ", Boolean.TRUE, Value.True().result(null, null));
+        assertEquals("Value.False ", Boolean.FALSE, Value.False().result(null, null));
+        assertEquals("Value(True) ", Boolean.TRUE, new Value<>(true).result(null, null));
+        assertEquals("Value(FALSE) ", Boolean.FALSE, new Value<>(false).result(null, null));
         
         //Now to integers.
-        assertEquals("Value.zero() ", new Integer(0), Value.Zero().result(null));
-        assertEquals("Value(5) ", new Integer(5), new Value<>(5).result(null));
+        assertEquals("Value.zero() ", new Integer(0), Value.Zero().result(null, null));
+        assertEquals("Value(5) ", new Integer(5), new Value<>(5).result(null, null));
         
         
         // TODO review the generated test code and remove the default call to fail.
@@ -54,8 +54,8 @@ public class EffectRulesTest {
     
     @Test
     public void testANDstatement(){
-         assertEquals("true & true", Boolean.TRUE, new OperatorAND(Value.True(), Value.True()).result(null));
-         assertEquals("true & false", Boolean.FALSE, new OperatorAND(Value.True(), Value.False()).result(null));
+         assertEquals("true & true", Boolean.TRUE, new OperatorAND(Value.True(), Value.True()).result(null, null));
+         assertEquals("true & false", Boolean.FALSE, new OperatorAND(Value.True(), Value.False()).result(null, null));
         
          List<EffectNode<Boolean>> tmp = new LinkedList<>();  // NOTE:  List has to be <EffectValue<Boolean>> for this to work!
          tmp.add(Value.True());
@@ -65,51 +65,51 @@ public class EffectRulesTest {
          tmp.add(Value.True());
          tmp.add(Value.True());
          
-         assertEquals("true & true & true", Boolean.TRUE, new OperatorAND(tmp).result(null));
+         assertEquals("true & true & true", Boolean.TRUE, new OperatorAND(tmp).result(null, null));
          
          tmp.add(Value.False());
-         assertEquals("true & true & false", Boolean.FALSE, new OperatorAND(tmp).result(null));
+         assertEquals("true & true & false", Boolean.FALSE, new OperatorAND(tmp).result(null, null));
          
          
          tmp = new LinkedList<>();         
          tmp.add(Value.True());
          tmp.add(new OperatorAND(Value.True(), Value.True()));
-         assertEquals("true & (true & true)", Boolean.TRUE, new OperatorAND(tmp).result(null));
+         assertEquals("true & (true & true)", Boolean.TRUE, new OperatorAND(tmp).result(null, null));
          
          
          tmp = new LinkedList<>();
          tmp.add(Value.True());
          tmp.add(new OperatorAND(Value.True(), Value.False()));
-         assertEquals("true & (true & false)", Boolean.FALSE, new OperatorAND(tmp).result(null));
+         assertEquals("true & (true & false)", Boolean.FALSE, new OperatorAND(tmp).result(null, null));
          
     }
     
     @Test
     public void testORstatement(){
-        assertEquals("False or False", Boolean.FALSE, new OperatorOr(Value.False(), Value.False()).result(null));
-        assertEquals("True or False", Boolean.TRUE, new OperatorOr(Value.True(), Value.False()).result(null));
+        assertEquals("False or False", Boolean.FALSE, new OperatorOr(Value.False(), Value.False()).result(null, null));
+        assertEquals("True or False", Boolean.TRUE, new OperatorOr(Value.True(), Value.False()).result(null, null));
         
     }
     
     @Test
     public void testNotstatement(){
-        assertEquals("Not True", Boolean.FALSE, new OperatorNOT(Value.True()).result(null));
-        assertEquals("Not False", Boolean.TRUE, new OperatorNOT(Value.False()).result(null));
+        assertEquals("Not True", Boolean.FALSE, new OperatorNOT(Value.True()).result(null, null));
+        assertEquals("Not False", Boolean.TRUE, new OperatorNOT(Value.False()).result(null, null));
         
-        assertEquals("Not (True & False)", Boolean.TRUE, new OperatorNOT(new OperatorAND(Value.True(), Value.False())).result(null));
+        assertEquals("Not (True & False)", Boolean.TRUE, new OperatorNOT(new OperatorAND(Value.True(), Value.False())).result(null, null));
     }
     
     @Test
     public void testADD(){
         EffectNode<Integer> tmp = new OperatorAdd(new Value<>(1), new Value<>(1));
-        assertEquals("1 + 1", 2, (int)tmp.result(null));
+        assertEquals("1 + 1", 2, (int)tmp.result(null, null));
         
-        assertEquals("1 - 1", 0, (int) new OperatorAdd(new Value<>(1), new Value<>(-1)).result(null));
+        assertEquals("1 - 1", 0, (int) new OperatorAdd(new Value<>(1), new Value<>(-1)).result(null, null));
     }
     
     @Test
     public void testEquals(){     
-        assertEquals("IF True = True", true, new OperatorEquals(Value.True(),Value.True()).result(null));
+        assertEquals("IF True = True", true, new OperatorEquals(Value.True(),Value.True()).result(null, null));
 
     }
 }

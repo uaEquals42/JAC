@@ -88,68 +88,13 @@ public class Gameboard implements GameMap{
         map[x][y].addUnit(unit);
     }
 
-    /**
-     * This is to be never called by the player method.  Only the unit should call this when it is ready to move to the square.
-     * @param begining
-     * @param unit
-     * @param destination 
-     */
-    public void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync{
-        // teleport command.  
-        destination.addUnit(unit);
-        begining.removeUnit(unit);
+    @Override
+    public void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
     
-    public List<UnitMoveUpdate> moveunit_1Square(int playerkey, int unitkey, Point start, Point end) throws MapDesync, CantMoveUnitThereException {
-       
-        // TODO:  Figure out what this should return/throw if an enemy unit is in that square.
-        
-
-        // See if the unit exits in the given square.
-        Square beginning = viewSquare(start);
-        if(!beginning.unitExists(playerkey, unitkey)){
-            throw new MapDesync("Unit not at location, Can't move");
-        }
-        
-         // Various sanity checks here.
-        if(start.distance(end)>=1.1){
-           throw new IllegalArgumentException("Distance greater than 1");
-        }
-        
-        GenericUnit unit = beginning.viewUnit(playerkey, unitkey);
-        Square destination = viewSquare(end);
-        
-        unit.set_movement_goal(destination, seaLevel);
-        List<Square> locationsVisited = unit.performActions(this);
-        
-        List<UnitMoveUpdate> mapUpdates = new LinkedList<>();
-        for(Square location : locationsVisited){
-            LinkedList<Square> squaresSeen = new LinkedList<>();
-            
-            squaresSeen.add(location);
-            
-            if(unit.getSensorRange() == 1){
-                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()-1));
-                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()));
-                squaresSeen.add(this.viewSquare(location.getX()+1, location.getY()+1));
-                
-                squaresSeen.add(this.viewSquare(location.getX(), location.getY()+1));
-                squaresSeen.add(this.viewSquare(location.getX(), location.getY()-1));
-                
-                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()+1));
-                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()));
-                squaresSeen.add(this.viewSquare(location.getX()-1, location.getY()-1));
-            }
-            // TODO:  Add support for larger sensor ranges via formula.
-            mapUpdates.add(new UnitMoveUpdate(unit, location, squaresSeen));
-        }
-        
-        return mapUpdates;
-        
-    }
-
   
-
-    
 
 }

@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,9 +48,9 @@ public class OperatorAND implements EffectNode<Boolean>{
     }
     
     @Override
-    public Boolean result(Unit unit) {
+    public Boolean result(Unit unit, Ruleset rules) {
         for(EffectNode<Boolean> test : tests){
-            if(! test.result(unit)){
+            if(! test.result(unit, rules)){
                 return Boolean.FALSE;
             }
         }

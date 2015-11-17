@@ -19,6 +19,7 @@
 package jac.unit.effectRules;
 
 import jac.Enum.WeaponRole;
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -34,7 +35,7 @@ public class HasRole<T extends Comparable<T>> implements EffectNode<Boolean>{
     }
 
     @Override
-    public Boolean result(Unit unit) {
-        return unit.getWeapon().getWeaponsRole() == role;     
+    public Boolean result(Unit unit, Ruleset rules) {
+        return rules.getWeapons().get(unit.getWeaponKey()).getWeaponsRole() == role;     
     }
 }

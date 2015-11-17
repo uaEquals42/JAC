@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -37,12 +38,12 @@ public class IfThenElse<T extends Comparable<T>> implements EffectNode<T>{
     
 
     @Override
-    public T result(Unit unit) {
-        if(ifStatement.result(unit)){
-            return valueIfTrue.result(unit);
+    public T result(Unit unit, Ruleset rules) {
+        if(ifStatement.result(unit, rules)){
+            return valueIfTrue.result(unit, rules);
         }
         else{
-            return valueIfFalse.result(unit);
+            return valueIfFalse.result(unit, rules);
         }
     }
 }

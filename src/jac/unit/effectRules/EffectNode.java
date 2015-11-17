@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -26,5 +27,5 @@ import jac.unit.Unit;
  * @param <T> needs to be Comparable.
  */
 public interface EffectNode<T extends Comparable<T>> {
-    T result(Unit unit);
+    T result(Unit unit, Ruleset rules);
 }

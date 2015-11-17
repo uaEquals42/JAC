@@ -18,6 +18,7 @@
  */
 package jac.unit.effectRules;
 
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -32,9 +33,8 @@ public class HasChassis<T extends Comparable<T>> implements EffectNode<Boolean>{
         this.requiredChassis = requiredChassis;
     }
 
-
     @Override
-    public Boolean result(Unit unit) {
-        return unit.getChassis().getKey().equals(requiredChassis);
+    public Boolean result(Unit unit, Ruleset rules) {
+        return unit.getChassisKey().equals(requiredChassis);
     }
 }

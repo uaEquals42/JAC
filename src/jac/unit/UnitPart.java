@@ -19,6 +19,7 @@
 package jac.unit;
 
 import jac.engine.PlayerDetails;
+import jac.engine.ruleset.Ruleset;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public interface UnitPart {
      * @param player
      * @return
      */
-    boolean available(GenericUnit unit, PlayerDetails player);
+    boolean available(GenericUnit unit, PlayerDetails player, Ruleset rules);
 
     Effect getEmpireEffects();
 

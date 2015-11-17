@@ -19,6 +19,7 @@
 package jac.unit.effectRules;
 
 import jac.Enum.Domain;
+import jac.engine.ruleset.Ruleset;
 import jac.unit.Unit;
 
 /**
@@ -34,8 +35,8 @@ public class RequiredDomain<T extends Comparable<T>> implements EffectNode<Boole
     
     
     @Override
-    public Boolean result(Unit unit) {
-        return unit.getChassis().getDomain() == domain;
+    public Boolean result(Unit unit, Ruleset rules) {
+        return rules.getChassis().get(unit.getWeaponKey()).getDomain() == domain;
          
     }
 

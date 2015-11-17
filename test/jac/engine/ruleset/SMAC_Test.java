@@ -129,7 +129,7 @@ public class SMAC_Test {
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", new Value(3).toString(), rules.getChassis().get("Infantry").getLocalEffects().getIntVariable(IntNames.SPEED_BOOST).toString());
+        assertEquals("Infantry movment", new Value(3).toString(), rules.getChassis().get("Infantry").getLocalEffects().getIntVariable(IntNames.SPEED).toString());
         assertEquals("Infantry cost", 1, rules.getChassis().get("Infantry").getFlatcost());
         assertEquals("Infantry Prereqs", 0, rules.getChassis().get("Infantry").getPre_requisite_technology().size());
         assertEquals("Infantry", Domain.LAND, rules.getChassis().get("Infantry").getDomain());

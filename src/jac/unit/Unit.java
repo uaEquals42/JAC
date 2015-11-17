@@ -18,26 +18,29 @@
  */
 package jac.unit;
 
+import jac.engine.ruleset.Ruleset;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Gregory Jordan
  */
 public interface Unit {
-    Chassis getChassis();
+    String getChassisKey();
     
-    Reactor getReactor();
+    String getReactorKey();
 
-    Armor getArmor();
+    String getArmorKey();
 
-    Weapon getWeapon();
+    String getWeaponKey();
     
-    Map<String, UnitAbility> getUnitAbilities();
+    Set<String> getUnitAbilityKeys();
     
-    Map<String, Facility> getUnitFacilities();
+    Set<String> getUnitFacilityKeys();
     
-    public List<Effect> getLocalEffects();
+    public List<Effect> getLocalEffects(Ruleset rules);
+
+    public Integer getPopulation();
     
 }
