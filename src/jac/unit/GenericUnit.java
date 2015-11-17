@@ -62,6 +62,8 @@ public class GenericUnit implements Unit {
     private Square location;
     private Ruleset rules;
 
+    UnitLibrary helper;
+    
     public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location, Ruleset rules) {
         construction_date = turn;
         this.rules = rules;
@@ -80,7 +82,7 @@ public class GenericUnit implements Unit {
         this.id_unit = id;
         this.player = player;
 
-        
+        helper = new UnitLibrary(this);
         localEffects = design.getLocalEffects(rules) ;
         empireEffects = null;
         Integer population;
@@ -93,7 +95,7 @@ public class GenericUnit implements Unit {
     }
 
     public void setHealthToMax() {
-        current_health = UnitLibrary.calculateInteger(IntNames.HEALTH, this,rules);
+        current_health = helper.calculateInteger(IntNames.HEALTH, rules);
     }
 
    
@@ -127,15 +129,15 @@ public class GenericUnit implements Unit {
     }
 
     public void resetMovementPoints() {
-        movementPoints = UnitLibrary.calculateInteger(IntNames.SPEED, this, rules);
+        movementPoints = helper.calculateInteger(IntNames.SPEED, rules);
     }
 
     public boolean calculateBool(BoolNames name) {
-       return UnitLibrary.calculateBool(name, this, rules);
+       return helper.calculateBool(name, rules);
     }
     
     public int calculateIntger(IntNames name){
-        return UnitLibrary.calculateInteger(name, this, rules);
+        return helper.calculateInteger(name, rules);
     }
 
     public int getConstruction_date() {

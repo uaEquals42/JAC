@@ -24,12 +24,16 @@ import jac.engine.ruleset.Ruleset;
 
 /**
  * Stores code shared between Unit_Plan and GenericUnit.  
- * TODO: This probably should be changed from static to instances inside GenericUnit and PlayerData when it comes time to optimize stuff.
  * @author Gregory Jordan
  */
 public class UnitLibrary {
+    private final Unit unit;
     
-    static int calculateInteger(IntNames name, Unit unit, Ruleset rules) {
+    public UnitLibrary(Unit unit){
+        this.unit = unit;
+    }
+    
+    public int calculateInteger(IntNames name, Ruleset rules) {
         // TODO: Also have it calculate the effects of the square it is on... (if any).
         int value = 0;
         float multiplier = 1;
@@ -42,7 +46,7 @@ public class UnitLibrary {
         return (int) (value * multiplier);
     }
     
-    static boolean calculateBool(BoolNames name, Unit unit, Ruleset rules) {
+    public boolean calculateBool(BoolNames name, Ruleset rules) {
         for (Effect eff : unit.getLocalEffects(rules)) {
             if (eff.getBoolValue(name, unit, rules)) {
                 return true;

@@ -43,7 +43,8 @@ public class Unit_Plan implements Comparable<String>, Unit {
     private final EffectNode<Integer> costoverride;  // So ruleset designer can specify a certain combination of parts to be allot cheaper. 
 
     private boolean prototyped = false;
-
+    private UnitLibrary helper;
+    
     private Unit_Plan(Builder build) {
         this.prototyped = build.prototyped;
         this.chassisKey = build.chassisKey;
@@ -53,6 +54,7 @@ public class Unit_Plan implements Comparable<String>, Unit {
         this.costoverride = build.costoverride;
         this.unitAbilityKeys = build.unitAbilityKeys;
         this.unitFacilityKeys = build.unitFacilityKeys;
+        helper = new UnitLibrary(this);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class Unit_Plan implements Comparable<String>, Unit {
         if (costoverride != null) {
             return costoverride.result(this, rules);
         } else {
-            return UnitLibrary.calculateInteger(IntNames.COST, this, rules);
+            return helper.calculateInteger(IntNames.COST, rules);
         }
 
     }
