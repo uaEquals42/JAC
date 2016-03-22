@@ -55,9 +55,9 @@ public class Faction {
     static Logger log = LoggerFactory.getLogger(Faction.class);
 
     final FactionSettings setting;
-    final Map<String, Faction_Dialog> translations;
+    final Map<Locale, Faction_Dialog> translations;
 
-    public Faction(FactionSettings setting, Map<String, Faction_Dialog> translations) {
+    public Faction(FactionSettings setting, Map<Locale, Faction_Dialog> translations) {
         this.setting = setting;
         this.translations = translations;
     }
@@ -78,7 +78,7 @@ public class Faction {
             log.warn("Fallback to English");
             return translations.get(Locale.ENGLISH);
         } else {
-            Locale key = new Locale(translations.keySet().iterator().next()); 
+            Locale key = translations.keySet().iterator().next(); 
             log.warn("Falling back to {}", key);
             return translations.get(key);
 
@@ -194,8 +194,8 @@ public class Faction {
 
         line = findKey(textFileIn, "#BLURB");
         dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
-        Map<String, Faction_Dialog> translations = new HashMap<>();
-        translations.put(Locale.ENGLISH.getISO3Language(), dialog);
+        Map<Locale, Faction_Dialog> translations = new HashMap<>();
+        translations.put(Locale.ENGLISH, dialog);
         return new Faction(tmp_setting, translations);
     }
 
@@ -207,12 +207,12 @@ public class Faction {
     
         FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME).toFile()), FactionSettings.class);
         
-        Map<String, Faction_Dialog> languages = new HashMap<>();
+        Map<Locale, Faction_Dialog> languages = new HashMap<>();
         
         List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
         for(Path pp : paths){
             Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
-            languages.put(dialog.getLanguage().getISO3Language(), dialog);
+            languages.put(dialog.getLanguage(), dialog);
         }
         
         return new Faction(setting, languages);
