@@ -50,13 +50,14 @@ import org.slf4j.LoggerFactory;
  */
 public class Faction {
     private static final String SETTING_FILE_NAME = "settings.json";
-    public static final String FACTION_FOLDER = "./Factions/";
+    public static final String FACTION_FOLDER = "Factions";
+    public static final String TRANSLATION_FOLDER = "Translations";
     static Logger log = LoggerFactory.getLogger(Faction.class);
 
     final FactionSettings setting;
-    final Map<Locale, Faction_Dialog> translations;
+    final Map<String, Faction_Dialog> translations;
 
-    public Faction(FactionSettings setting, Map<Locale, Faction_Dialog> translations) {
+    public Faction(FactionSettings setting, Map<String, Faction_Dialog> translations) {
         this.setting = setting;
         this.translations = translations;
     }
@@ -77,7 +78,7 @@ public class Faction {
             log.warn("Fallback to English");
             return translations.get(Locale.ENGLISH);
         } else {
-            Locale key = translations.keySet().iterator().next();
+            Locale key = new Locale(translations.keySet().iterator().next()); 
             log.warn("Falling back to {}", key);
             return translations.get(key);
 
@@ -193,8 +194,8 @@ public class Faction {
 
         line = findKey(textFileIn, "#BLURB");
         dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
-        Map<Locale, Faction_Dialog> translations = new HashMap<>();
-        translations.put(Locale.ENGLISH, dialog);
+        Map<String, Faction_Dialog> translations = new HashMap<>();
+        translations.put(Locale.ENGLISH.getISO3Language(), dialog);
         return new Faction(tmp_setting, translations);
     }
 
@@ -206,12 +207,12 @@ public class Faction {
     
         FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME).toFile()), FactionSettings.class);
         
-        Map<Locale, Faction_Dialog> languages = new HashMap<>();
+        Map<String, Faction_Dialog> languages = new HashMap<>();
         
-        List<Path> paths = FileHelpers.listFiles(folder, "lang_*.json");
+        List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
         for(Path pp : paths){
             Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
-            languages.put(dialog.getLanguage(), dialog);
+            languages.put(dialog.getLanguage().getISO3Language(), dialog);
         }
         
         return new Faction(setting, languages);
@@ -219,24 +220,16 @@ public class Faction {
     
     public void toJson(Path rulset_location) throws IOException {
 
-        Path saveLocation = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
-        // See if folder exists, if no... create it.
-        File folder = saveLocation.toFile();
-        boolean test = folder.mkdirs();
-        if (test) {
-            log.debug("Created Faction {} folder", getCodeName());
-        }
+        Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
+       FileHelpers.create_folder(save_location);
 
-        try (FileWriter file = new FileWriter(saveLocation.resolve(SETTING_FILE_NAME).toString())) {
-            file.write(setting.toJson());
+        try (FileWriter file = new FileWriter(save_location.resolve(SETTING_FILE_NAME).toString())) {
+            file.write(FileHelpers.toJson(setting));
         }
         log.trace("Available Translations");
-        for (Locale language : translations.keySet()) {
-            log.trace("{}",language.getLanguage());
-            try (FileWriter file = new FileWriter(saveLocation.resolve("lang_"+language.getISO3Language() + ".json").toString())) {
-                file.write(translations.get(language).toJson());
-            }
-        }
+        
+        FileHelpers.map_to_Json(save_location.resolve(TRANSLATION_FOLDER), translations);
+
     }
 
 

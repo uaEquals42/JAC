@@ -19,6 +19,7 @@
 package jac.engine.ruleset;
 
 import jac.Enum.*;
+import jac.engine.FileHelpers;
 import jac.engine.dialog.Noun;
 import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainBaseState;
@@ -30,6 +31,8 @@ import jac.unit.effectRules.Value;
 import jac.unit.partTranslation.AbilityTranslation;
 import jac.unit.partTranslation.ChassisTranslation;
 import jac.unit.partTranslation.FacilityTranslation;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -49,8 +52,12 @@ import org.slf4j.LoggerFactory;
  * @author Gregory Jordan
  */
 public class Ruleset {
-
+    static final Path RULESET_LOCATION = Paths.get("./Rulesets/");
+            
     static Logger log = LoggerFactory.getLogger(Ruleset.class);
+    
+    private final String ruleset_name;
+    
     private final List<Ideology> ideologies;
     private final Map<String, Tech> technologies;
 
@@ -78,7 +85,14 @@ public class Ruleset {
     }
 
 
-    
+    public void toJoson() throws IOException {
+
+        Path saveLocation = RULESET_LOCATION.resolve(ruleset_name);
+        FileHelpers.create_folder(saveLocation);
+
+        FileHelpers.list_to_json(saveLocation.resolve("ideologies"), ideologies);
+              
+    }
     
 
     public Tech find_tech(String key) {
@@ -86,6 +100,7 @@ public class Ruleset {
     }
 
     private Ruleset(Builder build) {
+        ruleset_name = build.ruleset_name;
         ideologies = build.ideologies;
         technologies = build.technologies;
 
@@ -149,7 +164,7 @@ public class Ruleset {
         static Locale FILELOCALE = Locale.ENGLISH;
         
         private final int SMAC_MP_COST_MULTIPLIER = 3;  // TODO: Load this from SMAC file.
-        
+        private String ruleset_name;
         private List<Ideology> ideologies = new ArrayList<>();
         private Map<String, Tech> technologies = new HashMap<>();
 
@@ -167,7 +182,7 @@ public class Ruleset {
 
         public Ruleset loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
             log.debug("loadalpha_txt: {}", filename);
-
+            ruleset_name = "SMAC";
             Path path = Paths.get(filename);
 
             List<String> input = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
@@ -198,6 +213,7 @@ public class Ruleset {
         //TODO: implement load alphax.txt
             //TODO: Load SMAC ideologies from SOCIO
             log.warn("Function not implemented yet.");
+            ruleset_name = "SMACX";
             return new Ruleset(this);
         }
 

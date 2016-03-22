@@ -22,6 +22,7 @@ import jac.Enum.Domain;
 import jac.Enum.IntNames;
 import jac.unit.effectRules.Value;
 import java.io.IOException;
+import java.util.logging.Level;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.BeforeClass;
@@ -55,6 +56,15 @@ public class SMAC_Test {
         }
     }
     
+    @Test
+    public void toJoson(){
+        try {
+            rules.toJoson();
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(SMAC_Test.class.getName()).log(Level.SEVERE, null, ex);
+            fail("IOError");
+        }
+    }
 
     @Test
     public void checkidologies(){

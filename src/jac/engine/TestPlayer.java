@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -16,23 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.engine.xmladaptors;
 
-import javax.xml.bind.annotation.XmlElement;
+package jac.engine;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class AdaptedQuote {
-    @XmlElement
-    public  String quote;
-    @XmlElement
-    public  String person;
-    @XmlElement
-    public  String source;
-    @XmlElement
-    public  String date;
-    @XmlElement
-    public String note;
+public class TestPlayer {
+    static Logger log = LoggerFactory.getLogger(TestPlayer.class);
 }

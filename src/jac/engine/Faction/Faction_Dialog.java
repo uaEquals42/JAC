@@ -36,15 +36,7 @@ import java.util.Locale;
 
 
 public class Faction_Dialog {
-
-    public String toJson(){
-        GsonBuilder builder = new GsonBuilder();
-        builder = builder.setPrettyPrinting().serializeNulls();
-        Gson gson = builder.create();
-        
-        return gson.toJson(this);
-    }
-
+ 
     public Locale getLanguage() {
         return language;
     }

@@ -77,5 +77,61 @@ public class RulesetTest {
         
 
     }
+
+    @Test
+    public void testGetBasicTerrainStates() {
+    }
+
+    @Test
+    public void testGetTerrainModifiers() {
+    }
+
+    @Test
+    public void testToJoson() throws Exception {
+    }
+
+    @Test
+    public void testFind_tech() {
+    }
+
+    @Test
+    public void testGetUnitAbilities() {
+    }
+
+    @Test
+    public void testGetUnitPlans() {
+    }
+
+    @Test
+    public void testGetIdeologies() {
+    }
+
+    @Test
+    public void testGetChassis() {
+    }
+
+    @Test
+    public void testGetReactors() {
+    }
+
+    @Test
+    public void testGetArmors() {
+    }
+
+    @Test
+    public void testGetWeapons() {
+    }
+
+    @Test
+    public void testGetTechnologies() {
+    }
+
+    @Test
+    public void testGetUnit_abilities() {
+    }
+
+    @Test
+    public void testGetFacilities() {
+    }
     
 }

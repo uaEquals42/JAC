@@ -36,14 +36,6 @@ import java.util.Map;
 public class FactionSettings {
     //TODO:  Use new Effect Nodes for appropriate values (stuff that will effect units/bases)
 
-    public String toJson(){
-        GsonBuilder builder = new GsonBuilder();
-        builder = builder.setPrettyPrinting().serializeNulls();
-        Gson gson = builder.create();
-
-        return gson.toJson(this);
-    }
-
     String codeName;
     String race;
     

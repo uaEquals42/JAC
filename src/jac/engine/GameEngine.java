@@ -44,8 +44,14 @@ public class GameEngine {
     private List<PlayerDetails> players;
     private Ruleset rules;
 
+    /**
+     * Using this for the test case.  Don't use it for players.  Players should be pushed only what they should see.  Not the entire gamemap.
+     * @return 
+     */
+    Gameboard getGameboard() {
+        return gameboard;
+    }
 
-    
     public void GameEngine() {
         // load ins
     }

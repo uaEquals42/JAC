@@ -18,6 +18,7 @@
  */
 package jac.unit;
 
+import jac.engine.HasKey;
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ruleset;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created this to make programming easier.
  * @author Gregory Jordan
  */
-abstract class PartCodeReuse implements UnitPart{
+abstract class PartCodeReuse implements UnitPart, HasKey{
     
     private final GenericPart generalPartDetails;
 

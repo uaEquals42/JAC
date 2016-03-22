@@ -40,7 +40,6 @@ public interface UnitPart {
 
     int getFlatcost();
 
-    String getKey();
 
     Effect getLocalEffects();
 

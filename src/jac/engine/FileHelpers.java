@@ -18,12 +18,21 @@
  */
 package jac.engine;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import jac.engine.Faction.Faction_Dialog;
+import jac.engine.ruleset.Ruleset;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -37,6 +46,9 @@ public class FileHelpers {
      * @return List of files that match the filter
      * @throws java.io.IOException
      */
+    
+    static Logger log = LoggerFactory.getLogger(FileHelpers.class);
+    
     public static List<Path> listFiles(Path location, String glob) throws IOException{
         ArrayList paths = new ArrayList<>();
         DirectoryStream<Path> stream = Files.newDirectoryStream(location, glob);
@@ -62,5 +74,45 @@ public class FileHelpers {
         }
         return paths;
     }
+    
+    public static void create_folder(Path location){
+         File folder = location.toFile();
+        boolean test = folder.mkdirs();
+        if (test) {
+            log.debug("Created Folder: {}", location.toString());
+        }
+    }
+    
+    public static String toJson(Object some_object){
+        GsonBuilder builder = new GsonBuilder();
+        builder = builder.setPrettyPrinting().serializeNulls();
+        Gson gson = builder.create();
+
+        return gson.toJson(some_object);
+    }
+    
+    public static void map_to_Json(Path location, Map map) throws IOException {
+        create_folder(location);
+        for (Object key : map.keySet()) {
+            try (FileWriter file = new FileWriter(location.resolve(key.toString()).toString()+".json")) {
+                file.write(FileHelpers.toJson(map.get(key)));
+            }
+        }
+        
+    }
+    
+    public static void list_to_json(Path location, List<? extends HasKey> the_list) throws IOException{
+        
+        create_folder(location);
+            for(HasKey item : the_list){
+                try (FileWriter file = new FileWriter(location.resolve(item.getKey()).toString()+".json")) {
+                file.write(FileHelpers.toJson(item));        
+            }
+            
+        
+    }
+    }
+
+   
     
 }

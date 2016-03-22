@@ -19,6 +19,7 @@
 package jac.engine.ruleset;
 
 import jac.Enum.SocialAreas;
+import jac.engine.HasKey;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -28,18 +29,23 @@ import java.util.Map;
  *
  * @author Gregory Jordan
  */
-public class Ideology {
+public class Ideology implements HasKey{
+    final String key;
     String category;
     String name;
     List<String> pre_req = new ArrayList<>();
-    String key;
-       
+
+    @Override
+            public String toString(){
+                return "Ideology (Key %S, Name %s, Category %s, ";
+            }
     
     Map<SocialAreas, Integer> effects = new EnumMap<>(SocialAreas.class);
     
     Ideology(String category, String key, String name, List<String> pre_reqs){
         this.category = category;
         this.name = name;
+        this.key = key;
         //System.out.println(pre_reqs.size());
         this.pre_req.addAll(pre_reqs);
         

@@ -20,6 +20,7 @@ package jac.unit;
 
 import jac.Enum.Domain;
 import jac.Enum.WeaponRole;
+import jac.engine.HasKey;
 import jac.engine.PlayerDetails;
 import jac.engine.ruleset.Ruleset;
 import jac.unit.effectRules.EffectNode;
@@ -39,7 +40,7 @@ import java.util.Set;
  *
  * @author Gregory Jordan
  */
-public class GenericPart implements UnitPart {
+public class GenericPart implements UnitPart, HasKey {
     
     
     private final Effect localEffects;
@@ -69,8 +70,7 @@ public class GenericPart implements UnitPart {
         return flatcost;
     }
     
-    
-    
+
     @Override
     public String getKey(){
         return key;
