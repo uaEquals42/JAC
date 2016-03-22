@@ -42,7 +42,7 @@ public class Red_FactionTest {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
 
         instance = Faction.loadSmacFactionFile(FileName);
-        instance.toJson(MOD_LOCATION);
+        instance.to_json(MOD_LOCATION);
         instance = Faction.loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED"));
 
     }

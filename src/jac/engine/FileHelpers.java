@@ -20,9 +20,9 @@ package jac.engine;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jac.engine.Faction.Faction_Dialog;
-import jac.engine.ruleset.Ruleset;
+import jac.engine.Faction.FactionSettings;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -83,7 +83,10 @@ public class FileHelpers {
         }
     }
     
-    public static String toJson(Object some_object){
+    
+    
+    
+    public static String object_to_json(Object some_object){
         GsonBuilder builder = new GsonBuilder();
         builder = builder.setPrettyPrinting().serializeNulls();
         Gson gson = builder.create();
@@ -91,33 +94,37 @@ public class FileHelpers {
         return gson.toJson(some_object);
     }
     
-    public static void map_to_Json(Path location, Map map) throws IOException {
+    
+    public static void to_json_file(Path location, String filename, Object item) throws IOException{
         create_folder(location);
-        for (Object key : map.keySet()) {
-            try (FileWriter file = new FileWriter(location.resolve(key.toString()).toString()+".json")) {
-                file.write(FileHelpers.toJson(map.get(key)));
+        try (FileWriter file = new FileWriter(location.resolve(filename).toString()+".json")) {
+                file.write(FileHelpers.object_to_json(item));        
             }
-        }
-        
     }
     
-    /**
-     * Used for saving each item in a list to it's own json file.
-     * @param location
-     * @param the_list
-     * @throws IOException 
-     */
-    public static void list_to_json(Path location, List<? extends HasKey> the_list) throws IOException{    
-        create_folder(location);
-            for(HasKey item : the_list){
-                try (FileWriter file = new FileWriter(location.resolve(item.getKey()).toString()+".json")) {
-                file.write(FileHelpers.toJson(item));        
-            }
-            
-        
+    public static void hasKey_to_json_file(Path location, HasKey item) throws IOException{
+        to_json_file(location, item.getKey(), item);   
     }
+    
+    
+    public static void map_to_Json(Path location, Map<?, ? extends HasKey> map) throws IOException {       
+        for (HasKey value : map.values()) {
+            hasKey_to_json_file(location, value);
+        }
     }
 
-   
-    
+    /**
+     * Used for saving each item in a list to it's own json file.
+     *
+     * @param location
+     * @param the_list
+     * @throws IOException
+     */
+    public static void list_to_json(Path location, List<? extends HasKey> the_list) throws IOException {
+        create_folder(location);
+        for (HasKey item : the_list) {
+            hasKey_to_json_file(location, item);
+        }
+    }
+
 }

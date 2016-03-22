@@ -80,7 +80,7 @@ public class FactionTest {
         
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
         Faction instance = Faction.loadSmacFactionFile(FileName);
-        instance.toJson(Paths.get("./Mods/TestFactions"));
+        instance.to_json(Paths.get("./Mods/TestFactions"));
         
     }
     

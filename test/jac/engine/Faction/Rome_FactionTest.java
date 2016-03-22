@@ -59,7 +59,7 @@ public class Rome_FactionTest {
     @Test 
         public void testJson() throws IOException{
       
-            instance.toJson(Paths.get("./Mods/TestFactions"));
+            instance.to_json(Paths.get("./Mods/TestFactions"));
             
  
     }

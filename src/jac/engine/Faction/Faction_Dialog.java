@@ -22,6 +22,7 @@ package jac.engine.Faction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jac.Enum.NounSex;
+import jac.engine.HasKey;
 import jac.engine.dialog.Quote;
 import jac.engine.dialog.SentenceFragment;
 import java.util.List;
@@ -35,7 +36,7 @@ import java.util.Locale;
  */
 
 
-public class Faction_Dialog {
+public class Faction_Dialog implements HasKey {
  
     public Locale getLanguage() {
         return language;
@@ -87,6 +88,11 @@ public class Faction_Dialog {
      */
     public Faction_Dialog(Locale lang) {
         language = lang;
+    }
+
+    @Override
+    public String getKey() {
+        return language.getISO3Language();
     }
 
 

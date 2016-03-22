@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * @author Gregory Jordan
  */
 public class Faction {
-    private static final String SETTING_FILE_NAME = "settings.json";
+    private static final String SETTING_FILE_NAME = "settings";
     public static final String FACTION_FOLDER = "Factions";
     public static final String TRANSLATION_FOLDER = "Translations";
     static Logger log = LoggerFactory.getLogger(Faction.class);
@@ -205,7 +205,7 @@ public class Faction {
         log.trace("loadJson: {}", folder.toString());
         Gson gson = new Gson();
     
-        FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME).toFile()), FactionSettings.class);
+        FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME+".json").toFile()), FactionSettings.class);
         
         Map<Locale, Faction_Dialog> languages = new HashMap<>();
         
@@ -217,17 +217,14 @@ public class Faction {
         
         return new Faction(setting, languages);
     }
-    
-    public void toJson(Path rulset_location) throws IOException {
 
+    public void to_json(Path rulset_location) throws IOException {
+        log.trace("Faction to json");
         Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
-       FileHelpers.create_folder(save_location);
+        FileHelpers.create_folder(save_location);
 
-        try (FileWriter file = new FileWriter(save_location.resolve(SETTING_FILE_NAME).toString())) {
-            file.write(FileHelpers.toJson(setting));
-        }
-        log.trace("Available Translations");
-        
+        FileHelpers.to_json_file(save_location,SETTING_FILE_NAME, setting);
+
         FileHelpers.map_to_Json(save_location.resolve(TRANSLATION_FOLDER), translations);
 
     }
