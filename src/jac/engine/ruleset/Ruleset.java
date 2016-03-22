@@ -31,8 +31,6 @@ import jac.unit.effectRules.Value;
 import jac.unit.partTranslation.AbilityTranslation;
 import jac.unit.partTranslation.ChassisTranslation;
 import jac.unit.partTranslation.FacilityTranslation;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -53,6 +51,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Ruleset {
     static final Path RULESET_LOCATION = Paths.get("./Rulesets/");
+    static final String CHASSIS = "chassis";
             
     static Logger log = LoggerFactory.getLogger(Ruleset.class);
     
@@ -89,8 +88,8 @@ public class Ruleset {
 
         Path saveLocation = RULESET_LOCATION.resolve(ruleset_name);
         FileHelpers.create_folder(saveLocation);
-
         FileHelpers.list_to_json(saveLocation.resolve("ideologies"), ideologies);
+        FileHelpers.map_to_Json(saveLocation.resolve(CHASSIS), chassis);
               
     }
     

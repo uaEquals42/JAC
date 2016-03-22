@@ -101,8 +101,13 @@ public class FileHelpers {
         
     }
     
-    public static void list_to_json(Path location, List<? extends HasKey> the_list) throws IOException{
-        
+    /**
+     * Used for saving each item in a list to it's own json file.
+     * @param location
+     * @param the_list
+     * @throws IOException 
+     */
+    public static void list_to_json(Path location, List<? extends HasKey> the_list) throws IOException{    
         create_folder(location);
             for(HasKey item : the_list){
                 try (FileWriter file = new FileWriter(location.resolve(item.getKey()).toString()+".json")) {
