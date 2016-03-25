@@ -18,203 +18,70 @@
  */
 package jac.unit;
 
-import jac.Enum.IntNames;
-import jac.engine.ruleset.Ruleset;
-import jac.unit.effectRules.EffectNode;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
  * @author Gregory Jordan
  */
-public class Unit_Plan implements Comparable<String>, Unit {
+public class Unit_Plan {
 
-    private final String chassisKey;
-    private final String reactorKey;
-    private final String armorKey;
-    private final String weaponKey;
-
-    private final Set<String> unitAbilityKeys;
-    private final Set<String> unitFacilityKeys;
-
-    private final EffectNode<Integer> costoverride;  // So ruleset designer can specify a certain combination of parts to be allot cheaper. 
+    private final Integer costoverride;  // So ruleset designer can specify a certain combination of parts to be allot cheaper. 
 
     private boolean prototyped = false;
-    private UnitLibrary helper;
-    
+    private final String name;
+    private final String frame;
+    private final List<String> parts;
+
     private Unit_Plan(Builder build) {
         this.prototyped = build.prototyped;
-        this.chassisKey = build.chassisKey;
-        this.armorKey = build.armorKey;
-        this.reactorKey = build.reactorKey;
-        this.weaponKey = build.weaponKey;
         this.costoverride = build.costoverride;
-        this.unitAbilityKeys = build.unitAbilityKeys;
-        this.unitFacilityKeys = build.unitFacilityKeys;
-        helper = new UnitLibrary(this);
-    }
-
-    @Override
-    public List<Effect> getLocalEffects(Ruleset rules) {
-        List<Effect> locEffect = new ArrayList<>();
-        locEffect.add(rules.getChassis().get(chassisKey).getLocalEffects());
-        locEffect.add(rules.getReactors().get(reactorKey).getLocalEffects());
-        locEffect.add(rules.getArmors().get(armorKey).getLocalEffects());
-        locEffect.add(rules.getWeapons().get(weaponKey).getLocalEffects());
-        
-
-        for (String abilityKey : unitAbilityKeys) {
-            locEffect.add(rules.getUnit_abilities().get(abilityKey).getLocalEffects());
-        }
-
-        for (String facilityKey : unitFacilityKeys) {
-            locEffect.add(rules.getFacilities().get(facilityKey).getLocalEffects());
-        }
-        return locEffect;
-    }
-
-    
-    public int cost_get(Ruleset rules) {
-        if (costoverride != null) {
-            return costoverride.result(this, rules);
-        } else {
-            return helper.calculateInteger(IntNames.COST, rules);
-        }
+        this.frame = build.framekey;
+        this.parts = build.parts;
+        this.name = build.name;
 
     }
 
-    
-
-    /**
-     * // Private methods private int calculate_cost() {
-     * //http://strategywiki.org/wiki/Sid_Meier%27s_Alpha_Centauri/Units is the
-     * formula I'm using. int def_cost = armor.getFlatcost();
-     *
-     * if (chassis.getDomain() == Domain.SEA) { def_cost = def_cost / 2; } else
-     * if (chassis.getDomain() == Domain.AIR) { def_cost = def_cost * 2; }
-     *
-     * int wep_cost = def_cost; if (wep_cost * 2 < def_cost) {
-     * wep_cost = def_cost / 2;
-     * }
-     * int r = reactor.reactor_power();
-     * int speed = chassis.getMovementPoints();
-     *
-     * int runningTotal = wep_cost * (def_cost + speed) * 10 / (2 ^ (r + 1));
-     *
-     * if (chassis.getDomain() == Domain.SEA) {
-     * runningTotal = runningTotal / 2;
-     * } else if (chassis.getDomain() == Domain.AIR) {
-     * runningTotal = runningTotal / 4;
-     * }
-     *
-     * //
-     * int ability_cost = 0;
-     * for (String key : unitAbilities.keySet()){
-     * ability_cost = ability_cost + unitAbilities.get(key).calculate_cost(runningTotal, weapon, armor,chassis);
-     * }
-     *
-     *
-     * runningTotal = runningTotal + ability_cost;
-     *
-     * if (wep_cost > 1 && def_cost > 1) { runningTotal = runningTotal + 10; }
-     * if (wep_cost > 1 && def_cost > 1 && speed > 1) { runningTotal =
-     * runningTotal + 10; }
-     *
-     * //Cmin = (R × 2 − R ÷ 2) × 10 int cmin = (r * 2 - r / 2) * 10;
-     *
-     * if (cmin > runningTotal) { return cmin; } else { return runningTotal; } }
-     */
-    @Override
-    public String toString() {
-        return "Unit Plan: C:" + chassisKey +" A: " + armorKey + " R:" + reactorKey + " W: " + weaponKey + " " + unitAbilityKeys.toString() + unitFacilityKeys.toString();
+    public Integer getCostoverride() {
+        return costoverride;
     }
 
-    @Override
-    public int compareTo(String o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean isPrototyped() {
+        return prototyped;
     }
 
-    @Override
-    public String getChassisKey() {
-        return chassisKey;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String getReactorKey() {
-        return reactorKey;
+    public String getFrame() {
+        return frame;
     }
 
-    @Override
-    public String getArmorKey() {
-        return armorKey;
+    public List<String> getParts() {
+        return parts;
     }
 
-    @Override
-    public String getWeaponKey() {
-       return weaponKey;
-    }
-
-    @Override
-    public Set<String> getUnitAbilityKeys() {
-        return unitAbilityKeys;
-    }
-
-    @Override
-    public Set<String> getUnitFacilityKeys() {
-        return unitFacilityKeys;
-    }
-
-    @Override
-    public Integer getPopulation() {
-        return 0;
-    }
-
-    
     //----------------------------------------------------------------------
-    
     public static class Builder {
 
-        private String chassisKey;
-        private String reactorKey;
-        private String armorKey;
-        private String weaponKey;
-
-        private Set<String> unitAbilityKeys;
-        private Set<String> unitFacilityKeys;
-
+        String framekey;
+        List<String> parts;
+        private final String name;
         private boolean prototyped;
-        
-        
+
         //Overrides.
-        private EffectNode<Integer> costoverride = null;  // So that
+        private Integer costoverride = null;  // So that
 
-        public Builder(String chassis, String reactor, String armor, String weapon) {
-            this.chassisKey = chassis;
-            this.reactorKey = reactor;
-            this.armorKey = armor;
-            this.weaponKey = weapon;    
-            
+        public Builder(String name, String frame, List<String> parts) {
+            this.framekey = frame;
+            this.parts = parts;
+            this.name = name;
             prototyped = false;
-            
-            unitAbilityKeys = new HashSet<>();
-            unitFacilityKeys = new HashSet<>();
-        }
-
-        public Builder setUnitAbilities(Set<String> unitAbilityKeys) {
-            this.unitAbilityKeys = unitAbilityKeys;
-            return this;
         }
 
         public Builder prototyped(boolean value) {
             prototyped = value;
-            return this;
-        }
-
-        public Builder setUnitFacilities(Set<String> unitFacilityKeys) {
-            this.unitFacilityKeys = unitFacilityKeys;
             return this;
         }
 
@@ -224,7 +91,7 @@ public class Unit_Plan implements Comparable<String>, Unit {
          * @param value
          * @return
          */
-        public Builder costOverride(EffectNode<Integer> value) {
+        public Builder costOverride(Integer value) {
             costoverride = value;
             return this;
         }
@@ -235,5 +102,4 @@ public class Unit_Plan implements Comparable<String>, Unit {
 
     }
 
-    
 }

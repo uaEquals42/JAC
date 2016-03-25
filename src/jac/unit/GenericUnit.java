@@ -22,7 +22,6 @@ import jac.Enum.BoolNames;
 import jac.Enum.IntNames;
 import jac.Enum.UnitActions;
 import jac.engine.PlayerDetails;
-import jac.engine.mapstuff.CantMoveUnitThereException;
 import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
 import jac.engine.mapstuff.Square;
@@ -37,7 +36,7 @@ import java.util.Set;
  *
  * @author Gregory Jordan
  */
-public class GenericUnit implements Unit {
+public class GenericUnit {
 
     private final int construction_date;
 
@@ -49,11 +48,11 @@ public class GenericUnit implements Unit {
 
     private final Unit_Plan design;
 
-    private final List<Effect> localEffects;
-    private final Effect empireEffects;
+    private final List<Effect> localEffects=new LinkedList<>();
+    private final List<Effect> empireEffects=new LinkedList<>();
 
-    private Map<String, UnitAbility> unit_abilities;
-    private Map<String, Facility> unit_facilities;
+    private Map<String, Unit_part> parts;
+    
 
     private int movementPoints;
     private boolean on_hold;
@@ -62,40 +61,38 @@ public class GenericUnit implements Unit {
     private Square location;
     private Ruleset rules;
 
-    UnitLibrary helper;
     
     public GenericUnit(Unit_Plan design, int turn, PlayerDetails player, int id, Square location, Ruleset rules) {
         construction_date = turn;
         this.rules = rules;
         this.location = location;
         this.design = design;
-        unit_abilities = new HashMap<>();
-        for(String key : design.getUnitAbilityKeys()){
-            unit_abilities.put(key, rules.getUnit_abilities().get(key));
+        
+        for(String key : design.getParts()){
+            parts.put(key, rules.getUnit_components().get(key));
         }
-        unit_facilities = new HashMap<>();
-        for(String key : design.getUnitFacilityKeys()){
-            unit_facilities.put(key, rules.getFacilities().get(key));
-        }
+        
         
 
         this.id_unit = id;
         this.player = player;
 
-        helper = new UnitLibrary(this);
-        localEffects = design.getLocalEffects(rules) ;
-        empireEffects = null;
-        Integer population;
+
+        for(Unit_part tmp : parts.values()){
+            localEffects.add(tmp.getLocalEffects());
+            empireEffects.add(tmp.getEmpireEffects());
+        }
+
 
     }
 
-    @Override
+
     public List<Effect> getLocalEffects(Ruleset Rules) {
         return localEffects;
     }
 
     public void setHealthToMax() {
-        current_health = helper.calculateInteger(IntNames.HEALTH, rules);
+        current_health = calculateInteger(IntNames.HEALTH);
     }
 
    
@@ -129,21 +126,41 @@ public class GenericUnit implements Unit {
     }
 
     public void resetMovementPoints() {
-        movementPoints = helper.calculateInteger(IntNames.SPEED, rules);
+        movementPoints = calculateInteger(IntNames.SPEED);
     }
 
-    public boolean calculateBool(BoolNames name) {
-       return helper.calculateBool(name, rules);
-    }
-    
-    public int calculateIntger(IntNames name){
-        return helper.calculateInteger(name, rules);
-    }
 
     public int getConstruction_date() {
         return construction_date;
     }
 
+    public int calculateInteger(IntNames name) {
+        // TODO: Also have it calculate the effects of the square it is on... (if any).
+        int value = 0;
+        float multiplier = 1;
+        for (Effect eff : getLocalEffects(rules)) {
+            value = value + eff.getIntVariable(name);
+            multiplier = multiplier * eff.getFloatValue(name);
+        }
+
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return (int) (value * multiplier);
+    }
+    
+    public boolean calculateBool(BoolNames name) {
+        for (Effect eff : getLocalEffects(rules)) {
+            if (eff.getBoolVariable(name)) {
+                return true;
+            }
+        }
+
+        // TODO:  Do the same for the faction wide effects (Tech, Rules, Faction Settings, Faction Rules, Secret Projects)
+        return false;
+
+    }
+    
+    
+    
     /**
      * Use this class so that optimizing latter will be allot easier. Plan to
      * cache the results, so that if the empire effects doesn't change, it will
@@ -172,37 +189,6 @@ public class GenericUnit implements Unit {
 
     public int getId_unit() {
         return id_unit;
-    }
-
-
-    @Override
-    public String getChassisKey() {
-        return design.getChassisKey();
-    }
-
-    @Override
-    public String getReactorKey() {
-       return design.getReactorKey();
-    }
-
-    @Override
-    public String getArmorKey() {
-        return design.getArmorKey();
-    }
-
-    @Override
-    public String getWeaponKey() {
-        return design.getWeaponKey();
-    }
-
-    @Override
-    public Set<String> getUnitAbilityKeys() {
-       return design.getUnitAbilityKeys();
-    }
-
-    @Override
-    public Set<String> getUnitFacilityKeys() {
-        return design.getUnitFacilityKeys();
     }
 
 }

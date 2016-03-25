@@ -18,7 +18,6 @@
  */
 package jac.unit;
 
-import jac.unit.effectRules.EffectNode;
 
 /**
  *
@@ -26,12 +25,10 @@ import jac.unit.effectRules.EffectNode;
  */
 public class UnitCoversion {
     private final String keyBindingCode;
-    private final EffectNode<Boolean> preReq;
     private final Unit_Plan unitToCreate;
     
-    UnitCoversion(String keyBindingCode, EffectNode<Boolean> preReq, Unit_Plan unitToCreate){
+    UnitCoversion(String keyBindingCode, Unit_Plan unitToCreate){
         this.keyBindingCode = keyBindingCode;
-        this.preReq = preReq;
         this.unitToCreate = unitToCreate;
     }
     

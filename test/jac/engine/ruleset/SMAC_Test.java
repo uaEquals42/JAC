@@ -20,7 +20,7 @@ package jac.engine.ruleset;
 
 import jac.Enum.Domain;
 import jac.Enum.IntNames;
-import jac.unit.effectRules.Value;
+import jac.unit.Part_Category;
 import java.io.IOException;
 import java.util.logging.Level;
 import static org.junit.Assert.assertEquals;
@@ -66,6 +66,12 @@ public class SMAC_Test {
         }
     }
 
+    @Test
+    public void test_new_armors(){
+        assertEquals("Number of armors", 10, rules.get_part_list_by_category(Part_Category.ARMOR).size());
+    }
+    
+    
     @Test
     public void checkidologies(){
         
@@ -136,10 +142,11 @@ public class SMAC_Test {
 
     }
 
+    /*
     @Test
     public void test_Chasis(){
         // Test a couple of the chasis to make sure the data is right.
-        assertEquals("Infantry movment", new Value(3).toString(), rules.getChassis().get("Infantry").getLocalEffects().getIntVariable(IntNames.SPEED).toString());
+        assertEquals("Infantry movment", 3, rules.getChassis().get("Infantry").getLocalEffects().getIntVariable(IntNames.SPEED).toString());
         assertEquals("Infantry cost", 1, rules.getChassis().get("Infantry").getFlatcost());
         assertEquals("Infantry Prereqs", 0, rules.getChassis().get("Infantry").getPre_requisite_technology().size());
         assertEquals("Infantry", Domain.LAND, rules.getChassis().get("Infantry").getDomain());
@@ -148,11 +155,11 @@ public class SMAC_Test {
         assertEquals("Missile is a missle?", true, rules.getChassis().get("Missile").isMissle());
         assertEquals("Missle is an air unit?", Domain.AIR, rules.getChassis().get("Missile").getDomain());
     }
-    
+    */
     
     @Test
     public void test_Facility(){
-        assertEquals("Number of facilities/secrectprojects", 71, rules.getFacilities().size());   
+        assertEquals("Number of facilities/secrectprojects", 71, rules.get_part_list_by_category(Part_Category.FACILITY).size());   
     }
     
     @Test

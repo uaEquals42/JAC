@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2015 Iceberg7
+ * JAC Copyright (C) 2016 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -16,28 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jac.Enum;
+package jac.unit.partTranslation;
 
+import java.util.Locale;
 
 /**
  *
- * @author  Gregory Jordan
+ * @author Gregory Jordan
  */
-public enum BoolNames {
-    // Base related effects
-    IS_IT_A_BASE,
-    CAN_MAKE_FACILITIES,
-    CAN_MAKE_UNITS,
-    CAPTURED_WHEN_DEFEATED,
+public interface Translation {
     
-    //General Effects
-    AMPHIBIOUS,
-    CAN_IT_ATTACK,
-    CAN_DEFEND,
-    DAMAGE_TO_SELF_WHEN_ATTACKING, // AKA. Missiles. 100% damage.
-    
-    
-    
+        public Locale getLanguage();
 
-    
 }

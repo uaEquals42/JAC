@@ -28,8 +28,12 @@ public enum IntNames {
     //More traditional unit effects
     SPEED, 
     HEALTH,
-    COST,
     CARGO_CAPACITY,
+    POWER,
+    COST,
+    ENERGY_SUPPORT_COST,
+    AIR_RANGE,
+    OUT_OF_RANGE_DAMAGE
     
     // Resousce Related Effects
     

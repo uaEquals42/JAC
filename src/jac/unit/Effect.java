@@ -20,10 +20,9 @@ package jac.unit;
 
 
 import jac.Enum.BoolNames;
+import jac.Enum.DefenceMode;
 import jac.Enum.IntNames;
-import jac.engine.ruleset.Ruleset;
-import jac.unit.effectRules.EffectNode;
-import jac.unit.effectRules.Value;
+import jac.Enum.WeaponRole;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -50,9 +49,14 @@ public class Effect {
      * If we need the speed... we can optimize latter after the design has been finalized.
      * Doing this.... really... shrunk down the lines of code needed to be written.
      */
-    private final Map<IntNames, EffectNode<Integer>> intEffects; 
-    private final Map<IntNames, EffectNode<Float>> multiplier; 
-    private final Map<BoolNames, EffectNode<Boolean>> boolEffects; 
+    private final Map<IntNames, Integer> intEffects; 
+    private final Map<IntNames, Float> multiplier; 
+    private final Map<BoolNames, Boolean> boolEffects; 
+    
+    private final Map<DefenceMode, Integer> armor;
+    private final Map<WeaponRole, Integer> attack; // what attack power type and how much this may or may not have.
+    
+    
 
     
     private Effect(Builder build) {
@@ -61,76 +65,78 @@ public class Effect {
         this.intEffects = build.intEffects;
         this.boolEffects = build.boolEffects;
         multiplier = build.multiplier;
+        this.armor = build.armor;
+        attack = build.attack;
     }
     
     
-     public EffectNode<Integer> getIntVariable(IntNames var){
+     public Integer getIntVariable(IntNames var){
         return intEffects.get(var);
     }
      
-    public EffectNode<Boolean> getBoolVariable(BoolNames var){
+    public Boolean getBoolVariable(BoolNames var){
         return boolEffects.get(var);
     }
-    
-    public Integer getIntValue(IntNames var, Unit unit, Ruleset rules){
-        return intEffects.get(var).result(unit, rules);
+
+    public Float getFloatValue(IntNames var){
+        return multiplier.get(var);
     }
-    
-    public Float getFloatValue(IntNames var, Unit unit, Ruleset rules){
-        return multiplier.get(var).result(unit, rules);
-    }
-     
-    public Boolean getBoolValue(BoolNames var, Unit unit, Ruleset rules){
-        return boolEffects.get(var).result(unit, rules);
-    }
-    
     
     public static class Builder {
-        
-        private Map<BoolNames, EffectNode<Boolean>> boolEffects = new EnumMap<>(BoolNames.class);
-        Map<IntNames, EffectNode<Integer>> intEffects = new EnumMap<>(IntNames.class); 
-        Map<IntNames, EffectNode<Float>> multiplier = new EnumMap<>(IntNames.class);
-            
+
+        private Map<BoolNames, Boolean> boolEffects = new EnumMap<>(BoolNames.class);
+        Map<IntNames, Integer> intEffects = new EnumMap<>(IntNames.class);
+        Map<IntNames, Float> multiplier = new EnumMap<>(IntNames.class);
+
         private List<UnitCoversion> converts_to = new ArrayList<>();
+        private Map<DefenceMode, Integer> armor = new EnumMap<>(DefenceMode.class);
+        private Map<WeaponRole, Integer> attack = new EnumMap<>(WeaponRole.class);
+        public Builder() {
+            for (BoolNames nnn : BoolNames.values()) {
+                boolEffects.put(nnn, false);
+            }
 
-
-        public Builder(){
-            for(BoolNames nnn : BoolNames.values()){
-                boolEffects.put(nnn, Value.False());
+            for(IntNames nnn : IntNames.values()){
+                intEffects.put(nnn, 0);
             }
             
             for(IntNames nnn : IntNames.values()){
-                intEffects.put(nnn, Value.Zero());
+                multiplier.put(nnn, 1f);
             }
             
-            for(IntNames nnn : IntNames.values()){
-                multiplier.put(nnn, Value.One());
-            }
-            
+        }
+        
+        public Builder add_shielding(DefenceMode type, Integer value){
+            armor.put(type, value);
+            return this;
         }
         
         
         public Builder makeItABase() {
-            boolEffects.put(BoolNames.IS_IT_A_BASE, Value.True());
-            boolEffects.put(BoolNames.CAN_MAKE_FACILITIES, Value.True());
-            boolEffects.put(BoolNames.CAN_MAKE_UNITS, Value.True());
-            boolEffects.put(BoolNames.CAPTURED_WHEN_DEFEATED, Value.True());
+            boolEffects.put(BoolNames.IS_IT_A_BASE, true);
+            boolEffects.put(BoolNames.CAN_MAKE_FACILITIES, true);
+            boolEffects.put(BoolNames.CAN_MAKE_UNITS, true);
+            boolEffects.put(BoolNames.CAPTURED_WHEN_DEFEATED, true);
             return this;
         }
         
         public Builder makeItAUnit(){
-            boolEffects.put(BoolNames.CAN_IT_ATTACK, Value.True());
-            boolEffects.put(BoolNames.CAN_DEFEND, Value.True());
+            boolEffects.put(BoolNames.CAN_IT_ATTACK, true);
+            boolEffects.put(BoolNames.CAN_DEFEND, true);
+            return this;
+        }
+       
+        public Builder set_attack(WeaponRole type, int power){
+            attack.put(type, power);
             return this;
         }
         
-        
-       public Builder setBoolFlag(BoolNames effect, EffectNode<Boolean> value){
+       public Builder setBoolFlag(BoolNames effect, Boolean value){
            boolEffects.put(effect, value);
            return this;
        }
        
-        public Builder setIntFlag(IntNames effect, EffectNode<Integer> value){
+        public Builder setIntFlag(IntNames effect, Integer value){
           intEffects.put(effect, value);
            return this;
        }
@@ -178,7 +184,8 @@ public class Effect {
         return value;
     }
     */
-        
+      
+        /*
     public int calculate_cost(int base_cost, Weapon weapon, Armor armor, Chassis chassis) {
 
         /*
@@ -212,12 +219,12 @@ public class Effect {
          -7 has cost equal to armor+chassis-2.
         
          It's used as if that were the positive ability cost, i.e. positive total_unit_cost = (unit_cost *(1+ability_cost / 4))
-         */
+         
         
         
         return 0;
     }
-        
+    */   
         
         
         public Effect build() {

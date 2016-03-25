@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2015 Gregory Jordan
+ * JAC Copyright (C) 2016 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -18,29 +18,15 @@
  */
 package jac.unit;
 
-import jac.engine.ruleset.Ruleset;
-import java.util.List;
-import java.util.Set;
-
 /**
  *
  * @author Gregory Jordan
  */
-public interface Unit {
-    String getChassisKey();
-    
-    String getReactorKey();
-
-    String getArmorKey();
-
-    String getWeaponKey();
-    
-    Set<String> getUnitAbilityKeys();
-    
-    Set<String> getUnitFacilityKeys();
-    
-    public List<Effect> getLocalEffects(Ruleset rules);
-
-    public Integer getPopulation();
-    
+public enum Part_Category {
+    PROPULSION,
+    REACTOR,
+    ARMOR,
+    FACILITY,
+    WEAPON,
+    MODS;
 }
