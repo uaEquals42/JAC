@@ -197,6 +197,8 @@ public class Ruleset {
             return new Ruleset(this);
 
         }
+        
+        
 
         public Ruleset loadalphax_txt() throws SectionNotFoundException, IOException {
             //TODO: implement load alphax.txt
@@ -222,25 +224,7 @@ public class Ruleset {
 
         }
 
-        /**
-         * Will find the first line that equals the string tag.
-         *
-         * @param tag The line you are looking for.
-         * @param input The list of strings you are searching.
-         * @return The line number where tag was found. Returns -1 if it wasn't
-         * found.
-         */
-        private int gotosection(String tag, List<String> input) throws SectionNotFoundException {
-            for (int line = 0; line < input.size(); line++) {
-                if (input.get(line).trim().equalsIgnoreCase(tag)) {
-                    log.trace("gotosection tag: {}  line: {}", tag, line);
-                    return line;
-                }
-            }
 
-            log.error("Section {} not found!", tag);
-            throw new SectionNotFoundException();  // TODO:  Change this to an exception?
-        }
 
         private Map<String, Terrainstat> load_BasicTerrainTypes() {
             Map<String, Terrainstat> basicterraintypes = new HashMap<>();
@@ -304,7 +288,7 @@ public class Ruleset {
 
         private void load_unitDesigns(List<String> input) throws SectionNotFoundException {
             log.debug("Load unit Designs");
-            int pos = gotosection("#UNITS", input);
+            int pos = FileHelpers.findKey("#UNITS", input);
             pos++;
 
             pos++;
@@ -362,7 +346,7 @@ public class Ruleset {
          * "#FACILITIES" section.
          */
         private void load_facilities(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
-            int pos = gotosection("#FACILITIES", input);
+            int pos = FileHelpers.findKey("#FACILITIES", input);
             pos++;
             int facility_count = 0;
             int secret_count = 0;
@@ -412,7 +396,7 @@ public class Ruleset {
         }
 
         private void load_weapon(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#WEAPONS", input);
+            int pos = FileHelpers.findKey("#WEAPONS", input);
             pos++;
             int count = 0;
             for (; !input.get(pos).trim().isEmpty(); pos++) {
@@ -450,7 +434,7 @@ public class Ruleset {
         }
 
         private void load_unit_abilities(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#ABILITIES", input);
+            int pos = FileHelpers.findKey("#ABILITIES", input);
             pos++;
 
             for (; !input.get(pos).trim().isEmpty(); pos++) {
@@ -487,7 +471,7 @@ public class Ruleset {
         }
 
         private void load_armor(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#DEFENSES", input);
+            int pos = FileHelpers.findKey("#DEFENSES", input);
             pos++;
 
             int count = 0;
@@ -527,7 +511,7 @@ public class Ruleset {
         }
 
         private void load_reactor(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#REACTORS", input);
+            int pos = FileHelpers.findKey("#REACTORS", input);
             pos++;
 
             for (; !input.get(pos).trim().isEmpty(); pos++) {
@@ -555,7 +539,7 @@ public class Ruleset {
         }
 
         private void load_chassis(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#CHASSIS", input);
+            int pos = FileHelpers.findKey("#CHASSIS", input);
             pos++;
 
             for (; !input.get(pos).trim().isEmpty(); pos++) {
@@ -606,7 +590,7 @@ public class Ruleset {
 
         /*
          private void load_technologies(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
-         int pos = gotosection("#TECHNOLOGY", input);
+         int pos = findKey("#TECHNOLOGY", input);
          pos++;
 
          for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
@@ -645,7 +629,7 @@ public class Ruleset {
          }
          */
         private void load_ideologies(List<String> input) throws SectionNotFoundException {
-            int pos = gotosection("#SOCIO", input);
+            int pos = FileHelpers.findKey("#SOCIO", input);
             pos += 3;
 
             String[] categories = input.get(pos).split(",");

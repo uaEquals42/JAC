@@ -20,6 +20,7 @@ package jac.engine.Faction;
 
 import jac.Enum.SocialAreas;
 import jac.engine.Faction.Faction;
+import jac.engine.ruleset.SectionNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,10 +47,13 @@ public class Rome_FactionTest {
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
         
         try {
-            instance = Faction.loadSmacFactionFile(FileName);
+            instance = new Faction.Builder().loadSmacFactionFile(FileName).build();
         } catch (IOException ex) {
             Logger.getLogger(Rome_FactionTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Failed to load the test file: " + FileName);
+        } catch (SectionNotFoundException ex) {
+            Logger.getLogger(Rome_FactionTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Section not found");
         }
 
     }

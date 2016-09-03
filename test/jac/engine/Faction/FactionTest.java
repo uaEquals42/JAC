@@ -19,6 +19,7 @@
 package jac.engine.Faction;
 
 
+import jac.engine.ruleset.SectionNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,10 +44,13 @@ public class FactionTest {
     @Test
     public void test_gaians(){
        try {
-           Faction gaians = Faction.loadSmacFactionFile(SMACX_LOCATION+"GAIANS.TXT");
+           Faction gaians = new Faction.Builder().loadSmacFactionFile(SMACX_LOCATION+"GAIANS.TXT").build();
        } catch (IOException ex) {
            Logger.getLogger(FactionTest.class.getName()).log(Level.SEVERE, null, ex);
            fail("IOException");
+       } catch (SectionNotFoundException ex) {
+           Logger.getLogger(FactionTest.class.getName()).log(Level.SEVERE, null, ex);
+           fail("Section not found:");
        }
     }
 
@@ -76,10 +80,10 @@ public class FactionTest {
 
     
     @Test
-    public void testToJson() throws IOException, JAXBException {
+    public void testToJson() throws IOException, JAXBException, SectionNotFoundException {
         
         String FileName = "./testfiles/FactionsbyBlueFlux/Rome/Rome.txt";
-        Faction instance = Faction.loadSmacFactionFile(FileName);
+        Faction instance = new Faction.Builder().loadSmacFactionFile(FileName).build();
         instance.to_json(Paths.get("./Mods/TestFactions"));
         
     }

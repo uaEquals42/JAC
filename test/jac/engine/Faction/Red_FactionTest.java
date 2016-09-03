@@ -18,6 +18,7 @@
  */
 package jac.engine.Faction;
 import jac.Enum.SocialAreas;
+import jac.engine.ruleset.SectionNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,12 +39,12 @@ public class Red_FactionTest {
     static Faction instance;
     static final Path MOD_LOCATION = Paths.get("./Mods/TestFactions");
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() throws IOException, SectionNotFoundException {
         String FileName = "./testfiles/FactionsbyBlueFlux/red/RED.txt";
 
-        instance = Faction.loadSmacFactionFile(FileName);
+        instance = new Faction.Builder().loadSmacFactionFile(FileName).build();
         instance.to_json(MOD_LOCATION);
-        instance = Faction.loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED"));
+        instance = new Faction.Builder().loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve("RED")).build();
 
     }
     

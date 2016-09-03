@@ -21,6 +21,7 @@ package jac.engine;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jac.engine.Faction.FactionSettings;
+import jac.engine.ruleset.SectionNotFoundException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -49,8 +50,59 @@ public class FileHelpers {
     
     static Logger log = LoggerFactory.getLogger(FileHelpers.class);
     
+    
+            /**
+         * Will find the first line that equals the string key.
+         *
+         * @param key The line you are looking for.
+         * @param input The list of strings you are searching.
+         * @return The line number where key was found. Returns -1 if it wasn't
+ found.
+         */
+        public static int findKey(String key, List<String> input) throws SectionNotFoundException {
+            for (int line = 0; line < input.size(); line++) {
+                if (input.get(line).trim().toLowerCase().startsWith(key.toLowerCase())) {
+                    log.trace("gotosection tag: {}  line: {}", key, line);
+                    return line;
+                }
+            }
+
+            log.error("Section {} not found!", key);
+            throw new SectionNotFoundException();  // TODO:  Change this to an exception?
+        }
+    
+        
+        
+        
+    public static List<String> readSection(List<String> strlist, String code) throws SectionNotFoundException {
+
+        ArrayList<String> tmp = new ArrayList<>();
+        int line = findKey(code, strlist);
+
+        // now we read in strings until we hit #END
+        line++;
+        while (line < strlist.size() && !strlist.get(line).startsWith("#")) {
+            tmp.add(strlist.get(line).trim());
+            line++;
+        }
+
+        return tmp;
+    }
+
+
+
+    public static int nextLine(int line, List<String> strlist) {
+        line++;
+        while (strlist.get(line).startsWith(";")) {
+            line++;
+        }
+        return line;
+    }
+    
+    
+    
     public static List<Path> listFiles(Path location, String glob) throws IOException{
-        ArrayList paths = new ArrayList<>();
+        List<Path> paths = new ArrayList<>();
         DirectoryStream<Path> stream = Files.newDirectoryStream(location, glob);
         
         for(Path pp : stream){
@@ -66,7 +118,7 @@ public class FileHelpers {
      * @throws IOException
      */
     public static List<Path> listFiles(Path location) throws IOException{
-        ArrayList paths = new ArrayList<>();
+        List<Path> paths = new ArrayList<>();
         DirectoryStream<Path> stream = Files.newDirectoryStream(location);
         
         for(Path pp : stream){

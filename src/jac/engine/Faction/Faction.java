@@ -25,6 +25,7 @@ import jac.Enum.SocialAreas;
 import jac.Enum.NounSex;
 import jac.engine.FileHelpers;
 import jac.engine.dialog.Quote;
+import jac.engine.ruleset.SectionNotFoundException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,6 +62,11 @@ public class Faction {
     public Faction(FactionSettings setting, Map<Locale, Faction_Dialog> translations) {
         this.setting = setting;
         this.translations = translations;
+    }
+    
+    private Faction(Builder build){
+        this.setting = build.setting;
+        this.translations = build.translations;
     }
 
     public FactionSettings getSetting() {
@@ -94,129 +101,167 @@ public class Faction {
         return setting.race;
     }
 
-    /**
-     * Load in the old SMAC/X config files for the factions.
-     *
-     * @param FileName
-     * @return
-     */
-    public static Faction loadSmacFactionFile(String FileName) throws IOException {
-        log.debug("Load Smac Faction at {}", FileName);
-        FactionSettings tmp_setting = new FactionSettings();
-        tmp_setting.race = "human";  // TODO: Set to alien if it is the alien people.
+    
+            /**
+         * Given a folder, return a list of all factions stored in that folder.
+         * @param path
+         * @return 
+         */
+     public static List<Faction> load_factions(Path path) throws IOException {
+        List<Faction> facts = new ArrayList<Faction>();
 
-        Faction_Dialog dialog = new Faction_Dialog(Locale.ENGLISH);
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            for (Path file : stream) {
+                if (Files.isDirectory(file)) {
+                    facts.add(new Faction.Builder().loadJson(file).build());
+                }
+            }
 
-        Path path = Paths.get(FileName);
+        }
 
-        List<String> textFileIn = Files.readAllLines(path, StandardCharsets.UTF_8);
-        int line = 0;
+        return facts;
+    }
+    
+    
+    public static class Builder {
 
-        line = findKey(textFileIn, "#");
-        tmp_setting.codeName = textFileIn.get(line).substring(1);
-        line = nextLine(line, textFileIn);
-        String[] tmp = textFileIn.get(line).split(",");
-        dialog.faction_name_title = tmp[0];
-        dialog.fact_short_description_of_ideology = tmp[1].trim();
-        dialog.noun = tmp[2].trim();
+        FactionSettings setting = new FactionSettings();
+        Map<Locale, Faction_Dialog> translations  = new HashMap<>();;
 
-        String temporaryString = tmp[3].trim() + tmp[4].trim();
+        public Faction build() {
+            return new Faction(this);
+        }
 
-        dialog.faction_name_sexP = NounSex.convert(temporaryString);
+        
+        public Builder loadJson(Path folder) throws FileNotFoundException, IOException {
+            log.trace("loadJson: {}", folder.toString());
+            Gson gson = new Gson();
 
-        dialog.leaders_name = tmp[5].trim();
-        dialog.leaders_gender = NounSex.convert(tmp[6].trim() + 1); // Yes, I'm making it so that the leader can be plural.  A council.  The elder's.  an alien hive mind. etc.
+            setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME + ".json").toFile()), FactionSettings.class);
 
-        tmp_setting.ai_fight = Integer.parseInt(tmp[7].trim());
-        tmp_setting.ai_power = Integer.parseInt(tmp[8].trim());
-        tmp_setting.ai_tech = Integer.parseInt(tmp[9].trim());
-        tmp_setting.ai_wealth = Integer.parseInt(tmp[10].trim());
-        tmp_setting.ai_growth = Integer.parseInt(tmp[11].trim());
+            List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
+            for (Path pp : paths) {
+                Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
+                translations.put(dialog.getLanguage(), dialog);
+            }
+
+            return this;
+        }
+
+        /**
+         * Load in the old SMAC/X config files for the factions.
+         *
+         * @param FileName
+         * @return
+         * @throws java.io.IOException
+         */
+        public Builder loadSmacFactionFile(String FileName) throws IOException, SectionNotFoundException {
+            log.debug("Load Smac Faction at {}", FileName);
+            setting.race = "human";  // TODO: Set to alien if it is the alien people.
+
+            Faction_Dialog dialog = new Faction_Dialog(Locale.ENGLISH);
+
+            Path path = Paths.get(FileName);
+
+            List<String> textFileIn = Files.readAllLines(path, StandardCharsets.UTF_8);
+            int line = 0;
+
+            line = FileHelpers.findKey("#",textFileIn);
+            setting.codeName = textFileIn.get(line).substring(1);
+            line = FileHelpers.nextLine(line, textFileIn);
+            String[] tmp = textFileIn.get(line).split(",");
+            dialog.faction_name_title = tmp[0];
+            dialog.fact_short_description_of_ideology = tmp[1].trim();
+            dialog.noun = tmp[2].trim();
+
+            String temporaryString = tmp[3].trim() + tmp[4].trim();
+
+            dialog.faction_name_sexP = NounSex.convert(temporaryString);
+
+            dialog.leaders_name = tmp[5].trim();
+            dialog.leaders_gender = NounSex.convert(tmp[6].trim() + 1); // Yes, I'm making it so that the leader can be plural.  A council.  The elder's.  an alien hive mind. etc.
+
+            setting.ai_fight = Integer.parseInt(tmp[7].trim());
+            setting.ai_power = Integer.parseInt(tmp[8].trim());
+            setting.ai_tech = Integer.parseInt(tmp[9].trim());
+            setting.ai_wealth = Integer.parseInt(tmp[10].trim());
+            setting.ai_growth = Integer.parseInt(tmp[11].trim());
 
         // Next line in file.
-        // Follows the following grammer:  Rule, rulesetting, rule, rulesetting, etc...
-        line++;
-        //System.out.println(textFileIn.get(line));
-        tmp = textFileIn.get(line).split(",");
-        setRules(tmp, tmp_setting);
-        line++;
-        String[] tmparray = textFileIn.get(line).split(",");
+            // Follows the following grammer:  Rule, rulesetting, rule, rulesetting, etc...
+            line++;
+            //System.out.println(textFileIn.get(line));
+            tmp = textFileIn.get(line).split(",");
+            setRules(tmp, setting);
+            line++;
+            String[] tmparray = textFileIn.get(line).split(",");
 
-        switch (tmparray[2].toUpperCase().trim()) {
-            case "NIL":
-                tmp_setting.ai_emphesis = AI_Emphesis.NIL;
-                break;
-            case "ECONOMY":
-                tmp_setting.ai_emphesis = AI_Emphesis.ECONOMY;
-                break;
-            case "EFFIC":
-                tmp_setting.ai_emphesis = AI_Emphesis.EFFIC;
-                break;
-            case "SUPPORT":
-                tmp_setting.ai_emphesis = AI_Emphesis.SUPPORT;
-                break;
-            case "TALENT":
-                tmp_setting.ai_emphesis = AI_Emphesis.TALENT;
-                break;
-            case "MORALE":
-                tmp_setting.ai_emphesis = AI_Emphesis.MORALE;
-                break;
-            case "POLICE":
-                tmp_setting.ai_emphesis = AI_Emphesis.POLICE;
-                break;
-            case "GROWTH":
-                tmp_setting.ai_emphesis = AI_Emphesis.GROWTH;
-                break;
-            case "PLANET":
-                tmp_setting.ai_emphesis = AI_Emphesis.PLANET;
-                break;
-            case "PROBE":
-                tmp_setting.ai_emphesis = AI_Emphesis.PROBE;
-                break;
-            case "INDUSTRY":
-                tmp_setting.ai_emphesis = AI_Emphesis.INDUSTRY;
-                break;
-            case "RESEARCH":
-                tmp_setting.ai_emphesis = AI_Emphesis.RESEARCH;
-                break;
+            switch (tmparray[2].toUpperCase().trim()) {
+                case "NIL":
+                    setting.ai_emphesis = AI_Emphesis.NIL;
+                    break;
+                case "ECONOMY":
+                    setting.ai_emphesis = AI_Emphesis.ECONOMY;
+                    break;
+                case "EFFIC":
+                    setting.ai_emphesis = AI_Emphesis.EFFIC;
+                    break;
+                case "SUPPORT":
+                    setting.ai_emphesis = AI_Emphesis.SUPPORT;
+                    break;
+                case "TALENT":
+                    setting.ai_emphesis = AI_Emphesis.TALENT;
+                    break;
+                case "MORALE":
+                    setting.ai_emphesis = AI_Emphesis.MORALE;
+                    break;
+                case "POLICE":
+                    setting.ai_emphesis = AI_Emphesis.POLICE;
+                    break;
+                case "GROWTH":
+                    setting.ai_emphesis = AI_Emphesis.GROWTH;
+                    break;
+                case "PLANET":
+                    setting.ai_emphesis = AI_Emphesis.PLANET;
+                    break;
+                case "PROBE":
+                    setting.ai_emphesis = AI_Emphesis.PROBE;
+                    break;
+                case "INDUSTRY":
+                    setting.ai_emphesis = AI_Emphesis.INDUSTRY;
+                    break;
+                case "RESEARCH":
+                    setting.ai_emphesis = AI_Emphesis.RESEARCH;
+                    break;
 
+            }
+            configIdeology(tmparray[0], tmparray[1], setting.pro_ideologies);
+
+            line++;
+            tmparray = textFileIn.get(line).split(",");
+            configIdeology(tmparray[0], tmparray[1], setting.anti_ideologies);
+
+            // Lets skip the sentences for now
+            dialog.land_base_names = FileHelpers.readSection(textFileIn, "#BASES");
+
+            dialog.water_base_names = FileHelpers.readSection(textFileIn, "#WATERBASES");
+
+            line = FileHelpers.findKey("#BLURB", textFileIn);
+            dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
+            
+            translations.put(Locale.ENGLISH, dialog);
+            return this;
         }
-        configIdeology(tmparray[0], tmparray[1], tmp_setting.pro_ideologies);
 
-        line++;
-        tmparray = textFileIn.get(line).split(",");
-        configIdeology(tmparray[0], tmparray[1], tmp_setting.anti_ideologies);
-
-        // Lets skip the sentences for now
-        dialog.land_base_names = readSection(textFileIn, "#BASES");
-
-        dialog.water_base_names = readSection(textFileIn, "#WATERBASES");
-
-        line = findKey(textFileIn, "#BLURB");
-        dialog.faction_blurb = Quote.readblurb(line + 1, textFileIn).get(0);
-        Map<Locale, Faction_Dialog> translations = new HashMap<>();
-        translations.put(Locale.ENGLISH, dialog);
-        return new Faction(tmp_setting, translations);
     }
+    
+    
+    
+
 
 
     
-    public static Faction loadJson(Path folder) throws FileNotFoundException, IOException{
-        log.trace("loadJson: {}", folder.toString());
-        Gson gson = new Gson();
-    
-        FactionSettings setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME+".json").toFile()), FactionSettings.class);
-        
-        Map<Locale, Faction_Dialog> languages = new HashMap<>();
-        
-        List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
-        for(Path pp : paths){
-            Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
-            languages.put(dialog.getLanguage(), dialog);
-        }
-        
-        return new Faction(setting, languages);
-    }
+
 
     public void to_json(Path rulset_location) throws IOException {
         log.trace("Faction to json");
@@ -423,35 +468,10 @@ public class Faction {
         }
     }
 
-    private static List<String> readSection(List<String> strlist, String code) {
+    
+    
+ 
 
-        ArrayList<String> tmp = new ArrayList<>();
-        int line = findKey(strlist, code);
-
-        // now we read in strings until we hit #END
-        line++;
-        while (line < strlist.size() && !strlist.get(line).startsWith("#")) {
-            tmp.add(strlist.get(line).trim());
-            line++;
-        }
-
-        return tmp;
-    }
-
-    private static int findKey(List<String> strlist, String key) {
-        int line = 0;
-        while (!strlist.get(line).startsWith(key) && line < strlist.size()) {
-            line++;
-        }
-
-        return line;
-    }
-
-    private static int nextLine(int line, List<String> strlist) {
-        line++;
-        while (strlist.get(line).startsWith(";")) {
-            line++;
-        }
-        return line;
-    }
+        
+        
 }
