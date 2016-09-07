@@ -22,6 +22,8 @@ import jac.Enum.Domain;
 import jac.Enum.IntNames;
 import jac.unit.Part_Category;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -39,14 +41,14 @@ public class SMAC_Test {
     public SMAC_Test() {
         
     }
-    
+    static final Path MOD_LOCATION = Paths.get("src/test/resources");
     static Ruleset rules;
     
     @BeforeClass
     public static void setUp() {
         
         try {
-            rules = new Ruleset.Builder().loadalpha_txt("./testfiles/SMACX/alpha.txt");
+            rules = new Ruleset.Builder().loadalpha_txt(MOD_LOCATION.resolve("./SMACX/alpha.txt"));
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");

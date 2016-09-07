@@ -60,7 +60,7 @@ public class GameEngine {
         gameboard = new Gameboard(200, 200, 50, this);
     }
     
-    void load_ruleset(String location) throws SectionNotFoundException, IOException{
+    void load_ruleset(Path location) throws SectionNotFoundException, IOException{
         //TODO: have a trigger and load from xml the rulesets.
         rules = new Ruleset.Builder().loadalpha_txt(location);
     }

@@ -168,11 +168,9 @@ public class Ruleset {
         private Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
         private Map<String, Terrainstat> terrainModifiers = new LinkedHashMap<>();
 
-        public Ruleset loadalpha_txt(String filename) throws SectionNotFoundException, IOException {
-            log.debug("loadalpha_txt: {}", filename);
-            ruleset_name = "SMAC";
-            Path path = Paths.get(filename);
-
+        public Ruleset loadalpha_txt(Path path) throws SectionNotFoundException, IOException {
+            log.debug("loadalpha_txt: {}", path.toAbsolutePath());
+            ruleset_name = "SMAC"; 
             List<String> input = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
             //tran = new Translation(Locale.ENGLISH);
 
