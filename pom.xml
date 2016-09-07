@@ -33,6 +33,11 @@
   		<artifactId>junit</artifactId>
   		<scope>test</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>pl.pragmatists</groupId>
+  		<artifactId>JUnitParams</artifactId>
+  		<scope>test</scope>
+  	</dependency>
   </dependencies>
   <dependencyManagement>
   	<dependencies>
@@ -50,6 +55,11 @@
   			<groupId>junit</groupId>
   			<artifactId>junit</artifactId>
   			<version>4.12</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>pl.pragmatists</groupId>
+  			<artifactId>JUnitParams</artifactId>
+  			<version>1.0.5</version>
   		</dependency>
   	</dependencies>
   </dependencyManagement>

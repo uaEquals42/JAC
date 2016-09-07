@@ -1,0 +1,71 @@
+{
+  "codeName": "RED",
+  "race": "human",
+  "ai_fight": -1,
+  "ai_power": 1,
+  "ai_tech": 1,
+  "ai_wealth": 0,
+  "ai_growth": 0,
+  "Free_Techs": [
+    "InfNet"
+  ],
+  "num_of_free_techs": 0,
+  "social": {
+    "ECONOMY": -2,
+    "MORALE": 1,
+    "RESEARCH": 1
+  },
+  "morale": 0,
+  "psi": 0,
+  "free_facilitys": [
+    "4"
+  ],
+  "free_facility_prereq": [],
+  "research": 0,
+  "drone_bonus": -1,
+  "talent": -1,
+  "energy": 0,
+  "interest": 0,
+  "commerce": 0,
+  "pop_cap_difference": 0,
+  "hurry": 50,
+  "unit": "NONE",
+  "techcost": 100,
+  "sharetech": -1,
+  "tech_share": false,
+  "terraform_cost": 100,
+  "robust": [],
+  "immunity": [],
+  "impunity": [],
+  "penalty": [],
+  "fungus_nutrient": 0,
+  "fungus_minerals": 0,
+  "fungus_energy": 0,
+  "extra_frequency": 0,
+  "mind_control_immunity": true,
+  "fanatic": false,
+  "votes": 0,
+  "freeproto": false,
+  "aquatic_faction": false,
+  "pro_ideologies": [
+    [
+      "values",
+      "knowledge"
+    ]
+  ],
+  "anti_ideologies": [
+    [
+      "values",
+      "power"
+    ]
+  ],
+  "ai_emphesis": "RESEARCH",
+  "free_ability": null,
+  "revolt_success_modifier": 0,
+  "probe_cost": 100,
+  "drone_reduction": 0,
+  "offence": 100,
+  "defence": 100,
+  "wormpolice": 1,
+  "techsteal": false
+}

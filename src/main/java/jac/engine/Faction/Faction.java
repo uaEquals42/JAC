@@ -155,13 +155,13 @@ public class Faction {
          * @return
          * @throws java.io.IOException
          */
-        public Builder loadSmacFactionFile(String FileName) throws IOException, SectionNotFoundException {
-            log.debug("Load Smac Faction at {}", FileName);
+        public Builder loadSmacFactionFile(Path path) throws IOException, SectionNotFoundException {
+            log.debug("Load Smac Faction at {}", path.toString());
             setting.race = "human";  // TODO: Set to alien if it is the alien people.
 
             Faction_Dialog dialog = new Faction_Dialog(Locale.ENGLISH);
 
-            Path path = Paths.get(FileName);
+            
 
             List<String> textFileIn = Files.readAllLines(path, StandardCharsets.UTF_8);
             int line = 0;
