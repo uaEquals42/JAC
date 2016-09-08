@@ -74,7 +74,7 @@ public class FactionSettings {
 
     int psi = 0; // Percentage combat bonus for PSI.  0+;
 
-    List<String> free_facilitys = new ArrayList<>();  // List of free facilitiy types.
+    List<String> freeFacilitys = new ArrayList<>();  // List of free facilitiy types.
 
     List<String> free_facility_prereq = new ArrayList<>(); // List of free facilities given to player WHEN they get the technology to support it.
 

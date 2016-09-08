@@ -20,9 +20,10 @@
 package jac;
 
 
-import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gui.Launcher;
 
 
 
@@ -37,12 +38,9 @@ private static final Logger log = LoggerFactory.getLogger(Jac.class);
      */
     public static void main(String[] args) {
         
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to JAC!\n");
-        // load the ruleset.
-        
-        System.out.println("Select your faction:");
-        sc.nextLine();
+
+        new Launcher();
+
        
        
     }

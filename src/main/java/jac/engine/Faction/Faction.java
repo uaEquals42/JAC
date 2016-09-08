@@ -62,6 +62,7 @@ public class Faction {
     public Faction(FactionSettings setting, Map<Locale, Faction_Dialog> translations) {
         this.setting = setting;
         this.translations = translations;
+        
     }
     
     private Faction(Builder build){
@@ -123,6 +124,17 @@ public class Faction {
     }
     
     
+     public void to_json(Path rulset_location) throws IOException {
+         log.trace("Faction to json");
+         Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
+         FileHelpers.create_folder(save_location);
+
+         FileHelpers.to_json_file(save_location,SETTING_FILE_NAME, setting);
+
+         FileHelpers.map_to_Json(save_location.resolve(TRANSLATION_FOLDER), translations);
+
+     }
+     
     public static class Builder {
 
         FactionSettings setting = new FactionSettings();
@@ -132,6 +144,8 @@ public class Faction {
             return new Faction(this);
         }
 
+        
+        
         
         public Builder loadJson(Path folder) throws FileNotFoundException, IOException {
             log.trace("loadJson: {}", folder.toString());
@@ -147,6 +161,8 @@ public class Faction {
 
             return this;
         }
+        
+        
 
         /**
          * Load in the old SMAC/X config files for the factions.
@@ -187,7 +203,7 @@ public class Faction {
             setting.ai_wealth = Integer.parseInt(tmp[10].trim());
             setting.ai_growth = Integer.parseInt(tmp[11].trim());
 
-        // Next line in file.
+            // Next line in file.
             // Follows the following grammer:  Rule, rulesetting, rule, rulesetting, etc...
             line++;
             //System.out.println(textFileIn.get(line));
@@ -253,225 +269,202 @@ public class Faction {
             return this;
         }
 
-    }
-    
-    
-    
 
+        private static void configIdeology(String value1, String value2, List<String[]> addto) {
 
+            value1 = value1.trim().toLowerCase();
+            value2 = value2.trim().toLowerCase();
 
-    
-
-
-    public void to_json(Path rulset_location) throws IOException {
-        log.trace("Faction to json");
-        Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
-        FileHelpers.create_folder(save_location);
-
-        FileHelpers.to_json_file(save_location,SETTING_FILE_NAME, setting);
-
-        FileHelpers.map_to_Json(save_location.resolve(TRANSLATION_FOLDER), translations);
-
-    }
-
-
-    private static void configIdeology(String value1, String value2, List<String[]> addto) {
-
-        value1 = value1.trim().toLowerCase();
-        value2 = value2.trim().toLowerCase();
-
-        String[] tmp = {value1, value2};
-        addto.add(tmp);
-
-    }
-
-    private static void setRules(String[] input, FactionSettings setting) {
-        String rule;
-        String answ;
-        for (int ii = 0; ii + 1 < input.length; ii = ii + 2) {
-            rule = input[ii].trim();
-            answ = input[ii + 1].trim();
-
-            switch (rule.toUpperCase()) {
-                case "TECH":
-                    // This can be either a name of a specific tech or a number of user selected techs.
-                    try {
-                        setting.num_of_free_techs = Integer.parseInt(answ);
-
-                    } catch (NumberFormatException e) {
-                        setting.Free_Techs.add(answ);
-
-                    }
-                    break;
-
-                case "SOCIAL":
-                    setting.social.putAll(SocialAreas.social_mods(answ));
-                    break;
-
-                case "DRONE":
-                    setting.drone_bonus = Integer.parseInt(answ);
-                    break;
-
-                case "FACILITY":
-                    setting.free_facilitys.add(answ);
-                    break;
-
-                case "TALENT":
-                    setting.talent = Integer.parseInt(answ);
-                    break;
-
-                case "ENERGY":
-                    setting.energy = Integer.parseInt(answ);
-
-                    break;
-
-                case "INTEREST":
-                    setting.interest = Integer.parseInt(answ);
-                    break;
-
-                case "COMMERCE":
-                    setting.commerce = Integer.parseInt(answ);
-                    break;
-
-                case "POPULATION":
-                    setting.pop_cap_difference = Integer.parseInt(answ);
-                    break;
-
-                case "HURRY":
-                    setting.hurry = Integer.parseInt(answ);
-                    break;
-
-                case "UNIT":
-
-                    int tmp = Integer.parseInt(answ);
-                    if (tmp == 0) {
-                        setting.unit = FreeUnitType.COLONIST;
-                    }
-                    if (tmp == 1) {
-                        setting.unit = FreeUnitType.TERRAFORMER;
-                    }
-                    if (tmp == 2) {
-                        setting.unit = FreeUnitType.SCOUT;
-                    }
-                    break;
-
-                case "TECHCOST":
-                    setting.techcost = Integer.parseInt(answ);
-                    break;
-
-                case "SHARETECH":
-                    setting.sharetech = Integer.parseInt(answ);
-                    break;
-
-                case "TECHSHARE":
-                    setting.tech_share = true;
-                    break;
-
-                case "TERRAFORM":
-                    setting.terraform_cost = 50;
-                    break;
-
-                case "ROBUST":
-                    setting.robust.add(SocialAreas.findtype(answ));
-                    break;
-
-                case "IMMUNITY":
-                    setting.immunity.add(SocialAreas.findtype(answ));
-                    break;
-
-                case "IMPUNITY":
-                    setting.impunity.add(SocialAreas.findtype(answ));
-                    break;
-
-                case "PENALTY":
-                    setting.penalty.add(SocialAreas.findtype(answ));
-                    break;
-
-                case "FUNGNUTRIENT":
-                    setting.fungus_nutrient = Integer.parseInt(answ);
-                    break;
-
-                case "FUNGMINERALS":
-                    setting.fungus_minerals = Integer.parseInt(answ);
-                    break;
-
-                case "FUNGENERGY":
-                    setting.fungus_energy = Integer.parseInt(answ);
-                    break;
-
-                case "COMMFREQ":
-                    setting.extra_frequency = 1;
-                    break;
-
-                case "MINDCONTROL":
-                    setting.mind_control_immunity = true;
-                    break;
-
-                case "FANATIC":
-                    setting.fanatic = true;
-                    break;
-
-                case "VOTES":
-                    setting.votes = Integer.parseInt(answ);
-                    break;
-
-                case "FREEPROTO":
-                    setting.freeproto = true;
-                    break;
-
-                case "AQUATIC":
-                    setting.aquatic_faction = true;
-                    break;
-
-                case "ALIEN":
-                    setting.race = "alien";
-                    break;
-
-                case "FREEFAC":
-                    setting.free_facility_prereq.add(answ);
-                    break;
-
-                case "REVOLT":
-                    setting.revolt_success_modifier = Integer.parseInt(answ);
-                    break;
-
-                case "NODRONE":
-                    setting.drone_reduction = Integer.parseInt(answ);
-                    break;
-
-                case "WORMPOLICE":
-                    setting.wormpolice = 2;
-                    break;
-
-                case "FREEABIL":
-                    setting.free_ability = answ;
-                    break;
-
-                case "PROBECOST":
-                    setting.probe_cost = Integer.parseInt(answ);
-                    break;
-
-                case "DEFENSE":
-                    setting.defence = Integer.parseInt(answ);
-                    break;
-
-                case "OFFENSE":
-                    setting.offence = Integer.parseInt(answ);
-                    break;
-
-                case "TECHSTEAL":
-                    setting.techsteal = true;
-                    break;
-
-            }
+            String[] tmp = {value1, value2};
+            addto.add(tmp);
 
         }
+        
+        private static void setRules(String[] input, FactionSettings setting) {
+            String rule;
+            String answ;
+            for (int ii = 0; ii + 1 < input.length; ii = ii + 2) {
+                rule = input[ii].trim();
+                answ = input[ii + 1].trim();
+
+                switch (rule.toUpperCase()) {
+                    case "TECH":
+                        // This can be either a name of a specific tech or a number of user selected techs.
+                        try {
+                            setting.num_of_free_techs = Integer.parseInt(answ);
+
+                        } catch (NumberFormatException e) {
+                            setting.Free_Techs.add(answ);
+
+                        }
+                        break;
+
+                    case "SOCIAL":
+                        setting.social.putAll(SocialAreas.social_mods(answ));
+                        break;
+
+                    case "DRONE":
+                        setting.drone_bonus = Integer.parseInt(answ);
+                        break;
+
+                    case "FACILITY":
+                        setting.freeFacilitys.add(answ);
+                        break;
+
+                    case "TALENT":
+                        setting.talent = Integer.parseInt(answ);
+                        break;
+
+                    case "ENERGY":
+                        setting.energy = Integer.parseInt(answ);
+
+                        break;
+
+                    case "INTEREST":
+                        setting.interest = Integer.parseInt(answ);
+                        break;
+
+                    case "COMMERCE":
+                        setting.commerce = Integer.parseInt(answ);
+                        break;
+
+                    case "POPULATION":
+                        setting.pop_cap_difference = Integer.parseInt(answ);
+                        break;
+
+                    case "HURRY":
+                        setting.hurry = Integer.parseInt(answ);
+                        break;
+
+                    case "UNIT":
+
+                        int tmp = Integer.parseInt(answ);
+                        if (tmp == 0) {
+                            setting.unit = FreeUnitType.COLONIST;
+                        }
+                        if (tmp == 1) {
+                            setting.unit = FreeUnitType.TERRAFORMER;
+                        }
+                        if (tmp == 2) {
+                            setting.unit = FreeUnitType.SCOUT;
+                        }
+                        break;
+
+                    case "TECHCOST":
+                        setting.techcost = Integer.parseInt(answ);
+                        break;
+
+                    case "SHARETECH":
+                        setting.sharetech = Integer.parseInt(answ);
+                        break;
+
+                    case "TECHSHARE":
+                        setting.tech_share = true;
+                        break;
+
+                    case "TERRAFORM":
+                        setting.terraform_cost = 50;
+                        break;
+
+                    case "ROBUST":
+                        setting.robust.add(SocialAreas.findtype(answ));
+                        break;
+
+                    case "IMMUNITY":
+                        setting.immunity.add(SocialAreas.findtype(answ));
+                        break;
+
+                    case "IMPUNITY":
+                        setting.impunity.add(SocialAreas.findtype(answ));
+                        break;
+
+                    case "PENALTY":
+                        setting.penalty.add(SocialAreas.findtype(answ));
+                        break;
+
+                    case "FUNGNUTRIENT":
+                        setting.fungus_nutrient = Integer.parseInt(answ);
+                        break;
+
+                    case "FUNGMINERALS":
+                        setting.fungus_minerals = Integer.parseInt(answ);
+                        break;
+
+                    case "FUNGENERGY":
+                        setting.fungus_energy = Integer.parseInt(answ);
+                        break;
+
+                    case "COMMFREQ":
+                        setting.extra_frequency = 1;
+                        break;
+
+                    case "MINDCONTROL":
+                        setting.mind_control_immunity = true;
+                        break;
+
+                    case "FANATIC":
+                        setting.fanatic = true;
+                        break;
+
+                    case "VOTES":
+                        setting.votes = Integer.parseInt(answ);
+                        break;
+
+                    case "FREEPROTO":
+                        setting.freeproto = true;
+                        break;
+
+                    case "AQUATIC":
+                        setting.aquatic_faction = true;
+                        break;
+
+                    case "ALIEN":
+                        setting.race = "alien";
+                        break;
+
+                    case "FREEFAC":
+                        setting.free_facility_prereq.add(answ);
+                        break;
+
+                    case "REVOLT":
+                        setting.revolt_success_modifier = Integer.parseInt(answ);
+                        break;
+
+                    case "NODRONE":
+                        setting.drone_reduction = Integer.parseInt(answ);
+                        break;
+
+                    case "WORMPOLICE":
+                        setting.wormpolice = 2;
+                        break;
+
+                    case "FREEABIL":
+                        setting.free_ability = answ;
+                        break;
+
+                    case "PROBECOST":
+                        setting.probe_cost = Integer.parseInt(answ);
+                        break;
+
+                    case "DEFENSE":
+                        setting.defence = Integer.parseInt(answ);
+                        break;
+
+                    case "OFFENSE":
+                        setting.offence = Integer.parseInt(answ);
+                        break;
+
+                    case "TECHSTEAL":
+                        setting.techsteal = true;
+                        break;
+
+                }
+
+            }
+        }
+
+        
+        
     }
 
-    
-    
- 
-
-        
-        
 }

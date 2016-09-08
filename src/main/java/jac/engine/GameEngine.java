@@ -18,17 +18,13 @@
  */
 package jac.engine;
 
-import jac.engine.Faction.Faction;
 import jac.engine.mapstuff.Gameboard;
 import jac.engine.Faction.FactionSettings;
 import jac.engine.ruleset.Ruleset;
 import jac.engine.ruleset.SectionNotFoundException;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +34,16 @@ import org.slf4j.LoggerFactory;
  * @author Gregory Jordan
  */
 public class GameEngine {
-    private static final Logger log = LoggerFactory.getLogger(GameEngine.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GameEngine.class);
     private Gameboard gameboard;
     private List<FactionSettings> factions;
     private List<PlayerDetails> players;
     private Ruleset rules;
 
+    public GameEngine() {
+        // load ins
+    }
+    
     /**
      * Using this for the test case.  Don't use it for players.  Players should be pushed only what they should see.  Not the entire gamemap.
      * @return 
@@ -52,9 +52,7 @@ public class GameEngine {
         return gameboard;
     }
 
-    public void GameEngine() {
-        // load ins
-    }
+
 
     public void createnewmap() {
         gameboard = new Gameboard(200, 200, 50, this);
@@ -68,7 +66,7 @@ public class GameEngine {
     List<FactionSettings> load_factions() throws IOException{
         // First we need to generate a list of available factions.
         List<Path> faction_settings = FileHelpers.listFiles(Paths.get("./Factions"), "*settings.xml");
-        log.debug(faction_settings.toString());
+        LOG.debug(faction_settings.toString());
         for(Path pp : faction_settings){
             
         }

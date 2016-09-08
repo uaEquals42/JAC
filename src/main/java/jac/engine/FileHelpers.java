@@ -20,10 +20,8 @@ package jac.engine;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jac.engine.Faction.FactionSettings;
 import jac.engine.ruleset.SectionNotFoundException;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
