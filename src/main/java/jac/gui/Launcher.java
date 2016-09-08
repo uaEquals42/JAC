@@ -11,7 +11,7 @@ public class Launcher {
 	public Launcher() {
 		// TODO Auto-generated constructor stub
 		
-		String[] possibilities = {"Start Game", "Set Ruleset", "Quit"};
+		String[] possibilities = {"Start Game", "Select Rules", "Quit"};
 		int test = JOptionPane.showOptionDialog(null, 
 				"Welcome to Jac", 
 				"JAC",

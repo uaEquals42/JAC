@@ -26,20 +26,15 @@ import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
 import jac.unit.*;
 import jac.unit.partTranslation.Unit_Part_Translation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 /**
  *
@@ -95,7 +90,7 @@ public class Ruleset {
         Path saveLocation = RULESET_LOCATION.resolve(ruleset_name);
         FileHelpers.create_folder(saveLocation);
         FileHelpers.list_to_json(saveLocation.resolve("ideologies"), ideologies);
-        FileHelpers.map_to_Json(saveLocation, unit_components);
+        FileHelpers.map_to_Json(saveLocation.resolve("components"), unit_components);
 
     }
 
