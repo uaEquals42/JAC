@@ -28,5 +28,5 @@ public enum Part_Category {
     ARMOR,
     FACILITY,
     WEAPON,
-    MODS;
+    MODS
 }

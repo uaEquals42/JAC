@@ -1,5 +1,5 @@
 /*
- * JAC Copyright (C) 2015 Iceberg7
+ * JAC Copyright (C) 2015 Gregory Jordan
  *
  * This file is part of JAC.   
  * 
@@ -19,6 +19,7 @@
 package jac.unit.partTranslation;
 
 import jac.engine.dialog.Noun;
+
 import java.util.Locale;
 
 /**
@@ -45,6 +46,31 @@ public class ChassisTranslation {
         this.deffensiveName3 = deffensiveName3;
     }
 
-  
-        
+    public Locale getLanguage() {
+        return language;
+    }
+
+    public Noun getOffensiveName1() {
+        return offensiveName1;
+    }
+
+    public Noun getOffensiveName2() {
+        return offensiveName2;
+    }
+
+    public Noun getOffensiveName3() {
+        return offensiveName3;
+    }
+
+    public Noun getDeffensiveName1() {
+        return deffensiveName1;
+    }
+
+    public Noun getDeffensiveName2() {
+        return deffensiveName2;
+    }
+
+    public Noun getDeffensiveName3() {
+        return deffensiveName3;
+    }
 }

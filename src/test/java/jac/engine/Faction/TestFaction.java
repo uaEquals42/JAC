@@ -17,23 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package jac.engine.Faction;
+
 import jac.Enum.SocialAreas;
 import jac.engine.ruleset.SectionNotFoundException;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -107,7 +105,7 @@ import org.slf4j.LoggerFactory;
     	}
     	
     	public Builder numberOfTechs(int number){
-    		number_of_techs = new Integer(number);
+    		number_of_techs = number;
     		return this;
     	}
     	

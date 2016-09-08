@@ -19,8 +19,8 @@
 package jac.engine.mapstuff;
 
 import jac.unit.GenericUnit;
-import java.awt.Point;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.Queue;
 
@@ -44,7 +44,7 @@ public interface GameMap {
      */
     void addUnit(int x, int y, GenericUnit unit) throws MapDesync;
         
-    public void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync;
+    void moveUnitTo(Square begining, GenericUnit unit, Square destination) throws MapDesync;
     
 
     

@@ -17,7 +17,7 @@
   },
   "morale": 0,
   "psi": 0,
-  "free_facilitys": [
+  "freeFacilitys": [
     "4"
   ],
   "free_facility_prereq": [],

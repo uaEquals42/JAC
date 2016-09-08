@@ -23,18 +23,11 @@ import jac.Enum.Domain;
 import jac.Enum.WeaponRole;
 import jac.engine.HasKey;
 import jac.engine.PlayerDetails;
-import jac.engine.ruleset.Ruleset;
 import jac.unit.partTranslation.Unit_Part_Translation;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  *

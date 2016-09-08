@@ -19,12 +19,12 @@
 package jac.engine.Faction;
 
 //import engine.dialog.QuestionYN;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import jac.Enum.NounSex;
 import jac.engine.HasKey;
 import jac.engine.dialog.Quote;
 import jac.engine.dialog.SentenceFragment;
+
 import java.util.List;
 import java.util.Locale;
 

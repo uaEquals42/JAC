@@ -21,15 +21,10 @@ package jac.engine.mapstuff;
 import jac.Enum.Domain;
 import jac.engine.PlayerDetails;
 import jac.unit.GenericUnit;
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 public class SquareVisible implements Square {

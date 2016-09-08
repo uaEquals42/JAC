@@ -25,5 +25,5 @@ package jac.Enum;
 public enum UnitActions {
     MOVING,
     ON_HOLD,
-    WAITING;
+    WAITING
 }

@@ -26,11 +26,10 @@ import jac.engine.mapstuff.GameMap;
 import jac.engine.mapstuff.MapDesync;
 import jac.engine.mapstuff.Square;
 import jac.engine.ruleset.Ruleset;
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *

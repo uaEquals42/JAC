@@ -20,11 +20,11 @@
 package jac.unit;
 
 import jac.engine.HasKey;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Describes what types of parts can be attached and how many. 

@@ -33,5 +33,5 @@ public enum AI_Emphesis {
     PLANET,
     PROBE,
     INDUSTRY,
-    RESEARCH;
+    RESEARCH
 }

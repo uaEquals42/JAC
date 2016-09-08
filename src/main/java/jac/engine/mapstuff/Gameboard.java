@@ -18,14 +18,11 @@
  */
 package jac.engine.mapstuff;
 
-import jac.unit.MoveTask;
 import jac.engine.GameEngine;
 import jac.unit.GenericUnit;
-import java.awt.Point;
+
+import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 /**

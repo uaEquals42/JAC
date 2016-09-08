@@ -21,30 +21,22 @@ package jac.engine.Faction;
 import com.google.gson.Gson;
 import jac.Enum.AI_Emphesis;
 import jac.Enum.FreeUnitType;
-import jac.Enum.SocialAreas;
 import jac.Enum.NounSex;
+import jac.Enum.SocialAreas;
 import jac.engine.FileHelpers;
 import jac.engine.dialog.Quote;
 import jac.engine.ruleset.SectionNotFoundException;
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 /**
  *
@@ -109,7 +101,7 @@ public class Faction {
          * @return 
          */
      public static List<Faction> load_factions(Path path) throws IOException {
-        List<Faction> facts = new ArrayList<Faction>();
+        List<Faction> facts = new ArrayList<>();
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             for (Path file : stream) {
@@ -138,7 +130,7 @@ public class Faction {
     public static class Builder {
 
         FactionSettings setting = new FactionSettings();
-        Map<Locale, Faction_Dialog> translations  = new HashMap<>();;
+        Map<Locale, Faction_Dialog> translations  = new HashMap<>();
 
         public Faction build() {
             return new Faction(this);
@@ -167,8 +159,6 @@ public class Faction {
         /**
          * Load in the old SMAC/X config files for the factions.
          *
-         * @param FileName
-         * @return
          * @throws java.io.IOException
          */
         public Builder loadSmacFactionFile(Path path) throws IOException, SectionNotFoundException {
@@ -180,9 +170,9 @@ public class Faction {
             
 
             List<String> textFileIn = Files.readAllLines(path, StandardCharsets.UTF_8);
-            int line = 0;
 
-            line = FileHelpers.findKey("#",textFileIn);
+
+            int line = FileHelpers.findKey("#",textFileIn);
             setting.codeName = textFileIn.get(line).substring(1);
             line = FileHelpers.nextLine(line, textFileIn);
             String[] tmp = textFileIn.get(line).split(",");

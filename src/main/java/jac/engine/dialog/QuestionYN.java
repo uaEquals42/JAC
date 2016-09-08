@@ -32,7 +32,7 @@ public class QuestionYN {
 	String dis_agree;
 	List<String> tags;
 	
-	public void QuestionYN(){
+	public QuestionYN(){
 		tags = null;
 	}
 	

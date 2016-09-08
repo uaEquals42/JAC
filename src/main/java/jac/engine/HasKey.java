@@ -23,5 +23,5 @@ package jac.engine;
  * @author Gregory Jordan
  */
 public interface HasKey {
-    public String getKey();
+    String getKey();
 }

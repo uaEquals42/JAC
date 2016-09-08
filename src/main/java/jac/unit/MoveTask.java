@@ -19,8 +19,6 @@
 package jac.unit;
 
 import jac.engine.mapstuff.Square;
-import jac.unit.GenericUnit;
-import java.awt.Point;
 
 /**
  *

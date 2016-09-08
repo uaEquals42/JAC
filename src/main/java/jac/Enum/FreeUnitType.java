@@ -27,8 +27,8 @@ public enum FreeUnitType {
     NONE,
     COLONIST,
     TERRAFORMER,
-    SCOUT;
+    SCOUT
 
-    
+
 }
 
