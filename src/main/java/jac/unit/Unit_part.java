@@ -44,7 +44,7 @@ public class Unit_part implements HasKey{
     private final Effect empireEffects;
     private final Domain domain;
 
-    //private final List<Restriction> restrictions;
+    //private final List<HasRestrictions> restrictions;
     private final boolean restrict_for_display;  // If true, the player can see the part in build menu
     private final List<String> pre_requisite_technology;  // This also has to be true.
     private final boolean secret_project; // aka secret project

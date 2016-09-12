@@ -18,55 +18,80 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.Domain;
+
+import java.util.HashMap;
+
 /**
- *
  * @author Gregory Jordan
  */
 public class TerrainModifier implements Terrainstat{
-    private final String key;
-    private final int normalMPCost;
-    private final Integer minMPCost;
-    
-    TerrainModifier(Builder build){
-        this.key = build.key;
-        this.minMPCost = build.minMPCost;
-        this.normalMPCost = build.normalMPCost;
-    }
-    
-    @Override
-    public String name() {
-        return key;
-    }
+	private final String key;
 
-    @Override
-    public int getNormalMovementPoints(int altitude) {
-        return this.normalMPCost;
-    }
+	private final HashMap<Domain, Integer> regularMoveCosts;
 
-    @Override
-    public Integer getMinMovementPoints(int altitude) {
-        return this.minMPCost;
-    }
-    
-    public static class Builder {
-        private final String key;
-        
-        private final int normalMPCost;
-        private Integer minMPCost;
-        
-        public Builder(String key, int normalMPCost){
-            this.key = key;
-            this.normalMPCost = normalMPCost;
-        }
+	private final HashMap<Domain, Integer> maxMoveCost;  // If set, will set the maximum, regarless of other modifiers to this value for this square.
 
-        public Builder setMinMPCost(Integer minMPCost) {
-            this.minMPCost = minMPCost;
-            return this;
-        }
-        
-        public TerrainModifier build(){
-            return new TerrainModifier(this);
-        }
-    }
+
+	TerrainModifier(Builder build) {
+		this.key = build.key;
+		regularMoveCosts = build.regularMoveCosts;
+		maxMoveCost = build.maxMoveCost;
+	}
+
+
+
+	public HashMap<Domain, Integer> getMaxMoveCost() {
+		return maxMoveCost;
+	}
+
+	@Override
+	public String name() {
+		return key;
+	}
+
+	@Override
+	public int getNormalMovementPoints(Domain domain) {
+		return regularMoveCosts.get(domain);
+	}
+
+	@Override
+	public Integer getMaxMovementPoints(Domain domain) {
+		return maxMoveCost.get(domain);
+	}
+
+	public static class Builder {
+		private final String key;
+		private HashMap<Domain, Integer> regularMoveCosts = new HashMap<>();
+
+		private HashMap<Domain, Integer> maxMoveCost = new HashMap<>();
+
+		public Builder(String key) {
+			this.key = key;
+		}
+
+		/**
+		 * Declare the move cost for this particular terrain type.
+		 * If not set for a particular Domain, it will assume it doesn't affect it.  (Equavalent of setting it to 0)
+		 *
+		 * @param domain Does this affect Land, Sea or Air travel?
+		 * @param value  The cost of moving.
+		 * @return
+		 */
+		public Builder setRegularMoveCost(Domain domain, Integer value) {
+			regularMoveCosts.put(domain, value);
+			return this;
+		}
+
+		public Builder setmaxMoveCost(Domain domain, Integer value) {
+			maxMoveCost.put(domain, value);
+			return this;
+		}
+
+
+		public TerrainModifier build() {
+			return new TerrainModifier(this);
+		}
+	}
 
 }

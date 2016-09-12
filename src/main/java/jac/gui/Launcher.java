@@ -9,7 +9,7 @@ import javax.swing.*;
 public class Launcher {
 	private static final Logger log = LoggerFactory.getLogger(Launcher.class);
 	public Launcher() {
-		// TODO Auto-generated constructor stub
+
 		
 		String[] possibilities = {"Start Game", "Select Rules", "Quit"};
 		int test = JOptionPane.showOptionDialog(null, 

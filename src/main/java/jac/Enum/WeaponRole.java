@@ -19,44 +19,45 @@
 package jac.Enum;
 
 /**
- *
  * @author Gregory Jordan
  */
 public enum WeaponRole {
-    PROJECTILE, 
-    ENERGY, 
-    MISSILE,
-    PSI,
-    TRANSPORT,
-    COLONIST,
-    TERRAFORMER,
-    CONVOY,
-    PROBE,
-    ARTIFACT;  
-    public static int COUNT = 10;
-    public static WeaponRole convert(int mode){
-     
-        switch(mode){
-            case 0:
-                return PROJECTILE;
-            case 1:
-                return ENERGY;
-            case 2:
-                return MISSILE;
-            case 7:
-                return TRANSPORT;
-            case 8:
-                return COLONIST;
-            case 9:
-                return TERRAFORMER;
-            case 10:
-                return CONVOY;
-            case 11:
-                return PROBE;
-            case 12:
-                return ARTIFACT;    
-        }
-        
-        throw new IllegalArgumentException();
-    }
+	PROJECTILE,
+	ENERGY,
+	MISSILE,
+	PSI,
+	TRANSPORT,
+	COLONIST,
+	TERRAFORMER,
+	CONVOY,
+	PROBE,
+	ARTIFACT,
+	BASE;
+	public static int COUNT = 10;
+
+	public static WeaponRole convert(int mode) {
+
+		switch (mode) {
+			case 0:
+				return PROJECTILE;
+			case 1:
+				return ENERGY;
+			case 2:
+				return MISSILE;
+			case 7:
+				return TRANSPORT;
+			case 8:
+				return COLONIST;
+			case 9:
+				return TERRAFORMER;
+			case 10:
+				return CONVOY;
+			case 11:
+				return PROBE;
+			case 12:
+				return ARTIFACT;
+		}
+
+		throw new IllegalArgumentException();
+	}
 }

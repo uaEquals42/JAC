@@ -21,7 +21,6 @@ package jac.engine.ruleset;
 import jac.Enum.*;
 import jac.engine.FileHelpers;
 import jac.engine.dialog.Quote;
-import jac.engine.mapstuff.TerrainBaseState;
 import jac.engine.mapstuff.TerrainModifier;
 import jac.engine.mapstuff.Terrainstat;
 import jac.unit.*;
@@ -176,7 +175,7 @@ public class Ruleset {
             Map<String, String> techlongs = load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
 
             load_ideologies(input);
-            //load_technologies(input, blurbs);
+            load_technologies(input, blurbs);
             load_SMAC_chassis_loadout();
             load_facilities(input, blurbs);
             load_chassis(input);
@@ -222,8 +221,8 @@ public class Ruleset {
         private Map<String, Terrainstat> load_BasicTerrainTypes() {
             Map<String, Terrainstat> basicterraintypes = new HashMap<>();
 
-            basicterraintypes.put("dirt", new TerrainBaseState.Builder("dirt", 3).build());
-            basicterraintypes.put("rock", new TerrainBaseState.Builder("rock", 3).build());
+            basicterraintypes.put("dirt", new TerrainModifier.Builder("dirt").setRegularMoveCost(Domain.LAND, 3).build());
+            basicterraintypes.put("rock", new TerrainModifier.Builder("rock").setRegularMoveCost(Domain.LAND, 3).build());
 
             return basicterraintypes;
         }
@@ -231,9 +230,9 @@ public class Ruleset {
         private Map<String, Terrainstat> load_TerrainModifiers() {
             Map<String, Terrainstat> terrainMods = new HashMap<>();
 
-            terrainMods.put("fungus", new TerrainModifier.Builder("fungus", 9).build());
-            terrainMods.put("road", new TerrainModifier.Builder("road", 1).setMinMPCost(1).build());
-            terrainMods.put("mag", new TerrainModifier.Builder("mag", 0).setMinMPCost(0).build());
+            terrainMods.put("fungus", new TerrainModifier.Builder("fungus").setRegularMoveCost(Domain.LAND,9).build());
+            terrainMods.put("road", new TerrainModifier.Builder("road").setmaxMoveCost(Domain.LAND, 1).build());
+            terrainMods.put("mag", new TerrainModifier.Builder("mag").setmaxMoveCost(Domain.LAND, 1).build());
 
             return terrainMods;
         }
@@ -581,47 +580,27 @@ public class Ruleset {
 
         }
 
-        /*
-         private void load_technologies(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
-         int pos = findKey("#TECHNOLOGY", input);
-         pos++;
 
-         for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
-         String[] row = input.get(pos + key).split(",");
-         String id = "#TECH" + key;
-         if (!row[6].trim().equalsIgnoreCase("Disable")) {
-         List<String> pre_reqs = new ArrayList<>();
-         if (!row[6].trim().equalsIgnoreCase("None")) {
-         pre_reqs.add(row[6].trim());
-         }
-         if (!row[7].trim().equalsIgnoreCase("None")) {
-         pre_reqs.add(row[7].trim());
-         }
+		private void load_technologies(List<String> input, Map<String, List<Quote>> blurbs) throws SectionNotFoundException {
+			int pos = FileHelpers.findKey("#TECHNOLOGY", input);
+			pos++;
 
-         char[] flags = row[8].trim().toCharArray();
-         int probe = Integer.parseInt(row[8].trim().substring(7, 8));
-         int commerce_bonus = Integer.parseInt(row[8].trim().substring(6, 7));
-         int fungus_nutrient_bonus = Integer.parseInt(row[8].trim().substring(0, 1));
-         int fungus_mineral_bonus = Integer.parseInt(row[8].trim().substring(1, 2));
-         int fungus_energy_bonus = Integer.parseInt(row[8].trim().substring(2, 3));
-         Tech new_tech;
+			for (int key = 0; !input.get(pos + key).trim().isEmpty(); key++) {
+				String[] row = input.get(pos + key).split(",");
+				String id = row[1].trim();
 
-         new_tech = new Tech(tran, id, row[0].trim(), blurbs.get(id), pre_reqs,
-         flags[8] == '1', probe, commerce_bonus,
-         flags[5] == '1', flags[3] == '1', flags[4] == '1',
-         fungus_energy_bonus, fungus_mineral_bonus,
-         fungus_nutrient_bonus, Integer.parseInt(row[2].trim()),
-         Integer.parseInt(row[3].trim()), Integer.parseInt(row[4].trim()),
-         Integer.parseInt(row[5].trim()));
-         //tran.technames.put(id, row[0].trim());
-         technologies.put(id, new_tech);
-         }
+				if (!id.startsWith("User")&&!id.startsWith("delete")) {
+					Tech new_tech = new Tech.Builder(id).fromSmacConfig(row).build();
+					technologies.put(id, new_tech);
+				}
 
-         }
+			}
 
-         }
-         */
-        private void load_ideologies(List<String> input) throws SectionNotFoundException {
+		}
+
+
+
+		private void load_ideologies(List<String> input) throws SectionNotFoundException {
             int pos = FileHelpers.findKey("#SOCIO", input);
             pos += 3;
 

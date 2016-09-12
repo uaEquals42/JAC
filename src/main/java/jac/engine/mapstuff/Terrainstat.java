@@ -18,12 +18,14 @@
  */
 package jac.engine.mapstuff;
 
+import jac.Enum.Domain;
+
 /**
  *
  * @author Gregory Jordan
  */
 public interface Terrainstat {
     String name();
-    int getNormalMovementPoints(int altitude);
-    Integer getMinMovementPoints(int altitude);
+    int getNormalMovementPoints(Domain domain);
+    Integer getMaxMovementPoints(Domain domain);
 }

@@ -33,10 +33,10 @@ public enum IntNames {
     COST,
     ENERGY_SUPPORT_COST,
     AIR_RANGE,
-    OUT_OF_RANGE_DAMAGE
+    OUT_OF_RANGE_DAMAGE,
     
     // Resousce Related Effects
-    
+
     
 
     

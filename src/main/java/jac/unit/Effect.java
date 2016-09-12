@@ -1,20 +1,18 @@
 /*
- * JAC Copyright (C) 2014 Gregory Jordan
+ * JAC Copyright (C) 2016  - Gregory Jordan
  *
- * This file is part of JAC.   
- * 
- * JAC is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package jac.unit;
 
@@ -23,127 +21,142 @@ import jac.Enum.BoolNames;
 import jac.Enum.DefenceMode;
 import jac.Enum.IntNames;
 import jac.Enum.WeaponRole;
+import jac.unit.restriction.NoRestriction;
+import jac.unit.restriction.Restriction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 
 /**
- *
  * @author Gregory Jordan
  */
 public class Effect {
-    
-    
-    static Logger log = LoggerFactory.getLogger(Effect.class);
-    
-     
-    private final List<UnitCoversion> converts_to; 
-    /**
-     * // Yes I'm using a map.  Yes a switch would probably be faster to run... 
-     * but this will save allot of time writing and testing a bunch of switch statements.  
-     * If we need the speed... we can optimize latter after the design has been finalized.
-     * Doing this.... really... shrunk down the lines of code needed to be written.
-     */
-    private final Map<IntNames, Integer> intEffects; 
-    private final Map<IntNames, Float> multiplier; 
-    private final Map<BoolNames, Boolean> boolEffects; 
-    
-    private final Map<DefenceMode, Integer> armor;
-    private final Map<WeaponRole, Integer> attack; // what attack power type and how much this may or may not have.
-    
-    
 
-    
-    private Effect(Builder build) {
-   
-        converts_to = build.converts_to;
-        this.intEffects = build.intEffects;
-        this.boolEffects = build.boolEffects;
-        multiplier = build.multiplier;
-        this.armor = build.armor;
-        attack = build.attack;
-    }
-    
-    
-     public Integer getIntVariable(IntNames var){
-        return intEffects.get(var);
-    }
-     
-    public Boolean getBoolVariable(BoolNames var){
-        return boolEffects.get(var);
-    }
 
-    public Float getFloatValue(IntNames var){
-        return multiplier.get(var);
-    }
-    
-    public static class Builder {
+	static Logger LOG = LoggerFactory.getLogger(Effect.class);
+	private final Restriction restrictions; // HasRestrictions on when this effect is available.
 
-        private Map<BoolNames, Boolean> boolEffects = new EnumMap<>(BoolNames.class);
-        Map<IntNames, Integer> intEffects = new EnumMap<>(IntNames.class);
-        Map<IntNames, Float> multiplier = new EnumMap<>(IntNames.class);
+	private final List<UnitCoversion> converts_to;
+	/**
+	 * // Yes I'm using a map.  Yes a switch would probably be faster to run...
+	 * but this will save allot of time writing and testing a bunch of switch statements.
+	 * If we need the speed... we can optimize latter after the design has been finalized.
+	 * Doing this.... really... shrunk down the lines of code needed to be written.
+	 */
+	private final Map<IntNames, Integer> intEffects;
+	private final Map<IntNames, Float> multiplier;
+	private final Map<BoolNames, Boolean> boolEffects;
 
-        private List<UnitCoversion> converts_to = new ArrayList<>();
-        private Map<DefenceMode, Integer> armor = new EnumMap<>(DefenceMode.class);
-        private Map<WeaponRole, Integer> attack = new EnumMap<>(WeaponRole.class);
-        public Builder() {
-            for (BoolNames nnn : BoolNames.values()) {
-                boolEffects.put(nnn, false);
-            }
+	private final Map<DefenceMode, Integer> armor;
+	private final Map<WeaponRole, Integer> attack; // what attack power type and how much this may or may not have.
 
-            for(IntNames nnn : IntNames.values()){
-                intEffects.put(nnn, 0);
-            }
-            
-            for(IntNames nnn : IntNames.values()){
-                multiplier.put(nnn, 1f);
-            }
-            
-        }
-        
-        public Builder add_shielding(DefenceMode type, Integer value){
-            armor.put(type, value);
-            return this;
-        }
-        
-        
-        public Builder makeItABase() {
-            boolEffects.put(BoolNames.IS_IT_A_BASE, true);
-            boolEffects.put(BoolNames.CAN_MAKE_FACILITIES, true);
-            boolEffects.put(BoolNames.CAN_MAKE_UNITS, true);
-            boolEffects.put(BoolNames.CAPTURED_WHEN_DEFEATED, true);
-            return this;
-        }
-        
-        public Builder makeItAUnit(){
-            boolEffects.put(BoolNames.CAN_IT_ATTACK, true);
-            boolEffects.put(BoolNames.CAN_DEFEND, true);
-            return this;
-        }
-       
-        public Builder set_attack(WeaponRole type, int power){
-            attack.put(type, power);
-            return this;
-        }
-        
-       public Builder setBoolFlag(BoolNames effect, Boolean value){
-           boolEffects.put(effect, value);
-           return this;
-       }
-       
-        public Builder setIntFlag(IntNames effect, Integer value){
-          intEffects.put(effect, value);
-           return this;
-       }
+
+
+	public Integer getIntEffect(IntNames key){
+		return intEffects.get(key);
+	}
+
+	public Float getMultiplier(IntNames key){
+		return multiplier.get(key);
+	}
+
+	private Effect(Builder build) {
+
+		converts_to = build.converts_to;
+		this.intEffects = build.intEffects;
+		this.boolEffects = build.boolEffects;
+		multiplier = build.multiplier;
+		this.armor = build.armor;
+		attack = build.attack;
+		this.restrictions = build.restrictions;
+	}
+
+
+	public Integer getIntVariable(IntNames var) {
+		return intEffects.get(var);
+	}
+
+	public Boolean getBoolVariable(BoolNames var) {
+		return boolEffects.get(var);
+	}
+
+	public Float getFloatValue(IntNames var) {
+		return multiplier.get(var);
+	}
+
+	public static class Builder {
+		private Restriction restrictions = new NoRestriction();
+		private Map<BoolNames, Boolean> boolEffects = new EnumMap<>(BoolNames.class);
+		Map<IntNames, Integer> intEffects = new EnumMap<>(IntNames.class);
+		Map<IntNames, Float> multiplier = new EnumMap<>(IntNames.class);
+
+		private List<UnitCoversion> converts_to = new ArrayList<>();
+		private Map<DefenceMode, Integer> armor = new EnumMap<>(DefenceMode.class);
+		private Map<WeaponRole, Integer> attack = new EnumMap<>(WeaponRole.class);
+
+		public Builder() {
+			for (BoolNames nnn : BoolNames.values()) {
+				boolEffects.put(nnn, false);
+			}
+
+			for (IntNames nnn : IntNames.values()) {
+				intEffects.put(nnn, 0);
+			}
+
+			for (IntNames nnn : IntNames.values()) {
+				multiplier.put(nnn, 1f);
+			}
+
+		}
+
+		public Builder add_shielding(DefenceMode type, Integer value) {
+			armor.put(type, value);
+			return this;
+		}
+
+
+		public Builder setRestriction(Restriction restriction){
+			restrictions = restriction;
+			return this;
+		}
+
+		public Builder makeItABase() {
+			boolEffects.put(BoolNames.IS_IT_A_BASE, true);
+			boolEffects.put(BoolNames.CAN_MAKE_FACILITIES, true);
+			boolEffects.put(BoolNames.CAN_MAKE_UNITS, true);
+			boolEffects.put(BoolNames.CAPTURED_WHEN_DEFEATED, true);
+			return this;
+		}
+
+		public Builder makeItAUnit() {
+			boolEffects.put(BoolNames.CAN_IT_ATTACK, true);
+			boolEffects.put(BoolNames.CAN_DEFEND, true);
+			return this;
+		}
+
+		public Builder set_attack(WeaponRole type, int power) {
+			attack.put(type, power);
+			return this;
+		}
+
+		public Builder setBoolFlag(BoolNames effect, Boolean value) {
+			boolEffects.put(effect, value);
+			return this;
+		}
+
+		public Builder setIntFlag(IntNames effect, Integer value) {
+			intEffects.put(effect, value);
+			return this;
+		}
 
         
     /*
-    private PlayerNode<Integer> convert_cost_code(int cost_code, PlayerDetails player){
+	private PlayerNode<Integer> convert_cost_code(int cost_code, PlayerDetails player){
         int value = 0;
         if (cost_code > 0) {
             value = cost_code;
@@ -206,7 +219,7 @@ public class Effect {
          ;          -6 = Increases w/ weapon+speed value
          ;          -7 = Increases w/ armor+speed value
          */
-        // http://alphacentauri2.info/index.php?topic=12897.msg61597#msg61597
+		// http://alphacentauri2.info/index.php?topic=12897.msg61597#msg61597
         /*
          Acording to Yitzi
          Ok (weapon, armor, and chassis all refer to the weapon/armor/chassis cost):
@@ -224,16 +237,13 @@ public class Effect {
         
         return 0;
     }
-    */   
-        
-        
-        public Effect build() {
-            return new Effect(this);
-        }
-    }
+    */
 
-  
 
-   
+		public Effect build() {
+			return new Effect(this);
+		}
+	}
+
 
 }

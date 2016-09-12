@@ -126,21 +126,10 @@ public class SMAC_Test {
     @Test
     public void test_Technologies() {
         assertEquals("Number of technologies", 77, rules.getTechnologies().size());
-        //assertEquals("Centari Ecology name", "Centauri Ecology", rules.getTechnologies().get("#TECH6").getName(rules.getTran()));
-        //assertEquals("Centari Ecology Quote", "Lady Deirdre Skye", rules.getTechnologies().get("#TECH6").getQuotes(rules.getTran()).get(0).person);
+
         
-        assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("#TECH6").pre_requisites_names.size());
-        assertEquals("Centari Ecology flag", 1, rules.find_tech("#TECH6").fungus_nutrient_bonus);
+        assertEquals("Centari Ecology has no prerequisites", 0, rules.find_tech("Ecology").pre_requisites_names.size());
 
-        assertEquals("Thresh flag", 1, rules.find_tech("#TECH56").fungus_mineral_bonus);
-        assertEquals("Thresh flag", 0, rules.find_tech("#TECH56").fungus_nutrient_bonus);
-
-        assertEquals("AlphCen flag", 1, rules.find_tech("#TECH64").fungus_energy_bonus);
-        assertEquals("AlphCen flag", true, rules.find_tech("#TECH64").revealmap);
-        assertEquals("AlphCen flag", true, rules.find_tech("#TECH64").freetech);
-
-        assertEquals("Viral flag", true, rules.find_tech("#TECH76").genewar_defence);
-        assertEquals("Viral flag", true, rules.find_tech("#TECH76").genewar_offence);
 
     }
 
