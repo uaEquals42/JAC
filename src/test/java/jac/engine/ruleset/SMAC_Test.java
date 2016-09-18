@@ -41,14 +41,15 @@ public class SMAC_Test {
     public SMAC_Test() {
         
     }
-    static final Path MOD_LOCATION = Paths.get("src/test/resources");
+    static final Path LOCATION = Paths.get("src/test/resources/SMACX/");
     static Ruleset rules;
     
     @BeforeClass
     public static void setUp() {
-        
+		log.debug("Setup step");
+		log.trace("{}", LOCATION.resolve(""));
         try {
-            rules = new Ruleset.Builder().loadalpha_txt(MOD_LOCATION.resolve("./SMACX/alpha.txt"));
+            rules = new Ruleset.Builder().loadalpha_txt(LOCATION);
         } catch (SectionNotFoundException ex) {
             log.error(ex.toString());
             fail("Section wasn't found it alpha.txt");

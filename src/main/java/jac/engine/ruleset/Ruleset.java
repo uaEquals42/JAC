@@ -19,6 +19,7 @@
 package jac.engine.ruleset;
 
 import jac.Enum.*;
+import jac.engine.Faction.Faction;
 import jac.engine.FileHelpers;
 import jac.engine.dialog.Quote;
 import jac.engine.mapstuff.TerrainModifier;
@@ -52,6 +53,7 @@ public class Ruleset {
 
     private final String ruleset_name;
 
+	private final List<Faction> factions;
     private final List<Ideology> ideologies;
     private final Map<String, Tech> technologies;
 
@@ -101,6 +103,7 @@ public class Ruleset {
         ruleset_name = build.ruleset_name;
         ideologies = build.ideologies;
         technologies = build.technologies;
+		factions = build.factions;
 
         //Unit variables
         unit_components = build.unit_components;
@@ -162,18 +165,21 @@ public class Ruleset {
         private Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
         private Map<String, Terrainstat> terrainModifiers = new LinkedHashMap<>();
 
+		List<Faction> factions = new ArrayList<>();
+
         public Ruleset loadalpha_txt(Path path) throws SectionNotFoundException, IOException {
             log.debug("loadalpha_txt: {}", path.toAbsolutePath());
             ruleset_name = "SMAC"; 
-            List<String> input = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
+            List<String> input = Files.readAllLines(path.resolve("alpha.txt"), StandardCharsets.ISO_8859_1);
             //tran = new Translation(Locale.ENGLISH);
 
             // load these in first.
-            Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolveSibling("Blurbs.txt"));
+            Map<String, List<Quote>> blurbs = load_blurbs_txt(path.resolve("Blurbs.txt"));
             //tran.opening_quote = blurbs.get("#OPENING").get(0);
 
-            Map<String, String> techlongs = load_techlongs(path.resolveSibling("TECHLONGS.TXT"));
+            Map<String, String> techlongs = load_techlongs(path.resolve("TECHLONGS.TXT"));
 
+			load_SMAC_factions(path);
             load_ideologies(input);
             load_technologies(input, blurbs);
             load_SMAC_chassis_loadout();
@@ -190,7 +196,23 @@ public class Ruleset {
 
         }
         
-        
+        private void load_SMAC_factions(Path path) throws IOException, SectionNotFoundException {
+			ArrayList<Path> filenames = new ArrayList<>();
+			filenames.add(path.resolve("believe.txt"));
+			filenames.add(path.resolve("GAIANS.TXT"));
+			filenames.add(path.resolve("hive.txt"));
+			filenames.add(path.resolve("MORGAN.TXT"));
+			filenames.add(path.resolve("PEACE.TXT"));
+			filenames.add(path.resolve("univ.txt"));
+			filenames.add(path.resolve("spartans.txt"));
+			load_factions(filenames);
+		}
+
+		private void load_factions(List<Path> filenames) throws IOException, SectionNotFoundException {
+			for(Path loc : filenames){
+				factions.add(new Faction.Builder().loadSmacFactionFile(loc).build());
+			}
+		}
 
         public Ruleset loadalphax_txt() throws SectionNotFoundException, IOException {
             //TODO: implement load alphax.txt
