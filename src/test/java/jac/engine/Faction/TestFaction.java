@@ -62,7 +62,7 @@ import static org.junit.Assert.assertEquals;
 
         instance = new Faction.Builder().loadSmacFactionFile(FactionLocation).build();
         instance.to_json(MOD_LOCATION);
-        instance = new Faction.Builder().loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve(instance.getCodeName())).build();
+        instance = new Faction.Builder().loadJson(MOD_LOCATION.resolve(Faction.FACTION_FOLDER).resolve(instance.getKey())).build();
 
     }
     

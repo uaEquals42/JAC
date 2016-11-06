@@ -53,7 +53,7 @@ public class Ruleset {
 
     private final String ruleset_name;
 
-	private final List<Faction> factions;
+	private final Map<String, Faction> factions;
     private final List<Ideology> ideologies;
     private final Map<String, Tech> technologies;
 
@@ -68,7 +68,26 @@ public class Ruleset {
     private final Map<String, Terrainstat> basicTerrainStates;
     private final Map<String, Terrainstat> terrainModifiers;
 
-    public List<Unit_part> get_part_list_by_category(Part_Category category) {
+	private Ruleset(Builder build) {
+		ruleset_name = build.ruleset_name;
+		ideologies = build.ideologies;
+		technologies = build.technologies;
+		factions = build.factions;
+
+		//Unit variables
+		unit_components = build.unit_components;
+		unit_frames = build.unit_frames;
+
+		basicTerrainStates = build.basicTerrainStates;
+		terrainModifiers = build.terrainModifiers;
+
+		this.unitPlans = build.unitPlans;
+	}
+
+
+
+
+	public List<Unit_part> get_part_list_by_category(Part_Category category) {
         List<Unit_part> results = new LinkedList<>();
         for (Unit_part part : unit_components.values()) {
             if (part.getCategory() == category) {
@@ -99,21 +118,6 @@ public class Ruleset {
         return technologies.get(key);
     }
 
-    private Ruleset(Builder build) {
-        ruleset_name = build.ruleset_name;
-        ideologies = build.ideologies;
-        technologies = build.technologies;
-		factions = build.factions;
-
-        //Unit variables
-        unit_components = build.unit_components;
-        unit_frames = build.unit_frames;
-
-        basicTerrainStates = build.basicTerrainStates;
-        terrainModifiers = build.terrainModifiers;
-
-        this.unitPlans = build.unitPlans;
-    }
 
 
     public Map<String, Unit_Plan> getUnitPlans() {
@@ -165,7 +169,7 @@ public class Ruleset {
         private Map<String, Terrainstat> basicTerrainStates = new LinkedHashMap<>();
         private Map<String, Terrainstat> terrainModifiers = new LinkedHashMap<>();
 
-		List<Faction> factions = new ArrayList<>();
+		Map<String, Faction> factions = new LinkedHashMap<>();
 
         public Ruleset loadalpha_txt(Path path) throws SectionNotFoundException, IOException {
             log.debug("loadalpha_txt: {}", path.toAbsolutePath());
@@ -210,7 +214,8 @@ public class Ruleset {
 
 		private void load_factions(List<Path> filenames) throws IOException, SectionNotFoundException {
 			for(Path loc : filenames){
-				factions.add(new Faction.Builder().loadSmacFactionFile(loc).build());
+				Faction tmp = new Faction.Builder().loadSmacFactionFile(loc).build();
+				factions.put(tmp.getKey(), tmp);
 			}
 		}
 

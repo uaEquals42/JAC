@@ -35,7 +35,8 @@ import java.util.Map;
 public class FactionSettings {
     //TODO:  Use new Effect Nodes for appropriate values (stuff that will effect units/bases)
 
-    String codeName;
+    String key;
+
     String race;
     
 

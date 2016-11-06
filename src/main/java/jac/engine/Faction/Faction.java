@@ -68,8 +68,8 @@ public class Faction {
 
     public Faction_Dialog getDialog(Locale language) throws ExceptionNoFactionDialog {
         if (translations.isEmpty()) {
-            log.error("Faction {} is missing all translations.", this.setting.codeName);
-            throw new ExceptionNoFactionDialog(this.setting.codeName);
+            log.error("Faction {} is missing all translations.", this.setting.key);
+            throw new ExceptionNoFactionDialog(this.setting.key);
         }
 
         if (translations.containsKey(language)) {
@@ -86,8 +86,8 @@ public class Faction {
 
     }
 
-    public String getCodeName() {
-        return setting.codeName;
+    public String getKey() {
+        return setting.key;
     }
 
     public String getRace() {
@@ -118,7 +118,7 @@ public class Faction {
     
      public void to_json(Path rulset_location) throws IOException {
          log.trace("Faction to json");
-         Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getCodeName());
+         Path save_location = rulset_location.resolve(FACTION_FOLDER).resolve(this.getKey());
          FileHelpers.create_folder(save_location);
 
          FileHelpers.to_json_file(save_location,SETTING_FILE_NAME, setting);
@@ -126,6 +126,9 @@ public class Faction {
          FileHelpers.map_to_Json(save_location.resolve(TRANSLATION_FOLDER), translations);
 
      }
+
+
+
      
     public static class Builder {
 
@@ -136,23 +139,23 @@ public class Faction {
             return new Faction(this);
         }
 
-        
-        
-        
-        public Builder loadJson(Path folder) throws FileNotFoundException, IOException {
-            log.trace("loadJson: {}", folder.toString());
-            Gson gson = new Gson();
 
-            setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME + ".json").toFile()), FactionSettings.class);
 
-            List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
-            for (Path pp : paths) {
-                Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
-                translations.put(dialog.getLanguage(), dialog);
-            }
+		public Builder loadJson(Path folder) throws FileNotFoundException, IOException {
+			log.trace("loadJson: {}", folder.toString());
+			Gson gson = new Gson();
 
-            return this;
-        }
+			setting = gson.fromJson(new FileReader(folder.resolve(SETTING_FILE_NAME + ".json").toFile()), FactionSettings.class);
+
+			List<Path> paths = FileHelpers.listFiles(folder.resolve(TRANSLATION_FOLDER), "*.json");
+			for (Path pp : paths) {
+				Faction_Dialog dialog = gson.fromJson(new FileReader(pp.toFile()), Faction_Dialog.class);
+				translations.put(dialog.getLanguage(), dialog);
+			}
+
+			return this;
+		}
+
         
         
 
@@ -173,7 +176,7 @@ public class Faction {
 
 
             int line = FileHelpers.findKey("#",textFileIn);
-            setting.codeName = textFileIn.get(line).substring(1);
+            setting.key = textFileIn.get(line).substring(1);
             line = FileHelpers.nextLine(line, textFileIn);
             String[] tmp = textFileIn.get(line).split(",");
             dialog.faction_name_title = tmp[0];
